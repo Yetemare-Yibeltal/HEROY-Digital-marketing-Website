@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
 import CustomCursor from "@/components/ui/CustomCursor";
+import AIChatWidget from "@/components/ui/AIChatWidget";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -58,6 +59,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <AIChatWidget />
       </body>
     </html>
   );
