@@ -6,6 +6,7 @@ import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import Process from "@/components/sections/Process";
 import PortfolioPreview from "@/components/sections/PortfolioPreview";
 import TestimonialsPreview from "@/components/sections/TestimonialsPreview";
+import CTABand from "@/components/sections/CTABand";
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
       <Process />
       <PortfolioPreview />
       <TestimonialsPreview />
+      <CTABand />
     </>
   );
 }
