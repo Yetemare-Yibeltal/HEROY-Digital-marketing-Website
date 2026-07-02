@@ -494,11 +494,10 @@ export default function CareersPage() {
                   key={dept}
                   type="button"
                   onClick={() => setActiveDept(dept)}
-                  className={`text-sm font-medium px-5 py-2 rounded-full border transition-all ${
-                    activeDept === dept
+                  className={`text-sm font-medium px-5 py-2 rounded-full border transition-all ${activeDept === dept
                       ? "bg-grad-primary text-background border-transparent"
                       : "border-border text-muted hover:text-white hover:border-primary/40"
-                  }`}
+                    }`}
                   style={
                     activeDept === dept
                       ? { boxShadow: "0 8px 24px rgba(124,92,255,0.4)" }
