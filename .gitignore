@@ -1,7 +1,7 @@
-node_modules
-.next
-out
-.env*
-.DS_Store
+frontend/node_modules
+frontend/.next
+frontend/.env*
+frontend/next-env.d.ts
+backend/node_modules
+backend/.env
 *.log
-next-env.d.ts
