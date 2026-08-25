@@ -1,8 +1,12 @@
 {
   "name": "heroy-backend",
   "version": "1.0.0",
-  "description": "HEROY Digital Agency — Express API backend",
+  "private": true,
+  "description": "HEROY Digital Solutions — Express API backend",
   "main": "src/server.js",
+  "engines": {
+    "node": ">=18.18.0"
+  },
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js"
