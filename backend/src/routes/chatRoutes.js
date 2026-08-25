@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { sendMessage, getChatHistory } = require("../controllers/chatController");
+const {
+  sendMessage,
+  getChatHistory,
+} = require("../controllers/chatController");
 const { chatLimiter } = require("../middleware/rateLimiter");
 const validateRequest = require("../middleware/validateRequest");
 const { body, param } = require("express-validator");
@@ -42,14 +45,14 @@ router.post(
   chatLimiter,
   messageValidationRules,
   validateRequest,
-  sendMessage
+  sendMessage,
 );
 
 router.get(
   "/history/:sessionId",
   sessionValidationRules,
   validateRequest,
-  getChatHistory
+  getChatHistory,
 );
 
 module.exports = router;
