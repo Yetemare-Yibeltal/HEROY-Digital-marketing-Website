@@ -7,6 +7,7 @@ const {
 } = require("../controllers/contactController");
 const { contactLimiter } = require("../middleware/rateLimiter");
 const validateRequest = require("../middleware/validateRequest");
+const adminAuth = require("../middleware/adminAuth");
 const { body } = require("express-validator");
 
 const contactValidationRules = [
@@ -65,8 +66,8 @@ router.post(
   submitContact,
 );
 
-router.get("/", getContacts);
+router.get("/", adminAuth, getContacts);
 
-router.patch("/:id/status", updateContactStatus);
+router.patch("/:id/status", adminAuth, updateContactStatus);
 
 module.exports = router;
