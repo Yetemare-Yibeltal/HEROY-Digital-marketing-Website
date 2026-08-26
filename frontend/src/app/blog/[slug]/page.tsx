@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, Clock, Calendar, ArrowRight, ArrowUpRight } from "lucide-react";
@@ -143,8 +144,13 @@ const relatedPosts = [
   },
 ];
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = postsData[params.slug];
+export default function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = use(params);
+  const post = postsData[slug];
 
   if (!post) {
     return (
