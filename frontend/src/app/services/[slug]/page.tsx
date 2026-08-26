@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { services } from "../page";
+import ThreeShowcase from "@/components/ui/ThreeShowcase";
 import type { Metadata } from "next";
 
 interface ServiceDetail {
@@ -148,15 +149,16 @@ const serviceDetails: Record<string, ServiceDetail> = {
 };
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const service = services.find((s) => s.slug === params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const service = services.find((s) => s.slug === slug);
   if (!service) return {};
   return {
     title: service.title,
@@ -164,9 +166,10 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-export default function ServiceDetailPage({ params }: PageProps) {
-  const service = services.find((s) => s.slug === params.slug);
-  const detail = serviceDetails[params.slug];
+export default async function ServiceDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const service = services.find((s) => s.slug === slug);
+  const detail = serviceDetails[slug];
 
   if (!service || !detail) notFound();
 
@@ -198,6 +201,24 @@ export default function ServiceDetailPage({ params }: PageProps) {
           </p>
         </div>
       </section>
+
+      {slug === "3d-experiences" && (
+        <section className="section pt-0">
+          <div className="container-px mx-auto max-w-5xl">
+            <div className="glass-strong rounded-3xl overflow-hidden relative h-[420px] sm:h-[480px]">
+              <ThreeShowcase />
+              <div className="absolute top-5 left-5 pointer-events-none">
+                <span className="badge">✦ Live Demo — Drag your cursor</span>
+              </div>
+            </div>
+            <p className="text-xs text-muted text-center mt-4">
+              This scene is running live in your browser with Three.js and
+              WebGL — the exact technology we use to build 3D product
+              configurators and interactive brand experiences.
+            </p>
+          </div>
+        </section>
+      )}
 
       <section className="section pt-0">
         <div className="container-px mx-auto max-w-5xl">
