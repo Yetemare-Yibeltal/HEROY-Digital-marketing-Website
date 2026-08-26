@@ -3,143 +3,151 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Star, Quote, ArrowRight, Sparkles } from "lucide-react";
+import { Star, Quote, ArrowRight, Sparkles, Info } from "lucide-react";
 import TypewriterText from "@/components/ui/TypewriterText";
 
 const categories = ["All", "Web Development", "Digital Marketing", "Mobile Apps", "SEO", "Branding", "AI Solutions"];
 
+/**
+ * These are illustrative example reviews representing the kind of feedback
+ * we aim to earn from clients — not verified, real, or unedited quotes
+ * from named companies. No specific performance percentages are claimed
+ * here since none are backed by real client data. Replace with real,
+ * client-approved testimonials (and get sign-off before publishing any
+ * numbers) as they become available.
+ */
 const testimonials = [
   {
     id: 1,
-    name: "Sarah Johnson",
+    name: "S. Johnson",
     position: "CEO",
-    company: "Nexora Tech",
+    company: "Retail Technology Company",
     category: "Web Development",
     rating: 5,
     gradient: "from-violet-500 to-purple-700",
     glow: "rgba(124,92,255,0.3)",
-    review: "HEROY completely transformed our platform. The new Next.js architecture cut our load time by 70% and our SEO rankings improved dramatically within the first two months. The team was professional, communicative, and delivered exactly what they promised — on time and on budget. We have already started planning our next project with them.",
+    review: "HEROY rebuilt our platform on Next.js and the difference was immediate — pages load noticeably faster and our search rankings improved within the first two months. The team was professional, communicative, and delivered exactly what they promised, on time and on budget.",
   },
   {
     id: 2,
-    name: "Daniel Mensah",
+    name: "D. Mensah",
     position: "Marketing Director",
-    company: "Bluepeak Retail",
+    company: "Regional Retail Brand",
     category: "Digital Marketing",
     rating: 5,
     gradient: "from-cyan-500 to-blue-600",
     glow: "rgba(34,211,238,0.3)",
-    review: "The digital marketing strategy HEROY built for us doubled our organic traffic in under six months and reduced our cost per lead by 45%. What stood out was how data-driven their approach was — every decision was backed by analysis, and every weekly report was clear and honest. They genuinely care about results, not just activities.",
+    review: "The digital marketing strategy HEROY built for us grew our organic traffic meaningfully within six months. What stood out was how data-driven their approach was — every decision was backed by analysis, and every weekly report was clear and honest.",
   },
   {
     id: 3,
-    name: "Amara Okafor",
+    name: "A. Okafor",
     position: "Founder",
-    company: "Pulse Health",
+    company: "Healthcare Startup",
     category: "Mobile Apps",
     rating: 5,
     gradient: "from-emerald-500 to-teal-600",
     glow: "rgba(34,197,94,0.3)",
-    review: "Our mobile app launch was flawless. HEROY understood the healthcare context deeply — they asked the right questions about compliance and patient data from day one. The app launched on time, performs beautifully, and our users love it. The post-launch support has also been exceptional. I would not hesitate to recommend them to any founder.",
+    review: "Our mobile app launch was smooth. HEROY understood the healthcare context deeply — they asked the right questions about compliance and patient data from day one. The app launched on time and our users have responded well. Post-launch support has also been solid.",
   },
   {
     id: 4,
-    name: "James Thornton",
+    name: "J. Thornton",
     position: "CTO",
-    company: "Cresta",
+    company: "Customer Support Platform",
     category: "AI Solutions",
     rating: 5,
     gradient: "from-orange-500 to-amber-600",
     glow: "rgba(249,115,22,0.3)",
-    review: "The AI support system HEROY built handles over 70% of our inbound tickets automatically with a customer satisfaction score that actually improved compared to human-only support. The implementation was clean, well-documented, and the team explained every technical decision clearly. This is genuinely one of the best technology investments we have made.",
+    review: "The AI support system HEROY built handles a large share of our inbound tickets automatically without hurting customer satisfaction. The implementation was clean, well-documented, and the team explained every technical decision clearly.",
   },
   {
     id: 5,
-    name: "Ingrid Larsen",
+    name: "I. Larsen",
     position: "Head of Digital",
-    company: "Northwind Industries",
+    company: "Industrial Equipment Manufacturer",
     category: "Web Development",
     rating: 5,
     gradient: "from-blue-500 to-indigo-600",
     glow: "rgba(99,102,241,0.3)",
-    review: "The 3D product showcase HEROY built for us has completely changed how we sell. Prospects who interact with the 3D configurator are three times more likely to request a demo. Our sales team is closing deals faster because customers arrive already understanding the product. The craftsmanship in the Three.js work was extraordinary.",
+    review: "The 3D product showcase HEROY built for us has changed how we sell. Prospects who interact with the configurator arrive at sales calls already understanding the product. The craftsmanship in the Three.js work was genuinely impressive.",
   },
   {
     id: 6,
-    name: "Priya Nair",
+    name: "P. Nair",
     position: "Growth Manager",
-    company: "Vertex Labs",
+    company: "B2B SaaS Startup",
     category: "Digital Marketing",
     rating: 5,
     gradient: "from-fuchsia-500 to-purple-600",
     glow: "rgba(217,70,239,0.3)",
-    review: "In 90 days, HEROY took us from 20 inbound leads per month to over 120. They did not just set up campaigns and leave — they built a full inbound engine with content, paid ads, and email automation all working together. The reporting was transparent, and they were proactive about sharing what was working and what needed adjusting.",
+    review: "HEROY did not just set up campaigns and leave — they built a full inbound engine with content, paid ads, and email automation all working together. The reporting was transparent, and they were proactive about sharing what was working and what needed adjusting.",
   },
   {
     id: 7,
-    name: "Marcus Webb",
+    name: "M. Webb",
     position: "E-commerce Director",
-    company: "Dataforge",
+    company: "Online Retail Company",
     category: "Web Development",
     rating: 5,
     gradient: "from-teal-500 to-cyan-600",
     glow: "rgba(20,184,166,0.3)",
-    review: "Our custom e-commerce platform replaced a Shopify setup that we had outgrown. HEROY built exactly what we needed — B2B pricing tiers, bulk ordering, and a proper admin dashboard — all in a clean, fast Next.js application. Online revenue increased by 220% in the first quarter after launch. The team is professional, skilled, and a genuine pleasure to work with.",
+    review: "Our custom e-commerce platform replaced an off-the-shelf setup we had outgrown. HEROY built exactly what we needed — B2B pricing tiers, bulk ordering, and a proper admin dashboard — all in a clean, fast Next.js application. The team is professional, skilled, and a genuine pleasure to work with.",
   },
   {
     id: 8,
-    name: "Chioma Eze",
+    name: "C. Eze",
     position: "CEO",
-    company: "Meridian Finance",
+    company: "Fintech Company",
     category: "Branding",
     rating: 5,
     gradient: "from-amber-500 to-yellow-600",
     glow: "rgba(234,179,8,0.3)",
-    review: "HEROY gave Meridian a brand identity that we are genuinely proud of. The strategic thinking behind the visual direction was impressive — they did not just make things look good, they made sure the brand would resonate with enterprise clients and communicate trust. Enterprise meeting conversion rate doubled within two months of the rebrand launch.",
+    review: "HEROY gave our company a brand identity we are genuinely proud of. The strategic thinking behind the visual direction was impressive — they did not just make things look good, they made sure the brand would resonate with enterprise clients and communicate trust.",
   },
   {
     id: 9,
-    name: "Tom Bradley",
+    name: "T. Bradley",
     position: "Founder",
-    company: "Orbitly",
+    company: "Productivity SaaS",
     category: "Mobile Apps",
     rating: 5,
     gradient: "from-indigo-500 to-violet-600",
     glow: "rgba(99,102,241,0.3)",
-    review: "HEROY delivered our web dashboard and React Native app simultaneously, sharing the same backend architecture. We launched both platforms in five months and hit 400% of our target user signups in month one. The team was organized, proactive, and technically excellent throughout. They are now our go-to development partner for everything.",
+    review: "HEROY delivered our web dashboard and mobile app in parallel, sharing the same backend architecture. The team was organized, proactive, and technically strong throughout. They are now our go-to development partner for everything we build.",
   },
   {
     id: 10,
-    name: "Fatima Al-Rashid",
+    name: "F. Al-Rashid",
     position: "Marketing Manager",
-    company: "Skyline Real Estate",
+    company: "Real Estate Group",
     category: "SEO",
     rating: 5,
     gradient: "from-pink-500 to-rose-600",
     glow: "rgba(236,72,153,0.3)",
-    review: "The SEO work HEROY did for our property listings was remarkable. We went from page 3 to the top 3 results for our most competitive keywords in four months. More importantly, the traffic that came in converted — our lead quality improved significantly because the content strategy attracted serious buyers rather than casual browsers.",
+    review: "The SEO work HEROY did for our property listings was solid. We moved up meaningfully for our most competitive keywords over a few months. More importantly, the traffic that came in converted — the content strategy attracted serious buyers rather than casual browsers.",
   },
   {
     id: 11,
-    name: "Kevin Osei",
+    name: "K. Osei",
     position: "COO",
-    company: "Bluepeak Logistics",
+    company: "Logistics Company",
     category: "Web Development",
     rating: 5,
     gradient: "from-slate-500 to-gray-700",
     glow: "rgba(100,116,139,0.3)",
-    review: "The fleet management dashboard HEROY built replaced three separate spreadsheet-based systems. Real-time tracking, automated dispatch, and management reporting are now all in one place. The system has been running without issues for six months. Operational efficiency improved by 40% and our dispatch team now handles twice the volume with the same headcount.",
+    review: "The fleet management dashboard HEROY built replaced several separate spreadsheet-based systems. Real-time tracking, automated dispatch, and management reporting are now all in one place, and the system has run reliably since launch.",
   },
   {
     id: 12,
-    name: "Aisha Diallo",
+    name: "A. Diallo",
     position: "Director of Programs",
-    company: "Hope Foundation",
+    company: "Education & Community NGO",
     category: "Digital Marketing",
     rating: 5,
     gradient: "from-green-500 to-emerald-600",
     glow: "rgba(34,197,94,0.3)",
-    review: "As an NGO with limited budget, we were skeptical about working with a full-service agency. HEROY was transparent about what was achievable and delivered beyond what we expected. Our donation platform and awareness campaigns increased donations by over 400% in the first year. They gave us the same quality of work as clients with much larger budgets.",
+    review: "As an NGO with a limited budget, we were unsure about working with a full-service agency. HEROY was transparent about what was achievable and delivered beyond what we expected on our donation platform and awareness campaigns. They gave us the same quality of work as clients with much larger budgets.",
   },
 ];
 
@@ -148,9 +156,6 @@ const typewriterWords = ["Clients", "Partners", "Teams", "Founders", "Leaders"];
 export default function TestimonialsPage() {
   const [active, setActive] = useState("All");
   const filtered = active === "All" ? testimonials : testimonials.filter((t) => t.category === active);
-
-  const avgRating = 4.9;
-  const totalReviews = 150;
 
   return (
     <div className="relative overflow-hidden">
@@ -187,42 +192,23 @@ export default function TestimonialsPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-muted text-lg leading-relaxed mb-8"
           >
-            Real feedback from real clients across industries — unedited
-            and in their own words.
+            The kind of feedback we work hard to earn from every client we
+            partner with.
           </motion.p>
+        </div>
+      </section>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="inline-flex items-center gap-6 glass-strong rounded-2xl px-8 py-5"
-          >
-            <div className="text-center">
-              <p className="font-display font-bold text-4xl text-gradient leading-none">
-                {avgRating}
-              </p>
-              <div className="flex gap-1 justify-center mt-2">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} size={14} className="text-accent-gold fill-accent-gold" />
-                ))}
-              </div>
-              <p className="text-xs text-muted mt-1">Average Rating</p>
-            </div>
-            <div className="w-px h-12 bg-border" />
-            <div className="text-center">
-              <p className="font-display font-bold text-4xl text-gradient-warm leading-none">
-                {totalReviews}+
-              </p>
-              <p className="text-xs text-muted mt-3">Verified Reviews</p>
-            </div>
-            <div className="w-px h-12 bg-border" />
-            <div className="text-center">
-              <p className="font-display font-bold text-4xl text-gradient-green leading-none">
-                98%
-              </p>
-              <p className="text-xs text-muted mt-3">Would Recommend</p>
-            </div>
-          </motion.div>
+      <section className="section pt-0 pb-4 relative">
+        <div className="container-px mx-auto max-w-6xl">
+          <div className="glass rounded-2xl p-5 flex items-start gap-3">
+            <Info size={16} className="text-accent shrink-0 mt-0.5" />
+            <p className="text-xs text-muted leading-relaxed">
+              The reviews below are illustrative examples of the kind of
+              feedback we aim to earn — not verified quotes from named
+              clients. Real, client-approved testimonials will replace
+              these as they become available.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -282,7 +268,12 @@ export default function TestimonialsPage() {
                   />
 
                   <div className="relative">
-                    <Quote size={24} className="text-primary/30 mb-3" />
+                    <div className="flex items-center justify-between mb-3">
+                      <Quote size={24} className="text-primary/30" />
+                      <span className="text-[9px] font-bold uppercase tracking-widest bg-white/10 border border-white/15 text-white/60 px-2 py-1 rounded-full">
+                        Illustrative
+                      </span>
+                    </div>
 
                     <div className="flex gap-1 mb-3">
                       {Array.from({ length: t.rating }).map((_, idx) => (
@@ -335,8 +326,9 @@ export default function TestimonialsPage() {
                 <span className="text-gradient">success story?</span>
               </h2>
               <p className="text-muted max-w-xl mx-auto leading-relaxed mb-8">
-                Join 150+ businesses that have grown their revenue, traffic,
-                and brand with HEROY. Start with a free consultation.
+                Join the growing list of businesses working with HEROY to
+                grow their revenue, traffic, and brand. Start with a free
+                consultation.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link href="/consultation" className="btn-primary">
