@@ -2,213 +2,240 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, TrendingUp, Users, Globe2, Sparkles } from "lucide-react";
+import { ArrowRight, TrendingUp, Users, Globe2, Sparkles, Info } from "lucide-react";
 import TypewriterText from "@/components/ui/TypewriterText";
 
-const caseStudies = [
+interface CaseStudyOutcome {
+  icon: typeof TrendingUp;
+  label: string;
+}
+
+interface CaseStudy {
+  id: string;
+  title: string;
+  industry: string;
+  service: string;
+  gradient: string;
+  glow: string;
+  accentColor: string;
+  challenge: string;
+  solution: string;
+  outcomes: CaseStudyOutcome[];
+  duration: string;
+  tags: string[];
+}
+
+/**
+ * These are illustrative examples of how HEROY approaches real project
+ * types — not verified results from named clients. No company names or
+ * invented performance percentages are used here. Once real, client-
+ * approved case studies exist, replace these entries with actual data
+ * (and get sign-off from the client before publishing any numbers).
+ */
+const caseStudies: CaseStudy[] = [
   {
-    id: "nexora-saas",
-    client: "Nexora Tech",
+    id: "saas-platform-rebuild",
+    title: "SaaS Platform Rebuild",
     industry: "SaaS / Technology",
     service: "Web Development + SEO",
     gradient: "from-violet-600/50 to-cyan-600/40",
     glow: "rgba(124,92,255,0.35)",
     accentColor: "text-violet-400",
     challenge:
-      "Nexora had a slow, outdated platform losing customers to faster, better-designed competitors. Their organic traffic had dropped 40% in 12 months.",
+      "A SaaS company's platform had grown slow and outdated over several years, losing ground to faster, better-designed competitors, with organic search visibility declining steadily.",
     solution:
-      "We rebuilt the entire platform in Next.js with server-side rendering, a PostgreSQL database, and a full technical SEO overhaul including content strategy.",
-    results: [
-      { icon: TrendingUp, metric: "+180%", label: "Revenue Growth" },
-      { icon: Users, metric: "+250%", label: "Monthly Active Users" },
-      { icon: Globe2, metric: "Top 3", label: "Google Rankings" },
+      "We rebuilt the platform in Next.js with server-side rendering and a PostgreSQL database, paired with a full technical SEO overhaul and a content strategy built around the product's core use cases.",
+    outcomes: [
+      { icon: TrendingUp, label: "Faster page loads" },
+      { icon: Users, label: "Higher user engagement" },
+      { icon: Globe2, label: "Improved search rankings" },
     ],
     duration: "4 months",
     tags: ["Next.js", "PostgreSQL", "TypeScript", "SEO"],
   },
   {
-    id: "pulse-health",
-    client: "Pulse Health",
+    id: "healthcare-patient-app",
+    title: "Cross-Platform Patient App",
     industry: "Healthcare",
     service: "Mobile App Development",
     gradient: "from-emerald-600/50 to-teal-600/40",
     glow: "rgba(34,197,94,0.35)",
     accentColor: "text-emerald-400",
     challenge:
-      "Pulse needed a secure, HIPAA-aware patient app that worked on both Android and iOS without the cost of building two separate native apps.",
+      "A healthcare provider needed a secure patient app that worked well on both Android and iOS, without the cost of maintaining two separate native codebases.",
     solution:
       "We built a cross-platform React Native app with offline support, appointment booking, medication reminders, and telehealth video integration.",
-    results: [
-      { icon: TrendingUp, metric: "+300%", label: "Active Users" },
-      { icon: Users, metric: "4.8/5", label: "App Store Rating" },
-      { icon: Globe2, metric: "60%", label: "Reduced Support Tickets" },
+    outcomes: [
+      { icon: TrendingUp, label: "Strong adoption at launch" },
+      { icon: Users, label: "High app store ratings" },
+      { icon: Globe2, label: "Fewer support tickets" },
     ],
     duration: "5 months",
     tags: ["React Native", "Node.js", "MongoDB", "Telehealth"],
   },
   {
-    id: "skyline-real-estate",
-    client: "Skyline Real Estate",
+    id: "real-estate-lead-generation",
+    title: "Property Listings Site & Lead Generation",
     industry: "Real Estate",
     service: "Website + Digital Marketing",
     gradient: "from-pink-600/50 to-rose-600/40",
     glow: "rgba(236,72,153,0.35)",
     accentColor: "text-pink-400",
     challenge:
-      "Skyline's old website was generating almost no leads online. They relied entirely on word of mouth and wanted to change that.",
+      "A real estate business relied almost entirely on word of mouth, with an outdated website that generated very few leads online.",
     solution:
-      "We built a premium Next.js property listing site with virtual tours and mortgage calculators, then ran a targeted paid acquisition campaign across Google and Meta.",
-    results: [
-      { icon: TrendingUp, metric: "+220%", label: "Online Leads" },
-      { icon: Users, metric: "+180%", label: "Website Traffic" },
-      { icon: Globe2, metric: "3x", label: "Sales Conversion Rate" },
+      "We built a premium Next.js property listing site with virtual tours and a mortgage calculator, then ran a targeted paid acquisition campaign across Google and Meta.",
+    outcomes: [
+      { icon: TrendingUp, label: "More qualified online leads" },
+      { icon: Users, label: "Increased website traffic" },
+      { icon: Globe2, label: "Better sales conversion rate" },
     ],
     duration: "3 months",
     tags: ["Next.js", "Sanity CMS", "Google Ads", "Meta Ads"],
   },
   {
-    id: "cresta-ai",
-    client: "Cresta",
+    id: "ai-support-assistant",
+    title: "AI-Powered Support Assistant",
     industry: "Customer Support / AI",
     service: "AI Solutions",
     gradient: "from-orange-600/50 to-amber-600/40",
     glow: "rgba(249,115,22,0.35)",
     accentColor: "text-orange-400",
     challenge:
-      "Cresta's support team was overwhelmed with repetitive tickets. Response times averaged 8 hours and customer satisfaction scores were falling.",
+      "A support team was overwhelmed with repetitive tickets, leading to slow response times and declining customer satisfaction.",
     solution:
-      "We built an AI-powered support assistant trained on their product documentation that automatically handles common queries and escalates complex issues.",
-    results: [
-      { icon: TrendingUp, metric: "+250%", label: "Support Efficiency" },
-      { icon: Users, metric: "2 hours", label: "Avg Response Time" },
-      { icon: Globe2, metric: "+40%", label: "CSAT Score" },
+      "We built an AI-powered support assistant trained on product documentation that automatically handles common queries and escalates complex issues to human agents.",
+    outcomes: [
+      { icon: TrendingUp, label: "Faster response times" },
+      { icon: Users, label: "Lower ticket volume" },
+      { icon: Globe2, label: "Improved satisfaction scores" },
     ],
     duration: "6 weeks",
-    tags: ["AI Integration", "Node.js", "MongoDB", "OpenAI API"],
+    tags: ["AI Integration", "Node.js", "MongoDB", "Anthropic API"],
   },
   {
-    id: "northwind-3d",
-    client: "Northwind Industries",
+    id: "manufacturing-3d-showcase",
+    title: "Interactive 3D Product Showcase",
     industry: "Manufacturing",
     service: "3D Interactive Website",
     gradient: "from-blue-600/50 to-indigo-600/40",
     glow: "rgba(99,102,241,0.35)",
     accentColor: "text-blue-400",
     challenge:
-      "Northwind sold complex industrial equipment that was hard to explain through photos and text alone, leading to long sales cycles and confused prospects.",
+      "A manufacturer sold complex industrial equipment that was difficult to explain through photos and text alone, leading to long sales cycles and confused prospects.",
     solution:
       "We built an immersive Three.js product showcase with interactive 3D models, a real-time configurator, and animated exploded diagrams of each product.",
-    results: [
-      { icon: TrendingUp, metric: "+400%", label: "Time on Site" },
-      { icon: Users, metric: "35%", label: "Shorter Sales Cycles" },
-      { icon: Globe2, metric: "+190%", label: "Demo Requests" },
+    outcomes: [
+      { icon: TrendingUp, label: "Longer time on site" },
+      { icon: Users, label: "Shorter sales cycles" },
+      { icon: Globe2, label: "More demo requests" },
     ],
     duration: "3 months",
     tags: ["Three.js", "WebGL", "React", "3D Modeling"],
   },
   {
-    id: "bluepeak-seo",
-    client: "Bluepeak Retail",
+    id: "ecommerce-seo-programme",
+    title: "Organic Growth SEO Programme",
     industry: "E-commerce",
     service: "SEO Services",
     gradient: "from-cyan-600/50 to-blue-600/40",
     glow: "rgba(34,211,238,0.35)",
     accentColor: "text-cyan-400",
     challenge:
-      "Bluepeak was spending heavily on paid ads with no organic presence. They wanted to reduce paid spend by building sustainable organic traffic.",
+      "An online retailer was spending heavily on paid ads with almost no organic presence, and wanted a sustainable alternative to rising ad costs.",
     solution:
-      "We ran a comprehensive 6-month SEO programme — technical audit and fixes, content cluster strategy, and a high-authority link building campaign.",
-    results: [
-      { icon: TrendingUp, metric: "+300%", label: "Organic Traffic" },
-      { icon: Users, metric: "Top 1", label: "Rankings for 12 Keywords" },
-      { icon: Globe2, metric: "-60%", label: "Paid Ad Spend" },
+      "We ran a comprehensive SEO programme — technical audit and fixes, a content cluster strategy, and a high-authority link building campaign.",
+    outcomes: [
+      { icon: TrendingUp, label: "Sustained organic traffic growth" },
+      { icon: Users, label: "Top rankings for priority keywords" },
+      { icon: Globe2, label: "Reduced reliance on paid ads" },
     ],
     duration: "6 months",
     tags: ["Technical SEO", "Content Strategy", "Link Building"],
   },
   {
-    id: "vertex-marketing",
-    client: "Vertex Labs",
+    id: "b2b-inbound-marketing",
+    title: "B2B Inbound Marketing System",
     industry: "B2B SaaS / Startups",
     service: "Digital Marketing",
     gradient: "from-fuchsia-600/50 to-purple-600/40",
     glow: "rgba(217,70,239,0.35)",
     accentColor: "text-fuchsia-400",
     challenge:
-      "Vertex had a great product but no marketing pipeline. Their sales team was spending all their time on cold outreach with poor conversion rates.",
+      "A B2B startup had a strong product but no marketing pipeline, with the sales team spending most of their time on cold outreach with low conversion.",
     solution:
       "We built a full inbound marketing system — content marketing, LinkedIn outreach, Google PPC, and an automated email nurture sequence.",
-    results: [
-      { icon: TrendingUp, metric: "+500%", label: "Inbound Leads" },
-      { icon: Users, metric: "12%", label: "Lead to Close Rate" },
-      { icon: Globe2, metric: "4x", label: "Pipeline Value" },
+    outcomes: [
+      { icon: TrendingUp, label: "More inbound leads" },
+      { icon: Users, label: "Higher lead-to-close rate" },
+      { icon: Globe2, label: "Stronger sales pipeline" },
     ],
     duration: "3 months",
     tags: ["Content Marketing", "LinkedIn Ads", "Google PPC", "Email Automation"],
   },
   {
-    id: "meridian-brand",
-    client: "Meridian Finance",
+    id: "fintech-rebrand",
+    title: "Fintech Brand Overhaul",
     industry: "Fintech",
     service: "Branding + Web Development",
     gradient: "from-amber-600/50 to-yellow-600/40",
     glow: "rgba(234,179,8,0.35)",
     accentColor: "text-amber-400",
     challenge:
-      "Meridian was launching a new fintech product but their brand looked generic and failed to inspire trust from their target enterprise clients.",
+      "A fintech company was launching a new product, but its existing brand looked generic and struggled to inspire trust with enterprise clients.",
     solution:
       "We delivered a complete brand overhaul including logo, colour system, typography, brand voice guidelines, and a premium website redesign.",
-    results: [
-      { icon: TrendingUp, metric: "+150%", label: "Brand Recognition" },
-      { icon: Users, metric: "+80%", label: "Enterprise Inquiries" },
-      { icon: Globe2, metric: "2x", label: "Investor Meeting Rate" },
+    outcomes: [
+      { icon: TrendingUp, label: "Stronger brand recognition" },
+      { icon: Users, label: "More enterprise inquiries" },
+      { icon: Globe2, label: "Higher investor engagement" },
     ],
     duration: "2 months",
     tags: ["Brand Identity", "UI Design", "Next.js", "Motion Design"],
   },
   {
-    id: "dataforge-ecommerce",
-    client: "Dataforge",
+    id: "b2b-headless-commerce",
+    title: "Headless B2B Commerce Platform",
     industry: "E-commerce / Data Tools",
     service: "E-commerce Development",
     gradient: "from-teal-600/50 to-emerald-600/40",
     glow: "rgba(20,184,166,0.35)",
     accentColor: "text-teal-400",
     challenge:
-      "Dataforge's Shopify store was hitting its limits. Custom pricing rules, bulk ordering, and B2B account management were impossible to implement.",
+      "A growing e-commerce brand had outgrown its off-the-shelf storefront. Custom pricing rules, bulk ordering, and B2B account management were impossible to implement.",
     solution:
-      "We built a fully custom headless e-commerce platform with Next.js, Stripe, and a custom admin dashboard for managing B2B pricing tiers.",
-    results: [
-      { icon: TrendingUp, metric: "+220%", label: "Online Revenue" },
-      { icon: Users, metric: "+45%", label: "Average Order Value" },
-      { icon: Globe2, metric: "99.9%", label: "Uptime" },
+      "We built a fully custom headless e-commerce platform with Next.js and Stripe, including a custom admin dashboard for managing B2B pricing tiers.",
+    outcomes: [
+      { icon: TrendingUp, label: "Increased online revenue" },
+      { icon: Users, label: "Higher average order value" },
+      { icon: Globe2, label: "Reliable uptime at scale" },
     ],
     duration: "4 months",
     tags: ["Next.js", "Stripe", "PostgreSQL", "Custom CMS"],
   },
   {
-    id: "orbitly-mobile",
-    client: "Orbitly",
+    id: "shared-codebase-launch",
+    title: "Shared-Codebase Web + Mobile Launch",
     industry: "Productivity / SaaS",
     service: "Mobile App + SaaS Platform",
     gradient: "from-indigo-600/50 to-violet-600/40",
     glow: "rgba(99,102,241,0.35)",
     accentColor: "text-indigo-400",
     challenge:
-      "Orbitly needed both a web dashboard and a mobile companion app, but their budget didn't allow two separate teams or a long development timeline.",
+      "An early-stage startup needed both a web dashboard and a mobile companion app, but its budget didn't allow for two separate teams or a long timeline.",
     solution:
-      "We built a shared API backend in Node.js, a Next.js web dashboard, and a React Native mobile app, all sharing the same codebase architecture.",
-    results: [
-      { icon: TrendingUp, metric: "50%", label: "Faster Time to Market" },
-      { icon: Users, metric: "+400%", label: "User Signups in Month 1" },
-      { icon: Globe2, metric: "4.9/5", label: "Product Hunt Rating" },
+      "We built a shared API backend in Node.js, a Next.js web dashboard, and a React Native mobile app, all built on the same architecture to keep development lean.",
+    outcomes: [
+      { icon: TrendingUp, label: "Faster time to market" },
+      { icon: Users, label: "Strong early user signups" },
+      { icon: Globe2, label: "Positive early reception" },
     ],
     duration: "5 months",
     tags: ["Next.js", "React Native", "Node.js", "Shared API"],
   },
 ];
 
-const typewriterWords = ["Results", "Revenue", "Growth", "Impact", "Success"];
+const typewriterWords = ["Approach", "Process", "Craft", "Thinking", "Method"];
 
 export default function CaseStudiesPage() {
   return (
@@ -217,7 +244,7 @@ export default function CaseStudiesPage() {
       <div className="glow-orb w-80 h-80 bg-accent/10 top-1/3 -left-20" style={{ animationDelay: "3s" }} />
       <div className="glow-orb w-64 h-64 bg-accent-pink/10 bottom-20 right-1/4" style={{ animationDelay: "5s" }} />
 
-      <section className="section pt-36 pb-10 relative">
+      <section className="section pt-36 pb-6 relative">
         <div className="container-px mx-auto max-w-4xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -235,7 +262,7 @@ export default function CaseStudiesPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6 text-white"
           >
-            Real projects, real{" "}
+            Our project{" "}
             <TypewriterText words={typewriterWords} className="text-gradient" />
           </motion.h1>
 
@@ -245,9 +272,24 @@ export default function CaseStudiesPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-muted text-lg leading-relaxed"
           >
-            A deep dive into how we solve complex problems and deliver
-            measurable outcomes for our clients across industries.
+            A look at how we approach different types of projects — the
+            challenges we solve for and the way we think through each build.
           </motion.p>
+        </div>
+      </section>
+
+      <section className="section pt-0 pb-4 relative">
+        <div className="container-px mx-auto max-w-6xl">
+          <div className="glass rounded-2xl p-5 flex items-start gap-3">
+            <Info size={16} className="text-accent shrink-0 mt-0.5" />
+            <p className="text-xs text-muted leading-relaxed">
+              The examples below are illustrative composites based on the
+              type of work we do — they represent our process and approach,
+              not verified results from a named client. Real, client-approved
+              case studies with permission to publish will replace these as
+              they become available.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -274,6 +316,9 @@ export default function CaseStudiesPage() {
                 <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
                   <div>
                     <div className="flex flex-wrap gap-2 mb-3">
+                      <span className="text-[10px] font-bold uppercase tracking-widest bg-white/10 border border-white/15 text-white/70 px-2.5 py-1 rounded-full">
+                        Illustrative Example
+                      </span>
                       {cs.tags.map((tag) => (
                         <span
                           key={tag}
@@ -284,25 +329,22 @@ export default function CaseStudiesPage() {
                       ))}
                     </div>
                     <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-1">
-                      {cs.client}
+                      {cs.title}
                     </h2>
                     <p className={`text-sm font-semibold ${cs.accentColor}`}>
                       {cs.industry} &middot; {cs.service} &middot; {cs.duration}
                     </p>
                   </div>
                   <div className="flex gap-3 flex-wrap">
-                    {cs.results.map((r) => {
-                      const Icon = r.icon;
+                    {cs.outcomes.map((o) => {
+                      const Icon = o.icon;
                       return (
                         <div
-                          key={r.label}
-                          className="glass-strong rounded-xl px-4 py-3 text-center min-w-[90px]"
+                          key={o.label}
+                          className="glass-strong rounded-xl px-4 py-3 text-center min-w-[110px] max-w-[140px]"
                         >
-                          <Icon size={14} className={`${cs.accentColor} mx-auto mb-1`} />
-                          <p className="font-display font-bold text-lg text-white leading-none">
-                            {r.metric}
-                          </p>
-                          <p className="text-[10px] text-muted mt-1">{r.label}</p>
+                          <Icon size={16} className={`${cs.accentColor} mx-auto mb-1.5`} />
+                          <p className="text-[11px] text-white leading-snug">{o.label}</p>
                         </div>
                       );
                     })}
