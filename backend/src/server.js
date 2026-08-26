@@ -8,6 +8,7 @@ const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 const { generalLimiter } = require("./middleware/rateLimiter");
 const contactRoutes = require("./routes/contactRoutes");
+const consultationRoutes = require("./routes/consultationRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 
 const app = express();
@@ -47,6 +48,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/contact", contactRoutes);
+app.use("/api/consultation", consultationRoutes);
 app.use("/api/chat", chatRoutes);
 
 app.use("*", (req, res) => {
