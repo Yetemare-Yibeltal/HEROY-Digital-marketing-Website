@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Sparkles, Bot, AlertCircle } from "lucide-react";
+import { apiUrl } from "@/lib/config";
 
 interface Message {
   id: number;
@@ -73,7 +74,7 @@ export default function AIChatWidget() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/chat`,
+        apiUrl("/api/chat"),
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
