@@ -13,6 +13,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import TypewriterText from "@/components/ui/TypewriterText";
+import { apiUrl } from "@/lib/config";
 
 const benefits = [
   "Get a clear direction for your project from a senior team member",
@@ -92,7 +93,7 @@ export default function ConsultationPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/consultation`,
+        apiUrl("/api/consultation"),
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
