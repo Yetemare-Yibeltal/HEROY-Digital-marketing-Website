@@ -19,13 +19,16 @@ export default function CustomCursor() {
       setHovering(Boolean(isInteractive));
     };
 
+    const handleMouseLeave = () => setVisible(false);
+
     window.addEventListener("mousemove", moveCursor);
     window.addEventListener("mouseover", handleMouseOver);
-    window.addEventListener("mouseleave", () => setVisible(false));
+    window.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, []);
 
