@@ -17,6 +17,20 @@ const quickReplies = [
   "What is your process?",
 ];
 
+function getOrCreateSessionId(): string {
+  if (typeof window === "undefined") return "";
+  const key = "heroy_chat_session_id";
+  let sessionId = window.sessionStorage.getItem(key);
+  if (!sessionId) {
+    sessionId =
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `session_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    window.sessionStorage.setItem(key, sessionId);
+  }
+  return sessionId;
+}
+
 export default function AIChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -31,6 +45,11 @@ export default function AIChatWidget() {
   const [isTyping, setIsTyping] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const sessionIdRef = useRef<string>("");
+
+  useEffect(() => {
+    sessionIdRef.current = getOrCreateSessionId();
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -53,22 +72,26 @@ export default function AIChatWidget() {
     setIsTyping(true);
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: updatedMessages.map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("API error");
-      }
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/chat`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: updatedMessages.map((m) => ({
+              role: m.role,
+              content: m.content,
+            })),
+            sessionId: sessionIdRef.current,
+          }),
+        },
+      );
 
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "API error");
+      }
 
       const assistantMessage: Message = {
         id: Date.now() + 1,
