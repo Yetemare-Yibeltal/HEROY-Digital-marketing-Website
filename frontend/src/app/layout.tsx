@@ -20,7 +20,10 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://heroy.dev";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "HEROY Digital Solutions | Digital Transformation Agency",
     template: "%s | HEROY Digital Solutions",
