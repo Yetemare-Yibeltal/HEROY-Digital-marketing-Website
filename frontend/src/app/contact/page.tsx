@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import { apiUrl } from "@/lib/config";
 import TypewriterText from "@/components/ui/TypewriterText";
 
 const contactMethods = [
@@ -37,11 +38,11 @@ const contactMethods = [
   {
     icon: Phone,
     title: "Telegram",
-    value: "@heroydev",
+    value: "@HEROY_Team",
     description: "Message us on Telegram anytime.",
     gradient: "from-cyan-500 to-blue-600",
     glow: "rgba(34,211,238,0.3)",
-    href: "https://t.me/heroydev",
+    href: "https://t.me/HEROY_Team",
   },
   {
     icon: MapPin,
@@ -94,7 +95,7 @@ export default function ContactPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/contact`,
+        apiUrl("/api/contact"),
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
