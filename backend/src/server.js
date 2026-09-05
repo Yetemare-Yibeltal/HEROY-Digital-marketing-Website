@@ -9,6 +9,7 @@ const errorHandler = require("./middleware/errorHandler");
 const { generalLimiter } = require("./middleware/rateLimiter");
 const contactRoutes = require("./routes/contactRoutes");
 const consultationRoutes = require("./routes/consultationRoutes");
+const blogRoutes = require("./routes/blogRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 
 const app = express();
@@ -24,7 +25,7 @@ app.use(helmet());
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:3000",
-    methods: ["GET", "POST", "PATCH"],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization", "x-admin-key"],
   }),
 );
@@ -49,6 +50,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/contact", contactRoutes);
 app.use("/api/consultation", consultationRoutes);
+app.use("/api/blog", blogRoutes);
 app.use("/api/chat", chatRoutes);
 
 app.use("*", (req, res) => {
