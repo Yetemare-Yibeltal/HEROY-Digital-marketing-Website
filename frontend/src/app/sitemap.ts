@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { apiUrl } from "@/lib/config";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://heroy.dev";
 
@@ -24,21 +25,6 @@ const serviceSlugs = [
   "it-consulting",
 ];
 
-const blogSlugs = [
-  "how-to-grow-organic-traffic-2026",
-  "nextjs-15-for-agencies",
-  "ai-chatbot-customer-support",
-  "brand-identity-guide-2026",
-  "react-native-vs-flutter-2026",
-  "digital-marketing-strategy-b2b",
-  "ecommerce-conversion-rate-optimization",
-  "technical-seo-audit-checklist",
-  "ui-design-trends-2026",
-  "building-saas-mvp-guide",
-  "local-seo-for-small-business",
-  "video-marketing-strategy-2026",
-];
-
 const staticRoutes: {
   path: string;
   priority: number;
@@ -61,7 +47,27 @@ const staticRoutes: {
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+interface BlogSlugEntry {
+  slug: string;
+  updatedAt?: string;
+  publishedAt?: string | null;
+}
+
+async function getBlogSlugs(): Promise<BlogSlugEntry[]> {
+  try {
+    const response = await fetch(apiUrl("/api/blog?limit=200"), {
+      cache: "no-store",
+    });
+    if (!response.ok) return [];
+    const data = await response.json();
+    return (data.data || []) as BlogSlugEntry[];
+  } catch (error) {
+    console.error("Failed to fetch blog slugs for sitemap:", error);
+    return [];
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
@@ -78,9 +84,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const blogEntries: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${siteUrl}/blog/${slug}`,
-    lastModified: now,
+  const blogPosts = await getBlogSlugs();
+  const blogEntries: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+    url: `${siteUrl}/blog/${post.slug}`,
+    lastModified: post.publishedAt ? new Date(post.publishedAt) : now,
     changeFrequency: "monthly",
     priority: 0.6,
   }));
