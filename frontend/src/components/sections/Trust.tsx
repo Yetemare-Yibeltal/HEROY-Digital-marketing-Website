@@ -1,48 +1,96 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
+// Real figures confirmed by client (Sep 2026): 50+ projects, 500+ clients.
+// "Years Active" pending confirmation — currently a placeholder, flagged for review.
 const stats = [
   {
-    value: "50+",
+    value: 50,
+    suffix: "+",
     label: "Projects Delivered",
     gradient: "linear-gradient(135deg,#7c5cff,#22d3ee)",
     glow: "rgba(124,92,255,0.3)",
     border: "#7c5cff",
   },
   {
-    value: "500+",
+    value: 500,
+    suffix: "+",
     label: "Happy Clients",
     gradient: "linear-gradient(135deg,#22d3ee,#4ade80)",
     glow: "rgba(34,211,238,0.3)",
     border: "#22d3ee",
   },
   {
-    value: "4+",
-    label: "Years Active",
+    value: 5,
+    suffix: "+",
+    label: "Years Active*",
     gradient: "linear-gradient(135deg,#f472b6,#fbbf24)",
     glow: "rgba(244,114,182,0.3)",
     border: "#f472b6",
-  },
+  }, // TODO: replace with real founding year
   {
-    value: "12+",
-    label: "Core Services",
+    value: 100,
+    suffix: "%",
+    label: "Custom-Built, No Templates",
     gradient: "linear-gradient(135deg,#4ade80,#22d3ee)",
     glow: "rgba(74,222,128,0.3)",
     border: "#4ade80",
   },
 ];
 
+// Real client logos aren't available yet — showing industries served instead of
+// inventing fake company names. Swap this for a real logo marquee once assets arrive.
 const industries = [
-  "Healthcare", "Finance", "Real Estate", "Education",
-  "NGOs & Nonprofits", "E-commerce", "Startups", "Technology",
+  "Finance", "Healthcare", "E-Commerce", "Real Estate",
+  "Education", "NGO & Nonprofit", "Startups", "Hospitality",
 ];
 
-const clients = [
-  "Nexora", "Bluepeak", "Orbitly", "Vertex Labs",
-  "Skyline Co", "Dataforge", "Northwind", "Cresta",
-  "Pulse Health", "Meridian", "Orbitly", "Vertex Labs",
-];
+function AnimatedCounter({ target, suffix }: { target: number; suffix: string }) {
+  const [count, setCount] = useState(0);
+  const [triggered, setTriggered] = useState(false);
+  const ref = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !triggered) setTriggered(true);
+      },
+      { threshold: 0.6 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!triggered) return;
+    const duration = 1600;
+    let raf: number;
+    const step = (ts: number, t0: number | null) => {
+      if (t0 === null) t0 = ts;
+      const p = Math.min((ts - t0) / duration, 1);
+      setCount(Math.floor(p * target));
+      if (p < 1) {
+        raf = requestAnimationFrame((next) => step(next, t0));
+      } else {
+        setCount(target);
+      }
+    };
+    raf = requestAnimationFrame((ts) => step(ts, null));
+    return () => cancelAnimationFrame(raf);
+  }, [triggered, target]);
+
+  return (
+    <p ref={ref} className="font-display font-bold mb-2" style={{ fontSize: "clamp(2rem,4vw,3rem)" }}>
+      {count}
+      {suffix}
+    </p>
+  );
+}
 
 export default function Trust() {
   return (
@@ -114,18 +162,16 @@ export default function Trust() {
                 (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
               }}
             >
-              <p
-                className="font-display font-bold mb-2"
+              <div
                 style={{
-                  fontSize: "clamp(2rem,4vw,3rem)",
                   background: stat.gradient,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                 }}
               >
-                {stat.value}
-              </p>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+              </div>
               <p
                 className="text-xs uppercase tracking-widest"
                 style={{ color: "#9292b8" }}
@@ -157,7 +203,7 @@ export default function Trust() {
             className="text-center text-xs uppercase tracking-[0.2em] mb-6"
             style={{ color: "#9292b8" }}
           >
-            Trusted by ambitious teams and growing brands
+            Trusted across industries
           </p>
           <div className="overflow-hidden relative">
             <div
@@ -176,7 +222,7 @@ export default function Trust() {
               className="flex gap-12 w-max"
               style={{ animation: "marquee 25s linear infinite" }}
             >
-              {[...clients, ...clients].map((client, i) => (
+              {[...industries, ...industries].map((industry, i) => (
                 <span
                   key={i}
                   className="font-display font-bold text-lg whitespace-nowrap transition-colors duration-300 cursor-default"
@@ -188,55 +234,10 @@ export default function Trust() {
                     (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.12)";
                   }}
                 >
-                  {client}
+                  {industry}
                 </span>
               ))}
             </div>
-          </div>
-        </motion.div>
-
-        {/* Industries served — chip layout */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-14 flex flex-col items-center gap-5"
-        >
-          <p
-            className="text-center text-xs uppercase tracking-[0.2em]"
-            style={{ color: "#9292b8" }}
-          >
-            Industries we build for
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 max-w-3xl">
-            {industries.map((industry) => (
-              <span
-                key={industry}
-                className="text-xs font-semibold px-4 py-2 rounded-full cursor-default transition-all duration-300"
-                style={{
-                  background: "rgba(124,92,255,0.06)",
-                  border: "1px solid rgba(124,92,255,0.2)",
-                  color: "#c9c9ea",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "#22d3ee";
-                  el.style.background = "rgba(34,211,238,0.1)";
-                  el.style.color = "#fff";
-                  el.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "rgba(124,92,255,0.2)";
-                  el.style.background = "rgba(124,92,255,0.06)";
-                  el.style.color = "#c9c9ea";
-                  el.style.transform = "translateY(0)";
-                }}
-              >
-                {industry}
-              </span>
-            ))}
           </div>
         </motion.div>
       </div>
