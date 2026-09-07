@@ -12,7 +12,6 @@ import {
   Bot,
   Search,
   ArrowRight,
-  ArrowUpRight,
 } from "lucide-react";
 
 const services = [
@@ -127,52 +126,43 @@ export default function ServicesPreview() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
-                whileHover={{
-                  y: -8,
-                  rotateX: 4,
-                  rotateY: 4,
-                }}
-                style={{ transformStyle: "preserve-3d" }}
+                className="hy-holo-container h-full"
               >
-                <Link
-                  href={`/services/${service.slug}`}
-                  className="group glass rounded-2xl p-6 flex flex-col h-full relative overflow-hidden block"
-                  style={{
-                    boxShadow: `0 0 0 rgba(0,0,0,0)`,
-                    transition: "box-shadow 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow =
-                      `0 20px 60px ${service.glow}`;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow =
-                      `0 0 0 rgba(0,0,0,0)`;
-                  }}
-                >
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{
-                      background: `radial-gradient(circle at top left, ${service.glow}, transparent 70%)`,
-                    }}
-                  />
-
-                  <div
-                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-5 relative`}
+                <div className="hy-holo-inner h-full">
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="hy-card-3d group block h-full"
                   >
-                    <Icon size={20} className="text-white" />
-                  </div>
+                    {/* glowing corner pip */}
+                    <span className="hy-corner-pip" />
 
-                  <h3 className="font-display font-semibold text-lg text-white mb-2 relative">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm text-muted leading-relaxed mb-4 flex-1 relative">
-                    {service.description}
-                  </p>
-                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent group-hover:gap-2 transition-all relative">
-                    Learn more
-                    <ArrowUpRight size={14} />
-                  </span>
-                </Link>
+                    {/* depth layer 1: icon */}
+                    <div className="hy-depth-1 mb-5">
+                      <div
+                        className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center`}
+                      >
+                        <Icon size={20} className="text-white" />
+                      </div>
+                    </div>
+
+                    {/* depth layer 2: title + description */}
+                    <div className="hy-depth-2 flex-1">
+                      <h3 className="hy-grad-text-flow hy-title-on-hover font-display font-semibold text-lg mb-2">
+                        {service.title}
+                      </h3>
+                      <p className="text-sm text-muted leading-relaxed mb-4" style={{ color: "#9292b8" }}>
+                        {service.description}
+                      </p>
+                    </div>
+
+                    {/* depth layer 3: CTA (floats highest on hover) */}
+                    <div className="hy-depth-3">
+                      <span className="hy-read-more">
+                        Learn more
+                      </span>
+                    </div>
+                  </Link>
+                </div>
               </motion.div>
             );
           })}
