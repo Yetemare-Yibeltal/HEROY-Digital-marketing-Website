@@ -166,50 +166,21 @@ export default function Footer() {
                 <a
                   key={s.label}
                   href={s.href}
-                  target={
-                    s.href.startsWith("http") ? "_blank" : undefined
-                  }
+                  target={s.href.startsWith("http") ? "_blank" : undefined}
                   rel={
                     s.href.startsWith("http")
                       ? "noopener noreferrer"
                       : undefined
                   }
                   aria-label={s.label}
-                  className="
-                    group
-                    flex
-                    h-10
-                    w-10
-                    items-center
-                    justify-center
-                    rounded-lg
-                    glass
-                    text-xs
-                    font-bold
-                    text-muted
-                    transition-all
-                    duration-300
-                    ease-out
-                    hover:-translate-y-1
-                    hover:scale-105
-                    hover:border-primary/50
-                    hover:text-white
-                    hover:shadow-lg
-                    hover:shadow-primary/10
-                    active:scale-95
-                    [transform:translateZ(0)]
-                    [will-change:transform]
-                  "
+                  title={
+                    s.href === "#"
+                      ? "Placeholder — real profile link pending"
+                      : s.label
+                  }
+                  className="hy-social-icon"
                 >
-                  <span
-                    className="
-                      transition-transform
-                      duration-300
-                      group-hover:scale-110
-                    "
-                  >
-                    {s.short}
-                  </span>
+                  {s.short}
                 </a>
               ))}
             </div>
@@ -321,9 +292,7 @@ export default function Footer() {
                   "
                 />
 
-                <span>
-                  Injibara, Awi Zone, Amhara, Ethiopia
-                </span>
+                <span>Injibara, Awi Zone, Amhara, Ethiopia</span>
               </li>
 
               {/* Email */}
@@ -370,13 +339,14 @@ export default function Footer() {
                   href="https://wa.me/251900000000"
                   target="_blank"
                   rel="noopener noreferrer"
+                  title="Placeholder — confirm real WhatsApp business number"
                   className="
                     transition-colors
                     duration-300
                     hover:text-accent
                   "
                 >
-                  +251 900 000 000 (WhatsApp)
+                  +251 900 000 000* (WhatsApp)
                 </a>
               </li>
             </ul>
@@ -428,67 +398,56 @@ export default function Footer() {
                 Thanks for subscribing!
               </div>
             ) : (
-              <form
-                onSubmit={handleSubscribe}
-                className="
-                  flex
-                  gap-2
-                  rounded-full
-                  transition-all
-                  duration-300
-                  focus-within:ring-1
-                  focus-within:ring-primary/30
-                "
-              >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email"
-                  required
-                  aria-label="Your email"
-                  className="
-                    min-w-0
-                    flex-1
-                    rounded-full
-                    border
-                    border-border
-                    bg-white/5
-                    px-4
-                    py-2.5
-                    text-sm
-                    text-white
-                    outline-none
-                    backdrop-blur-sm
-                    transition-all
-                    duration-300
-                    placeholder:text-muted/60
-                    focus:border-primary
-                    focus:bg-white/[0.07]
-                  "
-                />
-
-                <button
-                  type="submit"
-                  disabled={subscribing}
-                  className="
-                    btn-primary
-                    !px-5
-                    !py-2.5
-                    !text-xs
-                    transition-all
-                    duration-300
-                    hover:-translate-y-0.5
-                    hover:shadow-lg
-                    hover:shadow-primary/20
-                    active:translate-y-0
-                    disabled:cursor-not-allowed
-                    disabled:opacity-60
-                  "
+              <div className="hy-holo-container">
+                <form
+                  onSubmit={handleSubscribe}
+                  className="hy-holo-inner flex gap-2 p-1.5"
                 >
-                  {subscribing ? "..." : "Subscribe"}
-                </button>
-              </form>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your email"
+                    required
+                    aria-label="Your email"
+                    className="
+                      min-w-0
+                      flex-1
+                      rounded-full
+                      bg-transparent
+                      border-none
+                      px-4
+                      py-2.5
+                      text-sm
+                      text-white
+                      outline-none
+                      placeholder:text-muted/60
+                    "
+                  />
+
+                  <button
+                    type="submit"
+                    disabled={subscribing}
+                    className="
+                      btn-primary
+                      !px-5
+                      !py-2.5
+                      !text-xs
+                      shrink-0
+                      transition-all
+                      duration-300
+                      hover:-translate-y-0.5
+                      hover:shadow-lg
+                      hover:shadow-primary/20
+                      active:translate-y-0
+                      disabled:cursor-not-allowed
+                      disabled:opacity-60
+                    "
+                  >
+                    {subscribing ? "..." : "Subscribe"}
+                  </button>
+                </form>
+              </div>
             )}
           </div>
         </div>
@@ -511,8 +470,8 @@ export default function Footer() {
           "
         >
           <p>
-            &copy; {new Date().getFullYear()} HEROY Digital Solutions. Built
-            by Ethiopian engineers.
+            &copy; {new Date().getFullYear()} HEROY Digital Solution. Built by
+            Ethiopian engineers.
           </p>
 
           <div className="flex flex-wrap justify-center gap-5">
