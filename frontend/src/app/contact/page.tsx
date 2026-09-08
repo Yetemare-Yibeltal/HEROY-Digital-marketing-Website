@@ -13,7 +13,6 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
-import { apiUrl } from "@/lib/config";
 import TypewriterText from "@/components/ui/TypewriterText";
 
 const contactMethods = [
@@ -29,20 +28,22 @@ const contactMethods = [
   {
     icon: MessageCircle,
     title: "WhatsApp",
-    value: "+251 900 000 000",
+    value: "+251 900 000 000*",
     description: "Chat with us directly for quick questions.",
     gradient: "from-green-500 to-emerald-600",
     glow: "rgba(34,197,94,0.3)",
     href: "https://wa.me/251900000000",
+    placeholder: true, // TODO: confirm real WhatsApp business number
   },
   {
     icon: Phone,
     title: "Telegram",
-    value: "@HEROY_Team",
+    value: "@heroydev",
     description: "Message us on Telegram anytime.",
     gradient: "from-cyan-500 to-blue-600",
     glow: "rgba(34,211,238,0.3)",
-    href: "https://t.me/HEROY_Team",
+    href: "https://t.me/heroydev",
+    placeholder: true, // TODO: confirm this handle is live/correct
   },
   {
     icon: MapPin,
@@ -95,7 +96,7 @@ export default function ContactPage() {
 
     try {
       const response = await fetch(
-        apiUrl("/api/contact"),
+        `${process.env.NEXT_PUBLIC_API_URL}/api/contact`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -176,19 +177,14 @@ export default function ContactPage() {
                   href={method.href}
                   target={method.href.startsWith("http") ? "_blank" : undefined}
                   rel="noreferrer"
+                  title={method.placeholder ? "Placeholder — confirm real contact value before launch" : undefined}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  whileHover={{ y: -6 }}
-                  className="glass rounded-2xl p-6 relative overflow-hidden group block"
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 50px ${method.glow}`;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 rgba(0,0,0,0)";
-                  }}
+                  className="hy-holo-container block"
                 >
+                  <div className="hy-holo-inner relative overflow-hidden p-6 group">
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{ background: `radial-gradient(circle at top left, ${method.glow}, transparent 70%)` }}
@@ -200,6 +196,7 @@ export default function ContactPage() {
                     <h3 className="font-display font-semibold text-base text-white mb-1">{method.title}</h3>
                     <p className="text-sm font-medium text-accent mb-1">{method.value}</p>
                     <p className="text-xs text-muted">{method.description}</p>
+                  </div>
                   </div>
                 </motion.a>
               );
