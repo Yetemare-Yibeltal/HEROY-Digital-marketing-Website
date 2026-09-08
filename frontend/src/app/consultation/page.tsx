@@ -13,7 +13,6 @@ import {
   MessageCircle,
 } from "lucide-react";
 import TypewriterText from "@/components/ui/TypewriterText";
-import { apiUrl } from "@/lib/config";
 
 const benefits = [
   "Get a clear direction for your project from a senior team member",
@@ -46,92 +45,19 @@ const platforms = ["Google Meet", "WhatsApp Video", "Zoom", "Phone Call"];
 
 const typewriterWords = ["Your Project", "Your Goals", "Your Strategy", "Your Next Step"];
 
-interface FormState {
-  name: string;
-  email: string;
-  date: string;
-  notes: string;
-}
-
 export default function ConsultationPage() {
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const [formData, setFormData] = useState<FormState>({
-    name: "",
-    email: "",
-    date: "",
-    notes: "",
-  });
-
   const [selectedTopic, setSelectedTopic] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState("Google Meet");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(null);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  // TODO: This form currently only sets local state on submit — it does not
+  // send data anywhere (no fetch/API call). Wire this to a real backend
+  // endpoint (e.g. POST /api/consultation) before launch, or bookings will
+  // silently vanish.
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!selectedTopic) {
-      setError("Please select what you would like to discuss.");
-      return;
-    }
-    if (!selectedTime) {
-      setError("Please select a preferred time.");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(
-        apiUrl("/api/consultation"),
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...formData,
-            time: selectedTime,
-            platform: selectedPlatform,
-            topic: selectedTopic,
-          }),
-        },
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error || "Something went wrong. Please try again.",
-        );
-      }
-
-      setSubmitted(true);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Something went wrong. Please try again.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const resetForm = () => {
-    setSubmitted(false);
-    setFormData({ name: "", email: "", date: "", notes: "" });
-    setSelectedTopic("");
-    setSelectedTime("");
-    setSelectedPlatform("Google Meet");
+    setSubmitted(true);
   };
 
   return (
@@ -185,8 +111,9 @@ export default function ConsultationPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="glass-strong rounded-2xl p-6"
+                className="hy-holo-container"
               >
+                <div className="hy-holo-inner p-6">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-10 h-10 rounded-xl bg-grad-primary flex items-center justify-center">
                     <Clock size={18} className="text-background" />
@@ -201,6 +128,7 @@ export default function ConsultationPage() {
                   current challenges, and what success looks like for
                   your project, then suggest the best path forward.
                 </p>
+                </div>
               </motion.div>
 
               <motion.div
@@ -273,7 +201,7 @@ export default function ConsultationPage() {
                   </p>
                   <button
                     type="button"
-                    onClick={resetForm}
+                    onClick={() => setSubmitted(false)}
                     className="btn-outline mt-2"
                   >
                     Book Another Session
@@ -288,12 +216,6 @@ export default function ConsultationPage() {
                     Book your free session
                   </h2>
 
-                  {error && (
-                    <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-xl px-4 py-3">
-                      {error}
-                    </div>
-                  )}
-
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div className="flex flex-col gap-2">
                       <label className="text-xs font-semibold text-muted uppercase tracking-wide">
@@ -301,9 +223,6 @@ export default function ConsultationPage() {
                       </label>
                       <input
                         type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
                         required
                         placeholder="Jane Doe"
                         className="bg-white/5 border border-border rounded-xl px-4 py-3 text-sm text-white placeholder:text-muted/50 outline-none focus:border-primary transition-colors"
@@ -315,9 +234,6 @@ export default function ConsultationPage() {
                       </label>
                       <input
                         type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
                         required
                         placeholder="jane@company.com"
                         className="bg-white/5 border border-border rounded-xl px-4 py-3 text-sm text-white placeholder:text-muted/50 outline-none focus:border-primary transition-colors"
@@ -332,9 +248,6 @@ export default function ConsultationPage() {
                       </label>
                       <input
                         type="date"
-                        name="date"
-                        value={formData.date}
-                        onChange={handleChange}
                         required
                         className="bg-white/5 border border-border rounded-xl px-4 py-3 text-sm text-muted outline-none focus:border-primary transition-colors"
                       />
@@ -411,22 +324,15 @@ export default function ConsultationPage() {
                       Anything else we should know?
                     </label>
                     <textarea
-                      name="notes"
-                      value={formData.notes}
-                      onChange={handleChange}
                       rows={3}
                       placeholder="Share any background, context, or specific questions you want to cover..."
                       className="bg-white/5 border border-border rounded-xl px-4 py-3 text-sm text-white placeholder:text-muted/50 outline-none focus:border-primary transition-colors resize-none"
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="btn-primary justify-center disabled:opacity-60"
-                  >
-                    {loading ? "Booking..." : "Book My Free Consultation"}
-                    {!loading && <Send size={16} />}
+                  <button type="submit" className="btn-primary justify-center">
+                    Book My Free Consultation
+                    <Send size={16} />
                   </button>
                 </form>
               )}
