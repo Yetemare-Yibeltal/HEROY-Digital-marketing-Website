@@ -4,6 +4,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Star, Quote } from "lucide-react";
 
+// NOTE: These are illustrative placeholder testimonials (per client's explicit
+// instruction, Sep 2026) using invented names/companies — NOT real client quotes.
+// Replace each with a real testimonial as soon as the client provides one.
 const testimonials = [
   {
     name: "Sarah Johnson",
@@ -79,8 +82,8 @@ export default function TestimonialsPreview() {
             </div>
             <div className="h-10 w-px bg-border" />
             <div>
-              <p className="text-sm font-semibold text-white">150+</p>
-              <p className="text-xs text-muted">Verified Reviews</p>
+              <p className="text-sm font-semibold text-white">500+</p>
+              <p className="text-xs text-muted">Clients Served</p>
             </div>
           </motion.div>
         </div>
@@ -93,53 +96,51 @@ export default function TestimonialsPreview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -8 }}
-              className="glass rounded-2xl p-6 flex flex-col relative overflow-hidden group cursor-default"
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  `0 20px 50px ${t.glow}`;
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  `0 0 0 rgba(0,0,0,0)`;
-              }}
+              className="hy-holo-container"
             >
-              <div
-                className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${t.color}`}
-              />
+              <div className="hy-holo-inner">
+                <div className="hy-card-3d">
+                  <span className="hy-corner-pip" />
 
-              <Quote size={28} className="text-primary/30 mb-4" />
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${t.color}`} />
 
-              <div className="flex gap-1 mb-4">
-                {Array.from({ length: t.rating }).map((_, idx) => (
-                  <Star
-                    key={idx}
-                    size={14}
-                    className="text-accent-gold fill-accent-gold"
-                  />
-                ))}
-              </div>
+                  <div className="hy-depth-1">
+                    <Quote size={28} className="text-primary/30 mb-4" />
+                    <div className="flex gap-1 mb-4">
+                      {Array.from({ length: t.rating }).map((_, idx) => (
+                        <Star
+                          key={idx}
+                          size={14}
+                          className="text-accent-gold fill-accent-gold"
+                        />
+                      ))}
+                    </div>
+                  </div>
 
-              <p className="text-sm text-muted leading-relaxed mb-6 flex-1">
-                {t.review}
-              </p>
+                  <div className="hy-depth-2 flex-1">
+                    <p className="text-sm leading-relaxed mb-6" style={{ color: "#9292b8" }}>
+                      {t.review}
+                    </p>
+                  </div>
 
-              <div className="flex items-center gap-3 border-t border-white/10 pt-4">
-                <div
-                  className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center font-display font-bold text-sm text-white shrink-0`}
-                >
-                  {t.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">
-                    {t.name}
-                  </p>
-                  <p className="text-xs text-muted">
-                    {t.position}, {t.company}
-                  </p>
+                  <div className="hy-depth-2 flex items-center gap-3 border-t border-white/10 pt-4">
+                    <div
+                      className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center font-display font-bold text-sm text-white shrink-0`}
+                    >
+                      {t.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-white">
+                        {t.name}
+                      </p>
+                      <p className="text-xs" style={{ color: "#9292b8" }}>
+                        {t.position}, {t.company}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
