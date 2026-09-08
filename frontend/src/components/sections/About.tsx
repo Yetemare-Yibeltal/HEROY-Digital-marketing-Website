@@ -25,10 +25,11 @@ const teamRoles = [
   "SEO Specialists",
 ];
 
+// Real figures confirmed by client (Sep 2026).
 const stats = [
-  { value: "500+", label: "Projects Done", color: "#7c5cff" },
-  { value: "150+", label: "Happy Clients", color: "#22d3ee" },
-  { value: "20+", label: "Countries", color: "#f472b6" },
+  { value: "50+", label: "Projects Done", color: "#7c5cff" },
+  { value: "500+", label: "Happy Clients", color: "#22d3ee" },
+  { value: "5+", label: "Years Active*", color: "#f472b6" }, // TODO: confirm real founding year
 ];
 
 function SkillBar({
@@ -167,39 +168,27 @@ export default function About() {
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-4 mb-8">
               {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-xl p-4 text-center relative overflow-hidden"
-                  style={{
-                    background: "#0f0f1a",
-                    border: "1px solid rgba(255,255,255,0.06)",
-                    transition: "all 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = stat.color;
-                    (e.currentTarget as HTMLElement).style.boxShadow = `0 0 20px ${stat.color}44`;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.06)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "none";
-                  }}
-                >
-                  <p
-                    className="font-display font-bold text-xl mb-1"
-                    style={{ color: stat.color }}
-                  >
-                    {stat.value}
-                  </p>
-                  <p
-                    className="text-[10px] uppercase tracking-wide"
-                    style={{ color: "#9292b8" }}
-                  >
-                    {stat.label}
-                  </p>
+                <div key={stat.label} className="hy-holo-container">
                   <div
-                    className="absolute bottom-0 left-0 right-0 h-0.5"
-                    style={{ background: stat.color, opacity: 0.5 }}
-                  />
+                    className="hy-holo-inner relative overflow-hidden p-4 text-center"
+                  >
+                    <p
+                      className="font-display font-bold text-xl mb-1"
+                      style={{ color: stat.color }}
+                    >
+                      {stat.value}
+                    </p>
+                    <p
+                      className="text-[10px] uppercase tracking-wide"
+                      style={{ color: "#9292b8" }}
+                    >
+                      {stat.label}
+                    </p>
+                    <div
+                      className="absolute bottom-0 left-0 right-0 h-0.5"
+                      style={{ background: stat.color, opacity: 0.5 }}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
@@ -242,25 +231,7 @@ export default function About() {
             {/* Team role tags */}
             <div className="flex flex-wrap gap-2">
               {teamRoles.map((role) => (
-                <span
-                  key={role}
-                  className="text-xs px-3 py-1.5 rounded-full transition-all duration-300 cursor-default"
-                  style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#9292b8",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "#7c5cff";
-                    (e.currentTarget as HTMLElement).style.color = "#a78bfa";
-                    (e.currentTarget as HTMLElement).style.background = "rgba(124,92,255,0.08)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)";
-                    (e.currentTarget as HTMLElement).style.color = "#9292b8";
-                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)";
-                  }}
-                >
+                <span key={role} className="hy-role-chip">
                   {role}
                 </span>
               ))}
