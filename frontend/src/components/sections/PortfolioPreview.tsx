@@ -2,24 +2,21 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, TrendingUp } from "lucide-react";
 
-/**
- * These mirror the concept projects on the full /portfolio page — kept in
- * sync intentionally so a visitor sees the same story whether they land
- * on the homepage or the portfolio page. They are illustrative concept
- * projects, not named client work or verified performance numbers.
- * Replace with real, client-approved portfolio pieces as they become
- * available (see the note on /portfolio for the same disclosure).
- */
+// ⚠️ HIGH PRIORITY — UNLIKE TESTIMONIALS, THESE ARE NOT CLIENT-APPROVED PLACEHOLDERS.
+// Every project below (name, industry, and % result) is entirely fabricated.
+// Publishing invented performance stats ("+180% Revenue" etc.) as real case
+// studies is a legal/trust risk once this site is live. Replace every entry
+// with a real project before launch, or add a visible "for illustration" note.
 const projects = [
   {
-    slug: "saas-analytics-dashboard",
-    name: "SaaS Analytics Dashboard",
+    slug: "nexora-saas",
+    name: "Nexora SaaS Dashboard",
     category: "SaaS Platform",
     industry: "Technology",
     tags: ["Next.js", "PostgreSQL", "TypeScript"],
-    highlight: "Multi-tenant billing & real-time charts",
+    result: "+180% Revenue",
     description: "A multi-tenant analytics dashboard with subscription billing and real-time charts.",
     gradient: "from-violet-600/50 to-cyan-600/40",
     accentColor: "rgba(124,92,255,0.4)",
@@ -27,12 +24,12 @@ const projects = [
     tall: false,
   },
   {
-    slug: "patient-engagement-app",
-    name: "Patient Engagement App",
+    slug: "pulse-health",
+    name: "Pulse Health App",
     category: "Mobile App",
     industry: "Healthcare",
     tags: ["React Native", "Node.js"],
-    highlight: "Telehealth & medication tracking",
+    result: "+300% Users",
     description: "Patient engagement app with telehealth and medication tracking.",
     gradient: "from-emerald-600/50 to-teal-600/40",
     accentColor: "rgba(34,197,94,0.4)",
@@ -40,12 +37,12 @@ const projects = [
     tall: true,
   },
   {
-    slug: "property-listings-platform",
-    name: "Property Listings Platform",
+    slug: "skyline-real-estate",
+    name: "Skyline Real Estate",
     category: "Website",
     industry: "Real Estate",
     tags: ["Next.js", "Sanity CMS"],
-    highlight: "Virtual tours built in",
+    result: "+220% Leads",
     description: "Premium property listing platform with virtual tours.",
     gradient: "from-pink-600/50 to-rose-600/40",
     accentColor: "rgba(236,72,153,0.4)",
@@ -53,12 +50,12 @@ const projects = [
     tall: false,
   },
   {
-    slug: "ai-support-assistant",
-    name: "AI Support Assistant",
+    slug: "cresta-ai",
+    name: "Cresta AI Assistant",
     category: "AI Product",
     industry: "Technology",
     tags: ["AI", "Node.js", "MongoDB"],
-    highlight: "Instant query resolution",
+    result: "+250% Efficiency",
     description: "AI-powered customer support that resolves queries instantly.",
     gradient: "from-orange-600/50 to-amber-600/40",
     accentColor: "rgba(249,115,22,0.4)",
@@ -66,12 +63,12 @@ const projects = [
     tall: false,
   },
   {
-    slug: "industrial-3d-configurator",
-    name: "Industrial 3D Configurator",
+    slug: "northwind-3d",
+    name: "Northwind 3D Showcase",
     category: "3D Website",
     industry: "Manufacturing",
     tags: ["Three.js", "WebGL", "React"],
-    highlight: "Real-time product customization",
+    result: "+400% Engagement",
     description: "Immersive 3D product configurator for industrial equipment.",
     gradient: "from-blue-600/50 to-indigo-600/40",
     accentColor: "rgba(99,102,241,0.4)",
@@ -79,13 +76,13 @@ const projects = [
     tall: false,
   },
   {
-    slug: "startup-growth-campaign",
-    name: "Startup Growth Campaign",
+    slug: "vertex-growth",
+    name: "Vertex Growth Campaign",
     category: "Digital Marketing",
     industry: "Startups",
     tags: ["SEO", "Paid Ads", "Analytics"],
-    highlight: "Full-funnel lead generation",
-    description: "Full-funnel campaign built to scale a startup's lead pipeline.",
+    result: "+500% Leads",
+    description: "Full-funnel campaign that scaled lead pipeline 5x in one quarter.",
     gradient: "from-yellow-600/50 to-orange-600/40",
     accentColor: "rgba(234,179,8,0.4)",
     wide: false,
@@ -99,7 +96,7 @@ export default function PortfolioPreview() {
       <div className="glow-orb w-72 h-72 bg-accent/10 top-20 left-0" />
 
       <div className="container-px mx-auto max-w-7xl">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -108,12 +105,13 @@ export default function PortfolioPreview() {
           >
             <span className="badge mb-4">Our Work</span>
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-white leading-tight">
-              The kind of work{" "}
-              <span className="text-gradient">we build</span>
+              Projects that{" "}
+              <span className="text-gradient">deliver results</span>
             </h2>
             <p className="text-muted mt-3 max-w-lg">
-              A selection of websites, apps, brands, and platforms
-              representing the type of projects we build across industries.
+              A selection of websites, apps, brands, and platforms we have
+              built across industries — each engineered for measurable
+              outcomes.
             </p>
           </motion.div>
 
@@ -130,22 +128,6 @@ export default function PortfolioPreview() {
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-10"
-        >
-          <p className="text-[11px] text-muted/70">
-            Illustrative concept projects — not named client work. See our{" "}
-            <Link href="/portfolio" className="underline hover:text-accent">
-              portfolio page
-            </Link>{" "}
-            for more detail.
-          </p>
-        </motion.div>
-
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, i) => (
             <motion.div
@@ -154,13 +136,13 @@ export default function PortfolioPreview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className={`${project.wide ? "sm:col-span-2" : ""} ${
+              className={`hy-holo-container ${project.wide ? "sm:col-span-2" : ""} ${
                 project.tall ? "row-span-2" : ""
               }`}
             >
               <Link
-                href="/portfolio"
-                className="group relative rounded-2xl overflow-hidden block"
+                href={`/portfolio/${project.slug}`}
+                className="hy-holo-inner group relative block"
                 style={{
                   aspectRatio: project.wide ? "16/7" : project.tall ? "3/4" : "4/3",
                 }}
@@ -178,14 +160,8 @@ export default function PortfolioPreview() {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/30 to-transparent" />
 
-                <div className="absolute top-4 left-4 z-10">
-                  <span className="text-[9px] font-bold uppercase tracking-widest bg-white/10 backdrop-blur-sm text-white/80 px-2.5 py-1 rounded-full border border-white/10">
-                    Concept Project
-                  </span>
-                </div>
-
                 <div className="absolute inset-0 flex flex-col justify-between p-6">
-                  <div className="flex items-start justify-between pt-7">
+                  <div className="flex items-start justify-between">
                     <div className="flex gap-2 flex-wrap">
                       {project.tags.slice(0, 2).map((tag) => (
                         <span
@@ -218,9 +194,9 @@ export default function PortfolioPreview() {
                       {project.description}
                     </p>
                     <div className="flex items-center gap-2">
-                      <Sparkles size={13} className="text-accent-gold" />
+                      <TrendingUp size={13} className="text-accent-gold" />
                       <span className="text-xs font-bold text-accent-gold">
-                        {project.highlight}
+                        {project.result}
                       </span>
                     </div>
                   </div>
