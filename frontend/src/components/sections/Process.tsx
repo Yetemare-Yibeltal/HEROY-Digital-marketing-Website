@@ -85,7 +85,24 @@ export default function Process() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid lg:grid-cols-2 gap-6 relative">
+          {/* Animated connecting progress line */}
+          <div
+            className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2"
+            style={{ background: "rgba(255,255,255,0.06)" }}
+          >
+            <motion.div
+              initial={{ height: 0 }}
+              whileInView={{ height: "100%" }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.6, ease: "easeOut" }}
+              className="w-full"
+              style={{
+                background: "linear-gradient(180deg,#7c5cff,#22d3ee,#f472b6)",
+              }}
+            />
+          </div>
+
           {steps.map((step, i) => (
             <motion.div
               key={step.number}
@@ -93,41 +110,31 @@ export default function Process() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.08 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="glass rounded-2xl p-6 flex gap-5 cursor-default relative overflow-hidden group"
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  `0 20px 50px ${step.glow}`;
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  `0 0 0 rgba(0,0,0,0)`;
-              }}
+              className="hy-holo-container relative"
             >
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{
-                  background: `radial-gradient(circle at top left, ${step.glow}, transparent 70%)`,
-                }}
-              />
+              <div className="hy-holo-inner">
+                <div className="hy-card-3d flex-row gap-5 items-start text-left">
+                  <span className="hy-corner-pip" />
 
-              <div className="relative shrink-0">
-                <div
-                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center`}
-                >
-                  <span className="font-display font-bold text-white text-lg">
-                    {step.number}
-                  </span>
+                  <div className="hy-depth-1 shrink-0">
+                    <div
+                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center`}
+                    >
+                      <span className="font-display font-bold text-white text-lg">
+                        {step.number}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="hy-depth-2">
+                    <h3 className="hy-grad-text-flow hy-title-on-hover font-display font-semibold text-lg mb-2">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed" style={{ color: "#9292b8" }}>
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="relative">
-                <h3 className="font-display font-semibold text-lg text-white mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-muted leading-relaxed">
-                  {step.description}
-                </p>
               </div>
             </motion.div>
           ))}
