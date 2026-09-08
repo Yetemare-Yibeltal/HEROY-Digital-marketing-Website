@@ -22,6 +22,11 @@ import {
 } from "lucide-react";
 import TypewriterText from "@/components/ui/TypewriterText";
 
+// ⚠️ NOTE: All 9 positions below are marked "Open now" in the UI. Confirm with
+// the client whether these are real, currently-open roles before launch — if
+// not, either remove specific roles or change the label to something like
+// "Always accepting applications" instead of implying live openings.
+
 const departments = ["All", "Engineering", "Design", "Marketing", "Creative", "Operations"];
 
 const positions = [
@@ -308,14 +313,9 @@ function PositionCard({ position, index }: { position: typeof positions[0]; inde
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5, delay: (index % 2) * 0.1 }}
-      className="glass rounded-2xl overflow-hidden"
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 50px ${position.glow}`;
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 rgba(0,0,0,0)";
-      }}
+      className="hy-holo-container"
     >
+      <div className="hy-holo-inner">
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
@@ -330,7 +330,7 @@ function PositionCard({ position, index }: { position: typeof positions[0]; inde
               <h3 className="font-display font-semibold text-lg text-white mb-1">
                 {position.title}
               </h3>
-              <div className="flex flex-wrap gap-3 text-xs text-muted">
+              <div className="flex flex-wrap gap-3 text-xs" style={{ color: "#9292b8" }}>
                 <span className="flex items-center gap-1">
                   <Briefcase size={11} /> {position.type}
                 </span>
@@ -347,10 +347,10 @@ function PositionCard({ position, index }: { position: typeof positions[0]; inde
               transition={{ duration: 0.2 }}
               className="shrink-0"
             >
-              <ChevronDown size={20} className="text-muted" />
+              <ChevronDown size={20} style={{ color: "#9292b8" }} />
             </motion.div>
           </div>
-          <p className="text-sm text-muted mt-3 leading-relaxed">
+          <p className="text-sm mt-3 leading-relaxed" style={{ color: "#9292b8" }}>
             {position.description}
           </p>
         </div>
@@ -367,7 +367,7 @@ function PositionCard({ position, index }: { position: typeof positions[0]; inde
           >
             <div className="px-6 pb-6 grid sm:grid-cols-2 gap-6 border-t border-border pt-6">
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-muted mb-3">
+                <h4 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#9292b8" }}>
                   Responsibilities
                 </h4>
                 <ul className="flex flex-col gap-2">
@@ -380,7 +380,7 @@ function PositionCard({ position, index }: { position: typeof positions[0]; inde
                 </ul>
               </div>
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-muted mb-3">
+                <h4 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#9292b8" }}>
                   Requirements
                 </h4>
                 <ul className="flex flex-col gap-2">
@@ -405,6 +405,7 @@ function PositionCard({ position, index }: { position: typeof positions[0]; inde
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </motion.div>
   );
 }
@@ -429,7 +430,7 @@ export default function CareersPage() {
             transition={{ duration: 0.5 }}
           >
             <span className="badge mb-4">
-              <Sparkles size={14} /> Join HEROY
+              <Sparkles size={14} /> Join HEROY Digital Solution
             </span>
           </motion.div>
 
@@ -467,13 +468,15 @@ export default function CareersPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
-                  className="glass rounded-2xl p-6"
+                  className="hy-holo-container"
                 >
-                  <Icon size={20} className="text-accent mb-3" />
-                  <h3 className="font-display font-semibold text-base text-white mb-1">
-                    {perk.title}
-                  </h3>
-                  <p className="text-sm text-muted leading-relaxed">{perk.text}</p>
+                  <div className="hy-holo-inner p-6">
+                    <Icon size={20} className="text-accent mb-3" />
+                    <h3 className="font-display font-semibold text-base text-white mb-1">
+                      {perk.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed" style={{ color: "#9292b8" }}>{perk.text}</p>
+                  </div>
                 </motion.div>
               );
             })}
@@ -524,16 +527,17 @@ export default function CareersPage() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="glass-strong rounded-3xl p-10 sm:p-16 text-center relative overflow-hidden"
+            className="hy-holo-container"
           >
+            <div className="hy-holo-inner relative overflow-hidden p-10 sm:p-16 text-center">
             <div className="glow-orb w-64 h-64 bg-primary/25 -top-20 -left-20" />
             <div className="glow-orb w-48 h-48 bg-accent/20 -bottom-10 -right-10" style={{ animationDelay: "2s" }} />
             <div className="relative">
               <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl mb-4 text-white">
                 Do not see the right role?{" "}
-                <span className="text-gradient">Reach out anyway</span>
+                <span className="hy-grad-text-flow">Reach out anyway</span>
               </h2>
-              <p className="text-muted max-w-xl mx-auto leading-relaxed mb-8">
+              <p className="max-w-xl mx-auto leading-relaxed mb-8" style={{ color: "#9292b8" }}>
                 We are always interested in meeting talented people. Send
                 us your portfolio and tell us how you want to contribute
                 to what we are building.
@@ -542,6 +546,7 @@ export default function CareersPage() {
                 Send Us Your Portfolio
                 <ArrowRight size={16} />
               </Link>
+            </div>
             </div>
           </motion.div>
         </div>
