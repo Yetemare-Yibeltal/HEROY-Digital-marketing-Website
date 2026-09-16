@@ -19,16 +19,24 @@ export default function CustomCursor() {
       setHovering(Boolean(isInteractive));
     };
 
-    const handleMouseLeave = () => setVisible(false);
+    const handleMouseLeave = (e: MouseEvent) => {
+      // mouseleave on `window` isn't a standard, reliably-firing event in
+      // most browsers. Detecting the cursor actually leaving the viewport
+      // via `mouseout` + relatedTarget === null on `document` is the
+      // correct, cross-browser way to do this.
+      if (!e.relatedTarget) {
+        setVisible(false);
+      }
+    };
 
     window.addEventListener("mousemove", moveCursor);
     window.addEventListener("mouseover", handleMouseOver);
-    window.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseout", handleMouseLeave);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mouseover", handleMouseOver);
-      window.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseout", handleMouseLeave);
     };
   }, []);
 
