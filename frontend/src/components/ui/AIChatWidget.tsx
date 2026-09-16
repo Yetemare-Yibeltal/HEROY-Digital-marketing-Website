@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Sparkles, Bot, AlertCircle } from "lucide-react";
-import { apiUrl } from "@/lib/config";
 
 interface Message {
   id: number;
@@ -17,20 +16,6 @@ const quickReplies = [
   "Can I book a free consultation?",
   "What is your process?",
 ];
-
-function getOrCreateSessionId(): string {
-  if (typeof window === "undefined") return "";
-  const key = "heroy_chat_session_id";
-  let sessionId = window.sessionStorage.getItem(key);
-  if (!sessionId) {
-    sessionId =
-      typeof crypto !== "undefined" && "randomUUID" in crypto
-        ? crypto.randomUUID()
-        : `session_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-    window.sessionStorage.setItem(key, sessionId);
-  }
-  return sessionId;
-}
 
 export default function AIChatWidget() {
   const [open, setOpen] = useState(false);
@@ -46,11 +31,6 @@ export default function AIChatWidget() {
   const [isTyping, setIsTyping] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const sessionIdRef = useRef<string>("");
-
-  useEffect(() => {
-    sessionIdRef.current = getOrCreateSessionId();
-  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -73,26 +53,22 @@ export default function AIChatWidget() {
     setIsTyping(true);
 
     try {
-      const response = await fetch(
-        apiUrl("/api/chat"),
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            messages: updatedMessages.map((m) => ({
-              role: m.role,
-              content: m.content,
-            })),
-            sessionId: sessionIdRef.current,
-          }),
-        },
-      );
-
-      const data = await response.json();
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: updatedMessages.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error(data.error || "API error");
+        throw new Error("API error");
       }
+
+      const data = await response.json();
 
       const assistantMessage: Message = {
         id: Date.now() + 1,
@@ -159,8 +135,9 @@ export default function AIChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-24 right-6 z-[100] w-[360px] max-w-[calc(100vw-3rem)] h-[500px] glass-strong rounded-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-24 right-6 z-[100] w-[360px] max-w-[calc(100vw-3rem)] hy-holo-container"
           >
+            <div className="hy-holo-inner h-[500px] flex flex-col">
             <div className="bg-grad-primary p-4 flex items-center gap-3">
               <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                 <Bot size={18} className="text-background" />
@@ -173,7 +150,7 @@ export default function AIChatWidget() {
                   <Sparkles size={10} /> Powered by Claude AI
                 </p>
               </div>
-              <div className="w-2 h-2 rounded-full bg-green-300 animate-pulse" />
+              <span className="hy-blink-dot" style={{ background: "#86efac" }} />
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
@@ -273,6 +250,7 @@ export default function AIChatWidget() {
                 <Send size={16} className="text-background" />
               </button>
             </form>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
