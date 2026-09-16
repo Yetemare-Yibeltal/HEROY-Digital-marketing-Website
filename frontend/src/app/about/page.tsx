@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
@@ -63,10 +62,12 @@ const teamRoles = [
   "Digital Marketers", "SEO Specialists",
 ];
 
+// Real figures confirmed by client (Sep 2026). "Countries Served" is unconfirmed —
+// flagged rather than invented; consider replacing with a confirmed metric.
 const stats = [
   { icon: Award, value: "50+", label: "Projects Delivered", color: "text-accent" },
   { icon: Users, value: "500+", label: "Happy Clients", color: "text-accent-pink" },
-  { icon: Globe2, value: "4+", label: "Years Active", color: "text-accent-gold" },
+  { icon: Globe2, value: "5+", label: "Years Active*", color: "text-accent-gold" }, // TODO: confirm real founding year
 ];
 
 const typewriterWords = ["Engineers", "Creators", "Innovators", "Builders", "Dreamers"];
@@ -86,11 +87,13 @@ function AnimatedCounter({ value, label, icon: Icon, color }: {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.6 }}
-      className="glass rounded-2xl p-8 text-center gradient-border"
+      className="hy-holo-container"
     >
-      <Icon size={24} className={`${color} mx-auto mb-3`} />
-      <p className="font-display font-bold text-3xl text-gradient mb-1">{value}</p>
-      <p className="text-sm text-muted">{label}</p>
+      <div className="hy-holo-inner p-8 text-center">
+        <Icon size={24} className={`${color} mx-auto mb-3`} />
+        <p className="hy-grad-text-flow font-display font-bold text-3xl mb-1">{value}</p>
+        <p className="text-sm" style={{ color: "#9292b8" }}>{label}</p>
+      </div>
     </motion.div>
   );
 }
@@ -110,7 +113,7 @@ export default function AboutPage() {
             transition={{ duration: 0.5 }}
           >
             <span className="badge mb-4">
-              <Sparkles size={14} /> About HEROY
+              <Sparkles size={14} /> About HEROY Digital Solution
             </span>
           </motion.div>
 
@@ -132,7 +135,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-muted text-lg leading-relaxed"
           >
-            HEROY Digital Solutions is a full-service digital transformation agency built by a
+            HEROY is a full-service digital transformation agency built by a
             team of Ethiopian software engineers, designers, and creatives.
             We combine strategic marketing, premium design, and robust
             full-stack engineering to help organizations grow through
@@ -153,25 +156,21 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  whileHover={{ y: -6, scale: 1.02 }}
-                  className="glass rounded-2xl p-8 cursor-default relative overflow-hidden group"
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 50px ${v.glow}`;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 rgba(0,0,0,0)";
-                  }}
+                  className="hy-holo-container"
                 >
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: `radial-gradient(circle at top left, ${v.glow}, transparent 70%)` }}
-                  />
-                  <div className="relative">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${v.gradient} flex items-center justify-center mb-5`}>
-                      <Icon size={20} className="text-white" />
+                  <div className="hy-holo-inner">
+                    <div className="hy-card-3d">
+                      <span className="hy-corner-pip" />
+                      <div className="hy-depth-1">
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${v.gradient} flex items-center justify-center mb-5`}>
+                          <Icon size={20} className="text-white" />
+                        </div>
+                      </div>
+                      <div className="hy-depth-2 flex-1">
+                        <h2 className="hy-grad-text-flow hy-title-on-hover font-display font-semibold text-xl mb-3">{v.title}</h2>
+                        <p className="text-sm leading-relaxed" style={{ color: "#9292b8" }}>{v.text}</p>
+                      </div>
                     </div>
-                    <h2 className="font-display font-semibold text-xl text-white mb-3">{v.title}</h2>
-                    <p className="text-sm text-muted leading-relaxed">{v.text}</p>
                   </div>
                 </motion.div>
               );
@@ -184,48 +183,28 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7 }}
-              className="glass-strong rounded-2xl p-8 overflow-hidden"
+              className="hy-holo-container"
             >
-              <div className="relative rounded-xl overflow-hidden mb-5 -mx-8 -mt-8 w-[calc(100%+4rem)]">
-                <Image
-                  src="/images/team-photo.png"
-                  alt="The HEROY Digital Solutions team at work"
-                  width={1303}
-                  height={610}
-                  className="w-full h-40 object-cover object-top"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: "linear-gradient(to bottom, transparent 40%, rgba(10,10,20,0.9) 100%)",
-                  }}
-                />
-              </div>
-              <div className="w-12 h-12 rounded-xl bg-grad-mix flex items-center justify-center mb-5">
-                <Users size={20} className="text-background" />
-              </div>
-              <h2 className="font-display font-semibold text-xl text-white mb-2">
-                Team <span className="text-gradient">Expertise</span>
-              </h2>
-              <p className="text-sm text-muted leading-relaxed mb-5">
-                Our multidisciplinary team covers every discipline needed to
-                take a project from idea to launch — full-stack engineering,
-                mobile development, design, content creation, and digital
-                marketing, all in one place.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {teamRoles.map((role, i) => (
-                  <motion.span
-                    key={role}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
-                    className="text-xs bg-white/5 border border-border text-muted px-3 py-1.5 rounded-full hover:border-primary/40 hover:text-white transition-colors cursor-default"
-                  >
-                    {role}
-                  </motion.span>
-                ))}
+              <div className="hy-holo-inner p-8">
+                <div className="w-12 h-12 rounded-xl bg-grad-mix flex items-center justify-center mb-5">
+                  <Users size={20} className="text-background" />
+                </div>
+                <h2 className="font-display font-semibold text-xl text-white mb-2">
+                  Team <span className="hy-grad-text-flow">Expertise</span>
+                </h2>
+                <p className="text-sm leading-relaxed mb-5" style={{ color: "#9292b8" }}>
+                  Our multidisciplinary team covers every discipline needed to
+                  take a project from idea to launch — full-stack engineering,
+                  mobile development, design, content creation, and digital
+                  marketing, all in one place.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {teamRoles.map((role) => (
+                    <span key={role} className="hy-role-chip">
+                      {role}
+                    </span>
+                  ))}
+                </div>
               </div>
             </motion.div>
 
@@ -234,32 +213,27 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7 }}
-              className="glass-strong rounded-2xl p-8"
+              className="hy-holo-container"
             >
-              <div className="w-12 h-12 rounded-xl bg-grad-mix flex items-center justify-center mb-5">
-                <Code2 size={20} className="text-background" />
-              </div>
-              <h2 className="font-display font-semibold text-xl text-white mb-2">
-                Tools &amp; <span className="text-gradient-warm">Technologies</span>
-              </h2>
-              <p className="text-sm text-muted leading-relaxed mb-5">
-                We build on modern, production-tested tools so every product
-                we deliver is fast, secure, and easy to maintain long after
-                launch.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {skills.map((skill, i) => (
-                  <motion.span
-                    key={skill}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
-                    className="text-xs bg-white/5 border border-border text-muted px-3 py-1.5 rounded-full hover:border-accent/40 hover:text-white transition-colors cursor-default"
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
+              <div className="hy-holo-inner p-8">
+                <div className="w-12 h-12 rounded-xl bg-grad-mix flex items-center justify-center mb-5">
+                  <Code2 size={20} className="text-background" />
+                </div>
+                <h2 className="font-display font-semibold text-xl text-white mb-2">
+                  Tools &amp; <span className="hy-grad-text-flow">Technologies</span>
+                </h2>
+                <p className="text-sm leading-relaxed mb-5" style={{ color: "#9292b8" }}>
+                  We build on modern, production-tested tools so every product
+                  we deliver is fast, secure, and easy to maintain long after
+                  launch.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {skills.map((skill) => (
+                    <span key={skill} className="hy-role-chip">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
             </motion.div>
           </div>
@@ -281,16 +255,17 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7 }}
-            className="glass-strong rounded-3xl p-10 sm:p-16 text-center relative overflow-hidden"
+            className="hy-holo-container"
           >
+            <div className="hy-holo-inner relative overflow-hidden p-10 sm:p-16 text-center">
             <div className="glow-orb w-64 h-64 bg-primary/25 -top-20 -left-20" />
             <div className="glow-orb w-48 h-48 bg-accent/20 -bottom-10 -right-10" style={{ animationDelay: "2s" }} />
             <div className="relative">
               <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl mb-4 text-white">
                 Built on code, driven by{" "}
-                <span className="text-gradient-warm">purpose</span>
+                <span className="hy-grad-text-flow">purpose</span>
               </h2>
-              <p className="text-muted max-w-2xl mx-auto leading-relaxed mb-8">
+              <p className="max-w-2xl mx-auto leading-relaxed mb-8" style={{ color: "#9292b8" }}>
                 Every line of code, every design decision, and every marketing
                 strategy we deliver is grounded in one goal — helping our
                 clients succeed. That is the standard we hold ourselves to on
@@ -306,6 +281,7 @@ export default function AboutPage() {
                   <ArrowRight size={16} />
                 </Link>
               </div>
+            </div>
             </div>
           </motion.div>
         </div>
