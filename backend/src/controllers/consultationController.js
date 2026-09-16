@@ -21,7 +21,7 @@ exports.submitConsultation = asyncHandler(async (req, res, next) => {
     date: date?.trim() || "",
     time: time?.trim() || "",
     platform: platform?.trim() || "Google Meet",
-    topic: topic?.trim() || "Not specified",
+    topic: topic?.trim() || "",
     notes: notes?.trim() || "",
     ipAddress: req.ip || req.connection.remoteAddress || "",
     userAgent: req.headers["user-agent"] || "",
@@ -44,7 +44,7 @@ exports.submitConsultation = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     success: true,
     message:
-      "Your consultation request has been received. We will confirm your slot within 2 hours via email.",
+      "Your consultation request has been received. We will confirm a time within 24 hours.",
     data: {
       id: consultation._id,
       name: consultation.name,
@@ -74,29 +74,5 @@ exports.getConsultations = asyncHandler(async (req, res, next) => {
     page,
     pages: Math.ceil(total / limit),
     data: consultations,
-  });
-});
-
-exports.updateConsultationStatus = asyncHandler(async (req, res, next) => {
-  const { status } = req.body;
-  const validStatuses = ["pending", "confirmed", "completed", "cancelled"];
-
-  if (!validStatuses.includes(status)) {
-    return next(new ErrorResponse("Invalid status value", 400));
-  }
-
-  const consultation = await Consultation.findByIdAndUpdate(
-    req.params.id,
-    { status },
-    { new: true, runValidators: true },
-  );
-
-  if (!consultation) {
-    return next(new ErrorResponse("Consultation not found", 404));
-  }
-
-  res.status(200).json({
-    success: true,
-    data: consultation,
   });
 });
