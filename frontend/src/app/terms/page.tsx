@@ -240,8 +240,9 @@ export default function TermsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: (i % 4) * 0.05 }}
-                className="glass rounded-2xl p-6 sm:p-8"
+                className="hy-holo-container"
               >
+                <div className="hy-holo-inner p-6 sm:p-8">
                 <h2 className="font-display font-semibold text-lg text-white mb-5 pb-3 border-b border-border">
                   {section.title}
                 </h2>
@@ -251,11 +252,12 @@ export default function TermsPage() {
                       <h3 className="text-sm font-semibold text-accent mb-1.5">
                         {item.subtitle}
                       </h3>
-                      <p className="text-sm text-muted leading-relaxed">
+                      <p className="text-sm leading-relaxed" style={{ color: "#9292b8" }}>
                         {item.text}
                       </p>
                     </div>
                   ))}
+                </div>
                 </div>
               </motion.div>
             ))}
@@ -266,15 +268,16 @@ export default function TermsPage() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="glass-strong rounded-3xl p-8 text-center relative overflow-hidden"
+            className="hy-holo-container"
           >
+            <div className="hy-holo-inner relative overflow-hidden p-8 text-center">
             <div className="glow-orb w-48 h-48 bg-primary/20 -top-10 -left-10" />
             <div className="relative">
               <h2 className="font-display font-bold text-xl sm:text-2xl text-white mb-3">
                 Questions about our{" "}
-                <span className="text-gradient">terms?</span>
+                <span className="hy-grad-text-flow">terms?</span>
               </h2>
-              <p className="text-muted text-sm max-w-md mx-auto mb-6">
+              <p className="text-sm max-w-md mx-auto mb-6" style={{ color: "#9292b8" }}>
                 We are happy to clarify anything before you engage our
                 services. Reach out and we will respond personally.
               </p>
@@ -288,6 +291,7 @@ export default function TermsPage() {
                   <ArrowRight size={16} />
                 </Link>
               </div>
+            </div>
             </div>
           </motion.div>
         </div>
