@@ -20,6 +20,10 @@ import {
 } from "lucide-react";
 import TypewriterText from "@/components/ui/TypewriterText";
 
+// ⚠️ NOTE: Every "stat" badge below (e.g. "300% avg user growth", "Serving 1M+
+// citizens") is fabricated — there is no real aggregate data behind these
+// numbers yet. Same risk category as portfolio/case-studies. Replace with real
+// aggregate data once available, or remove the stat badges entirely.
 const industries = [
   {
     icon: HeartPulse,
@@ -198,45 +202,42 @@ export default function IndustriesPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="glass rounded-2xl p-6 cursor-default relative overflow-hidden group"
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 60px ${ind.glow}`;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 rgba(0,0,0,0)";
-                  }}
+                  className="hy-holo-container"
                 >
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{
-                      background: `radial-gradient(circle at top left, ${ind.glow}, transparent 70%)`,
-                    }}
-                  />
-                  <div className="relative">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${ind.gradient} flex items-center justify-center mb-4`}>
-                      <Icon size={20} className="text-white" />
-                    </div>
-                    <div className="flex items-center justify-between mb-2">
-                      <h2 className="font-display font-semibold text-lg text-white">
-                        {ind.name}
-                      </h2>
-                      <span className="text-[10px] font-bold text-accent-gold bg-accent-gold/10 px-2 py-1 rounded-full">
-                        {ind.stat}
-                      </span>
-                    </div>
-                    <p className="text-sm text-muted leading-relaxed mb-4">
-                      {ind.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {ind.services.map((s) => (
-                        <span
-                          key={s}
-                          className="text-[10px] bg-white/5 border border-border text-muted px-2 py-1 rounded-full"
-                        >
-                          {s}
-                        </span>
-                      ))}
+                  <div className="hy-holo-inner">
+                    <div className="hy-card-3d">
+                      <span className="hy-corner-pip" />
+                      <div className="hy-depth-1">
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${ind.gradient} flex items-center justify-center mb-4`}>
+                          <Icon size={20} className="text-white" />
+                        </div>
+                      </div>
+                      <div className="hy-depth-2 flex-1">
+                        <div className="flex items-center justify-between mb-2 gap-2">
+                          <h2 className="hy-grad-text-flow hy-title-on-hover font-display font-semibold text-lg">
+                            {ind.name}
+                          </h2>
+                          <span
+                            className="text-[10px] font-bold text-accent-gold bg-accent-gold/10 px-2 py-1 rounded-full shrink-0"
+                            title="Illustrative — not yet backed by real aggregate data"
+                          >
+                            {ind.stat}
+                          </span>
+                        </div>
+                        <p className="text-sm leading-relaxed mb-4" style={{ color: "#9292b8" }}>
+                          {ind.description}
+                        </p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {ind.services.map((s) => (
+                            <span
+                              key={s}
+                              className="text-[10px] bg-white/5 border border-border text-muted px-2 py-1 rounded-full"
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -249,16 +250,17 @@ export default function IndustriesPage() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7 }}
-            className="glass-strong rounded-3xl p-10 sm:p-16 text-center relative overflow-hidden"
+            className="hy-holo-container"
           >
+            <div className="hy-holo-inner relative overflow-hidden p-10 sm:p-16 text-center">
             <div className="glow-orb w-64 h-64 bg-primary/25 -top-20 -left-20" />
             <div className="glow-orb w-48 h-48 bg-accent/20 -bottom-10 -right-10" style={{ animationDelay: "2s" }} />
             <div className="relative">
               <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl mb-4 text-white">
                 Don&apos;t see your industry?{" "}
-                <span className="text-gradient">We can still help</span>
+                <span className="hy-grad-text-flow">We can still help</span>
               </h2>
-              <p className="text-muted max-w-xl mx-auto leading-relaxed mb-8">
+              <p className="max-w-xl mx-auto leading-relaxed mb-8" style={{ color: "#9292b8" }}>
                 Our process adapts to any sector. Tell us about your
                 business and we will show you exactly how we would
                 approach it, with a clear plan and realistic timeline.
@@ -273,6 +275,7 @@ export default function IndustriesPage() {
                   <ArrowRight size={16} />
                 </Link>
               </div>
+            </div>
             </div>
           </motion.div>
         </div>

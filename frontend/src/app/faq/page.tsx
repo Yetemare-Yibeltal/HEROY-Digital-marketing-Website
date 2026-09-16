@@ -26,7 +26,7 @@ const faqs = [
     id: 2,
     category: "Services",
     question: "Do you work with clients outside Ethiopia?",
-    answer: "Yes, the majority of our clients are international. We have worked with businesses across 20+ countries including the United States, United Kingdom, Canada, Australia, Germany, UAE, and across Africa. We communicate entirely in English, work across time zones, and use tools like Google Meet, Slack, and Notion to keep projects running smoothly regardless of location.",
+    answer: "Yes, the majority of our clients are international. We work with businesses across multiple countries including the United States, United Kingdom, Canada, Australia, Germany, UAE, and across Africa. We communicate entirely in English, work across time zones, and use tools like Google Meet, Slack, and Notion to keep projects running smoothly regardless of location.",
   },
   {
     id: 3,
@@ -251,18 +251,9 @@ export default function FAQPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: i * 0.04 }}
-                  className="glass rounded-2xl overflow-hidden"
-                  onMouseEnter={(e) => {
-                    if (openId !== faq.id) {
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(124,92,255,0.4)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (openId !== faq.id) {
-                      (e.currentTarget as HTMLElement).style.borderColor = "";
-                    }
-                  }}
+                  className="hy-holo-container"
                 >
+                  <div className="hy-holo-inner">
                   <button
                     type="button"
                     onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
@@ -300,6 +291,7 @@ export default function FAQPage() {
                       </motion.div>
                     )}
                   </AnimatePresence>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -310,16 +302,17 @@ export default function FAQPage() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="glass-strong rounded-3xl p-10 text-center relative overflow-hidden"
+            className="hy-holo-container"
           >
+            <div className="hy-holo-inner relative overflow-hidden p-10 text-center">
             <div className="glow-orb w-48 h-48 bg-primary/25 -top-10 -left-10" />
             <div className="glow-orb w-40 h-40 bg-accent/20 -bottom-10 -right-10" style={{ animationDelay: "2s" }} />
             <div className="relative">
               <h2 className="font-display font-bold text-xl sm:text-2xl text-white mb-3">
                 Still have questions?{" "}
-                <span className="text-gradient">Just ask us directly</span>
+                <span className="hy-grad-text-flow">Just ask us directly</span>
               </h2>
-              <p className="text-muted text-sm max-w-md mx-auto mb-6">
+              <p className="text-sm max-w-md mx-auto mb-6" style={{ color: "#9292b8" }}>
                 Our team responds to every message personally. No bots,
                 no templates — just honest answers to your specific
                 questions.
@@ -334,6 +327,7 @@ export default function FAQPage() {
                   <ArrowRight size={16} />
                 </Link>
               </div>
+            </div>
             </div>
           </motion.div>
         </div>
