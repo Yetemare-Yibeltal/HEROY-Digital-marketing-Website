@@ -182,8 +182,8 @@ export default function PrivacyPolicyPage() {
               <span className="text-border">·</span>
               <span>Last updated: July 1, 2026</span>
             </div>
-            <p className="text-muted leading-relaxed">
-              This Privacy Policy explains how HEROY Digital Agency
+            <p className="leading-relaxed" style={{ color: "#9292b8" }}>
+              This Privacy Policy explains how HEROY Digital Solution
               collects, uses, stores, and protects your personal
               information when you visit our website or engage our
               services. We are committed to handling your data with
@@ -203,8 +203,9 @@ export default function PrivacyPolicyPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: (i % 4) * 0.05 }}
-                className="glass rounded-2xl p-6 sm:p-8"
+                className="hy-holo-container"
               >
+                <div className="hy-holo-inner p-6 sm:p-8">
                 <h2 className="font-display font-semibold text-lg text-white mb-5 pb-3 border-b border-border">
                   {section.title}
                 </h2>
@@ -214,11 +215,12 @@ export default function PrivacyPolicyPage() {
                       <h3 className="text-sm font-semibold text-accent mb-1.5">
                         {item.subtitle}
                       </h3>
-                      <p className="text-sm text-muted leading-relaxed">
+                      <p className="text-sm leading-relaxed" style={{ color: "#9292b8" }}>
                         {item.text}
                       </p>
                     </div>
                   ))}
+                </div>
                 </div>
               </motion.div>
             ))}
@@ -229,14 +231,15 @@ export default function PrivacyPolicyPage() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="glass-strong rounded-3xl p-8 text-center relative overflow-hidden"
+            className="hy-holo-container"
           >
+            <div className="hy-holo-inner relative overflow-hidden p-8 text-center">
             <div className="glow-orb w-48 h-48 bg-primary/20 -top-10 -left-10" />
             <div className="relative">
               <h2 className="font-display font-bold text-xl sm:text-2xl text-white mb-3">
-                Questions about your <span className="text-gradient">privacy?</span>
+                Questions about your <span className="hy-grad-text-flow">privacy?</span>
               </h2>
-              <p className="text-muted text-sm max-w-md mx-auto mb-6">
+              <p className="text-sm max-w-md mx-auto mb-6" style={{ color: "#9292b8" }}>
                 We take every privacy concern seriously. Contact us
                 directly and we will respond personally within 24 hours.
               </p>
@@ -244,6 +247,7 @@ export default function PrivacyPolicyPage() {
                 Contact Us
                 <ArrowRight size={16} />
               </Link>
+            </div>
             </div>
           </motion.div>
         </div>
