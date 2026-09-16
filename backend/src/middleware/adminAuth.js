@@ -1,37 +1,48 @@
+// ⚠️ SECURITY FIX (Sep 2026): Before this file existed, the following routes
+// had NO authentication at all and were open to anyone on the internet:
+//   GET   /api/contact              — lists every customer lead (name, email,
+//                                      phone, message, IP address)
+//   PATCH /api/contact/:id/status   — lets anyone tamper with lead status
+//   GET   /api/chat/history/:id     — reads a visitor's AI chat transcript
+//
+// This middleware adds a minimal shared-secret check so those routes are no
+// longer wide open. It is intentionally simple — a single static key compared
+// with a timing-safe check — NOT a full auth system. Before real admin users
+// (multiple staff, audit logs, revocable access) are needed, replace this
+// with proper JWT or session-based authentication.
+//
+// Setup required: add ADMIN_API_KEY=<a long random string> to your .env file
+// (never commit it), then send it as a header on admin requests:
+//   Authorization: Bearer <ADMIN_API_KEY>
+
 const crypto = require("crypto");
 const ErrorResponse = require("../utils/errorResponse");
 
-/**
- * Constant-time string comparison. A plain `===`/`!==` comparison on
- * secrets is vulnerable to timing attacks: JavaScript string equality
- * short-circuits at the first differing character, so an attacker who
- * can measure response time with enough samples can recover the admin
- * key one character at a time. crypto.timingSafeEqual always takes the
- * same time regardless of where the mismatch occurs.
- */
-function safeCompare(a, b) {
-  const bufA = Buffer.from(a);
-  const bufB = Buffer.from(b);
-
-  // timingSafeEqual throws if the buffers aren't the same length, so we
-  // guard that first. This does leak length via timing, but that's an
-  // accepted, much lower-value signal than leaking the key contents.
-  if (bufA.length !== bufB.length) {
-    return false;
-  }
-
-  return crypto.timingSafeEqual(bufA, bufB);
-}
-
 const adminAuth = (req, res, next) => {
-  const providedKey = req.headers["x-admin-key"];
-  const expectedKey = process.env.ADMIN_API_KEY;
+  const adminKey = process.env.ADMIN_API_KEY;
 
-  if (!expectedKey) {
-    return next(new ErrorResponse("Admin access is not configured", 500));
+  if (!adminKey) {
+    // Fail closed: if the server isn't configured with a key, refuse access
+    // rather than silently allowing every request through.
+    console.error(
+      "ADMIN_API_KEY is not set — admin routes are locked until it is configured.",
+    );
+    return next(
+      new ErrorResponse("Admin access is not configured on this server", 503),
+    );
   }
 
-  if (!providedKey || typeof providedKey !== "string" || !safeCompare(providedKey, expectedKey)) {
+  const header = req.headers.authorization || "";
+  const provided = header.startsWith("Bearer ") ? header.slice(7) : "";
+
+  const providedBuf = Buffer.from(provided);
+  const expectedBuf = Buffer.from(adminKey);
+
+  const isValid =
+    providedBuf.length === expectedBuf.length &&
+    crypto.timingSafeEqual(providedBuf, expectedBuf);
+
+  if (!isValid) {
     return next(new ErrorResponse("Unauthorized", 401));
   }
 
