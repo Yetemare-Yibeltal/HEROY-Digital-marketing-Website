@@ -47,17 +47,63 @@ const typewriterWords = ["Your Project", "Your Goals", "Your Strategy", "Your Ne
 
 export default function ConsultationPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState("Google Meet");
 
-  // TODO: This form currently only sets local state on submit — it does not
-  // send data anywhere (no fetch/API call). Wire this to a real backend
-  // endpoint (e.g. POST /api/consultation) before launch, or bookings will
-  // silently vanish.
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const date = formData.get("date") as string;
+    const notes = formData.get("notes") as string;
+
+    if (!name?.trim() || !email?.trim() || !date || !selectedTime || !selectedTopic) {
+      setError("Please fill in your name, email, date, time, and topic.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/consultation`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: name.trim(),
+            email: email.trim(),
+            date,
+            time: selectedTime,
+            platform: selectedPlatform,
+            topic: selectedTopic,
+            notes: notes?.trim() || "",
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong. Please try again.");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again or contact us directly.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -223,6 +269,7 @@ export default function ConsultationPage() {
                       </label>
                       <input
                         type="text"
+                        name="name"
                         required
                         placeholder="Jane Doe"
                         className="bg-white/5 border border-border rounded-xl px-4 py-3 text-sm text-white placeholder:text-muted/50 outline-none focus:border-primary transition-colors"
@@ -234,6 +281,7 @@ export default function ConsultationPage() {
                       </label>
                       <input
                         type="email"
+                        name="email"
                         required
                         placeholder="jane@company.com"
                         className="bg-white/5 border border-border rounded-xl px-4 py-3 text-sm text-white placeholder:text-muted/50 outline-none focus:border-primary transition-colors"
@@ -248,6 +296,7 @@ export default function ConsultationPage() {
                       </label>
                       <input
                         type="date"
+                        name="date"
                         required
                         className="bg-white/5 border border-border rounded-xl px-4 py-3 text-sm text-muted outline-none focus:border-primary transition-colors"
                       />
@@ -325,13 +374,22 @@ export default function ConsultationPage() {
                     </label>
                     <textarea
                       rows={3}
+                      name="notes"
                       placeholder="Share any background, context, or specific questions you want to cover..."
                       className="bg-white/5 border border-border rounded-xl px-4 py-3 text-sm text-white placeholder:text-muted/50 outline-none focus:border-primary transition-colors resize-none"
                     />
                   </div>
 
-                  <button type="submit" className="btn-primary justify-center">
-                    Book My Free Consultation
+                  {error && (
+                    <p className="text-sm text-red-400 -mt-2">{error}</p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="btn-primary justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {submitting ? "Booking..." : "Book My Free Consultation"}
                     <Send size={16} />
                   </button>
                 </form>
