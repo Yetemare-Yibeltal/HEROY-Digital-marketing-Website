@@ -11,17 +11,6 @@ const contactLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-const consultationLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 5,
-  message: {
-    success: false,
-    error: "Too many consultation requests. Please try again after an hour.",
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
 const chatLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 20,
@@ -44,9 +33,4 @@ const generalLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-module.exports = {
-  contactLimiter,
-  consultationLimiter,
-  chatLimiter,
-  generalLimiter,
-};
+module.exports = { contactLimiter, chatLimiter, generalLimiter };
