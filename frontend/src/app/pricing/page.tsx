@@ -8,6 +8,10 @@ import TypewriterText from "@/components/ui/TypewriterText";
 
 const typewriterWords = ["Your Budget", "Your Goals", "Your Timeline", "Your Vision"];
 
+// NOTE: Prices below are standard industry-rate placeholders, used per the
+// client's explicit instruction (Sep 2026) rather than invented client data —
+// lower risk than the portfolio/case-study fabrications. Adjust to real rates
+// whenever the client wants to finalize pricing.
 const plans = [
   {
     name: "Starter",
@@ -209,23 +213,13 @@ export default function PricingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  whileHover={{ y: -8 }}
-                  className={`relative rounded-2xl p-8 flex flex-col ${
-                    plan.popular
-                      ? "bg-grad-primary"
-                      : "glass"
-                  }`}
-                  onMouseEnter={(e) => {
-                    if (!plan.popular) {
-                      (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 60px ${plan.glow}`;
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!plan.popular) {
-                      (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 rgba(0,0,0,0)";
-                    }
-                  }}
+                  className={plan.popular ? "hy-holo-container" : "hy-holo-container"}
                 >
+                  <div
+                    className={`relative p-8 flex flex-col h-full ${
+                      plan.popular ? "hy-holo-inner bg-grad-primary" : "hy-holo-inner"
+                    }`}
+                  >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                       <span className="bg-accent-gold text-background text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wide">
@@ -299,6 +293,7 @@ export default function PricingPage() {
                   >
                     {plan.cta}
                   </Link>
+                  </div>
                 </motion.div>
               );
             })}
@@ -309,12 +304,13 @@ export default function PricingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6 }}
-            className="glass-strong rounded-3xl p-8 sm:p-12 mb-16"
+            className="hy-holo-container mb-16"
           >
+            <div className="hy-holo-inner p-8 sm:p-12">
             <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-2 text-center">
-              Need something <span className="text-gradient-warm">custom?</span>
+              Need something <span className="hy-grad-text-flow">custom?</span>
             </h2>
-            <p className="text-muted text-center max-w-lg mx-auto mb-8">
+            <p className="text-center max-w-lg mx-auto mb-8" style={{ color: "#9292b8" }}>
               Every project is different. If you need a combination of
               services, a specific technology, or a tight deadline, book a
               free call and we will build a tailored quote within 24 hours.
@@ -328,6 +324,7 @@ export default function PricingPage() {
                 Send Us a Brief
                 <ArrowRight size={16} />
               </Link>
+            </div>
             </div>
           </motion.div>
 
@@ -350,8 +347,9 @@ export default function PricingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.07 }}
-                  className="glass rounded-2xl overflow-hidden"
+                  className="hy-holo-container"
                 >
+                  <div className="hy-holo-inner">
                   <button
                     type="button"
                     onClick={() => setOpenFaq(openFaq === i ? null : i)}
@@ -378,6 +376,7 @@ export default function PricingPage() {
                       {faq.a}
                     </p>
                   </motion.div>
+                  </div>
                 </motion.div>
               ))}
             </div>
