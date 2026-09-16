@@ -18,7 +18,6 @@ import {
   Layers,
   Box,
   Users,
-  ArrowUpRight,
 } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -193,30 +192,36 @@ export default function ServicesPage() {
           {services.map((service) => {
             const Icon = service.icon;
             return (
-              <Link
-                key={service.slug}
-                href={`/services/${service.slug}`}
-                className="group glass rounded-2xl p-6 hover:border-primary/40 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden block"
-              >
-                <div className="absolute inset-0 bg-grad-primary opacity-0 group-hover:opacity-[0.06] transition-opacity" />
-                <div className="relative">
-                  <div
-                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-5`}
+              <div key={service.slug} className="hy-holo-container">
+                <div className="hy-holo-inner h-full">
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="hy-card-3d group block h-full"
                   >
-                    <Icon size={20} className="text-white" />
-                  </div>
-                  <h2 className="font-display font-semibold text-lg text-white mb-2">
-                    {service.title}
-                  </h2>
-                  <p className="text-sm text-muted leading-relaxed mb-4">
-                    {service.shortDescription}
-                  </p>
-                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent group-hover:gap-2 transition-all">
-                    View details
-                    <ArrowUpRight size={14} />
-                  </span>
+                    <span className="hy-corner-pip" />
+                    <div className="hy-depth-1">
+                      <div
+                        className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-5`}
+                      >
+                        <Icon size={20} className="text-white" />
+                      </div>
+                    </div>
+                    <div className="hy-depth-2 flex-1">
+                      <h2 className="hy-grad-text-flow hy-title-on-hover font-display font-semibold text-lg mb-2">
+                        {service.title}
+                      </h2>
+                      <p className="text-sm leading-relaxed mb-4" style={{ color: "#9292b8" }}>
+                        {service.shortDescription}
+                      </p>
+                    </div>
+                    <div className="hy-depth-3">
+                      <span className="hy-read-more">
+                        View details
+                      </span>
+                    </div>
+                  </Link>
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>
