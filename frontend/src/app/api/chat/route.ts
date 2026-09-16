@@ -1,15 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const SYSTEM_PROMPT = `You are the HEROY Assistant — a helpful, knowledgeable, and friendly AI assistant for HEROY Digital Solutions, a full-service digital transformation agency founded by a team of Ethiopian software engineers, designers, and creatives.
+// ⚠️ NOTE: This in-memory rate limiter only protects a single running Node.js
+// instance — it resets on redeploy/restart and won't coordinate across
+// multiple serverless instances if this app scales horizontally (e.g. on
+// Vercel with multiple concurrent lambda invocations). It's a real
+// improvement over having zero limiting, but for production-grade protection
+// against cost-based abuse, replace this with a durable store (Redis/Upstash)
+// or a platform-level rate limiter (e.g. Vercel Firewall / WAF rules).
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX = 20;
+const requestLog = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = (requestLog.get(ip) || []).filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS,
+  );
+  timestamps.push(now);
+  requestLog.set(ip, timestamps);
+  return timestamps.length > RATE_LIMIT_MAX;
+}
+
+const SYSTEM_PROMPT = `You are the HEROY Assistant — a helpful, knowledgeable, and friendly AI assistant for HEROY Digital Solution, a full-service digital transformation agency founded by a team of Ethiopian software engineers, designers, and creatives.
 
 Your role is to help website visitors learn about HEROY's services, understand pricing, get answers to common questions, and take the next step toward starting a project.
 
-About HEROY Digital Solutions:
+About HEROY:
 - Full-service digital agency based in Injibara, Awi Zone, Amhara Region, Ethiopia
-- Active for 4+ years
 - Team includes full-stack engineers, frontend and backend developers, Android developers, UI/UX designers, graphics designers, video editors, AI developers, digital marketers, and SEO specialists
-- Serves clients across healthcare, finance, real estate, education, NGOs, e-commerce, manufacturing, logistics, tourism, government, startups, and technology
-- 50+ projects delivered, 500+ happy clients, 12+ core services offered
+- 50+ projects delivered, 500+ happy clients
 
 Services offered:
 - Digital Marketing (full-funnel campaigns, paid ads, email marketing)
@@ -38,7 +57,7 @@ Pricing:
 Contact:
 - Email: hello@heroy.dev
 - WhatsApp: +251 900 000 000
-- Telegram: @HEROY_Team
+- Telegram: @heroydev
 - Location: Injibara, Awi Zone, Amhara, Ethiopia
 - Free 30-minute consultation available — no obligation
 
@@ -54,11 +73,44 @@ Guidelines for your responses:
 
 export async function POST(request: NextRequest) {
   try {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Too many messages. Please slow down and try again shortly." },
+        { status: 429 },
+      );
+    }
+
     const { messages } = await request.json();
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
         { error: "Messages array is required" },
+        { status: 400 },
+      );
+    }
+
+    // NOTE: this length check was missing here even though the (unused)
+    // Express /api/chat backend has it — added for parity and to prevent
+    // arbitrarily long requests being sent to the Anthropic API.
+    const lastMessage = messages[messages.length - 1];
+    if (
+      !lastMessage ||
+      typeof lastMessage.content !== "string" ||
+      lastMessage.content.trim().length === 0
+    ) {
+      return NextResponse.json(
+        { error: "Message content cannot be empty" },
+        { status: 400 },
+      );
+    }
+    if (lastMessage.content.length > 1000) {
+      return NextResponse.json(
+        { error: "Message too long. Maximum 1000 characters." },
         { status: 400 },
       );
     }
