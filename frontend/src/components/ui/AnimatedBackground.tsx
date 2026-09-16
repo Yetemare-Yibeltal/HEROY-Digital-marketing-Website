@@ -18,6 +18,12 @@ export default function AnimatedBackground() {
     resize();
     window.addEventListener("resize", resize);
 
+    // Also watch the body's own size — window resize alone misses the case
+    // where a client-side route change (no window resize) lands on a page
+    // of a different length, leaving the canvas height stale.
+    const bodyObserver = new ResizeObserver(() => resize());
+    bodyObserver.observe(document.body);
+
     const dots: {
       x: number;
       y: number;
@@ -98,6 +104,7 @@ export default function AnimatedBackground() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
+      bodyObserver.disconnect();
     };
   }, []);
 
