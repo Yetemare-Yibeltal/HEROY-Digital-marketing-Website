@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   Target,
@@ -14,6 +15,17 @@ import {
   Award,
   Code2,
   Sparkles,
+  Search,
+  PenTool,
+  Hammer,
+  TestTube2,
+  Send as SendIcon,
+  LifeBuoy,
+  Handshake,
+  Gauge,
+  MessageSquareHeart,
+  Plus,
+  Minus,
 } from "lucide-react";
 import TypewriterText from "@/components/ui/TypewriterText";
 
@@ -62,12 +74,112 @@ const teamRoles = [
   "Digital Marketers", "SEO Specialists",
 ];
 
-// Real figures confirmed by client (Sep 2026). "Countries Served" is unconfirmed —
-// flagged rather than invented; consider replacing with a confirmed metric.
 const stats = [
-  { icon: Award, value: "50+", label: "Projects Delivered", color: "text-accent" },
-  { icon: Users, value: "500+", label: "Happy Clients", color: "text-accent-pink" },
-  { icon: Globe2, value: "5+", label: "Years Active*", color: "text-accent-gold" }, // TODO: confirm real founding year
+  { icon: Rocket, value: "2025", label: "Founded", color: "text-accent" },
+  { icon: Users, value: "3", label: "Core Team Members", color: "text-accent-pink" },
+  { icon: Award, value: "20+", label: "Projects In Progress", color: "text-accent-gold" },
+];
+
+const team = [
+  {
+    name: "Metages Yibeltal",
+    role: "Team Lead & Frontend Developer",
+    image: "/images/team/metages-yibeltal.png",
+    bio: "Leads product direction and builds the interfaces clients interact with, focused on clean, fast, and accessible frontends.",
+  },
+  {
+    name: "Henok Amare",
+    role: "Database Engineer",
+    image: "/images/team/henok-amare.png",
+    bio: "Designs and manages the data layer behind every HEROY project — schema design, performance, and data integrity.",
+  },
+  {
+    name: "Robel Yinager",
+    role: "Backend Developer",
+    image: "/images/team/robel-yinager.png",
+    bio: "Builds the APIs, services, and server-side logic that power HEROY's web and mobile products.",
+  },
+];
+
+const process = [
+  {
+    icon: Search,
+    step: "01",
+    title: "Discover",
+    text: "We start with a real conversation — your goals, your audience, your competitors, and what success actually looks like for your business, not just a checklist of features.",
+  },
+  {
+    icon: PenTool,
+    step: "02",
+    title: "Design",
+    text: "Wireframes and visual direction come before a single line of code, so you can see and approve the look and feel of your product before we build it.",
+  },
+  {
+    icon: Hammer,
+    step: "03",
+    title: "Build",
+    text: "Our engineers write clean, documented, production-grade code using modern frameworks — with regular check-ins so you always know exactly where your project stands.",
+  },
+  {
+    icon: TestTube2,
+    step: "04",
+    title: "Test & Refine",
+    text: "Every feature is tested across devices and browsers before it ships. We fix issues before you ever see them, not after.",
+  },
+  {
+    icon: SendIcon,
+    step: "05",
+    title: "Launch",
+    text: "We handle deployment, domain and hosting setup, and make sure everything is production-ready — fast, secure, and SEO-friendly from day one.",
+  },
+  {
+    icon: LifeBuoy,
+    step: "06",
+    title: "Support",
+    text: "Launch isn't the finish line. We stay reachable for fixes, updates, and the next phase of your product, directly — no ticket queue, no account managers.",
+  },
+];
+
+const advantages = [
+  {
+    icon: Handshake,
+    title: "You talk directly to the people building your product",
+    text: "No account managers, no outsourcing to subcontractors you've never met. When you message HEROY, you're talking to the engineer or designer actually working on your project.",
+  },
+  {
+    icon: Gauge,
+    title: "Faster decisions, faster delivery",
+    text: "A three-person team makes decisions in minutes, not committee meetings. That speed shows up directly in how quickly your project moves from idea to live product.",
+  },
+  {
+    icon: Award,
+    title: "Every project matters to us — because it has to",
+    text: "As a growing studio, every client relationship shapes our reputation. We aren't spreading attention across hundreds of accounts; we're focused on doing right by the clients we have.",
+  },
+  {
+    icon: MessageSquareHeart,
+    title: "Honest communication over sales pitches",
+    text: "We'll tell you if something won't work, if a timeline is unrealistic, or if a cheaper approach solves your problem just as well. We're building long-term relationships, not one-off invoices.",
+  },
+];
+
+const faqs = [
+  {
+    q: "Is HEROY a registered company or a freelance team?",
+    a: "HEROY is a growing digital solutions studio based in Injibara, Ethiopia. We operate as a dedicated team working full-time on client projects, with the structure and processes of a professional agency.",
+  },
+  {
+    q: "You're a small team — can you really handle a full project?",
+    a: "Yes. Our three founders each own a full discipline end-to-end — frontend, backend, and data — which covers everything a typical web or mobile project needs. For specialized work outside our core stack, we're transparent about it up front rather than overpromising.",
+  },
+  {
+    q: "How do you communicate during a project?",
+    a: "Directly, via WhatsApp, Telegram, email, or scheduled calls — whichever you prefer. You'll get regular progress updates rather than radio silence between kickoff and delivery.",
+  },
+  {
+    q: "Do you work with clients outside Ethiopia?",
+    a: "Yes. We work with clients remotely and communicate entirely in English, using standard tools like Google Meet, WhatsApp, and email to keep projects moving regardless of time zone.",
+  },
 ];
 
 const typewriterWords = ["Engineers", "Creators", "Innovators", "Builders", "Dreamers"];
@@ -87,18 +199,18 @@ function AnimatedCounter({ value, label, icon: Icon, color }: {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.6 }}
-      className="hy-holo-container"
+      className="glass rounded-2xl p-8 text-center gradient-border"
     >
-      <div className="hy-holo-inner p-8 text-center">
-        <Icon size={24} className={`${color} mx-auto mb-3`} />
-        <p className="hy-grad-text-flow font-display font-bold text-3xl mb-1">{value}</p>
-        <p className="text-sm" style={{ color: "#9292b8" }}>{label}</p>
-      </div>
+      <Icon size={24} className={`${color} mx-auto mb-3`} />
+      <p className="font-display font-bold text-3xl text-gradient mb-1">{value}</p>
+      <p className="text-sm text-muted">{label}</p>
     </motion.div>
   );
 }
 
-export default function AboutPage() {
+export default function AboutPageClient() {
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
   return (
     <div className="relative overflow-hidden">
       <div className="glow-orb w-96 h-96 bg-primary/15 -top-20 -right-20" />
@@ -113,7 +225,7 @@ export default function AboutPage() {
             transition={{ duration: 0.5 }}
           >
             <span className="badge mb-4">
-              <Sparkles size={14} /> About HEROY Digital Solution
+              <Sparkles size={14} /> About HEROY
             </span>
           </motion.div>
 
@@ -133,13 +245,29 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-muted text-lg leading-relaxed"
+            className="text-muted text-lg leading-relaxed mb-4"
           >
             HEROY is a full-service digital transformation agency built by a
             team of Ethiopian software engineers, designers, and creatives.
             We combine strategic marketing, premium design, and robust
             full-stack engineering to help organizations grow through
             technology — from Ethiopia to the world.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="text-muted text-base leading-relaxed"
+          >
+            Founded in 2025 and based in Injibara, Ethiopia, HEROY started
+            with a simple observation: too many businesses either overpay
+            large agencies for slow, templated work, or underpay freelancers
+            who disappear halfway through a project. We built HEROY to be
+            the alternative — a small, accountable team of specialists who
+            treat every client's product like it's our own, backed by the
+            same modern engineering practices used by top software teams
+            worldwide.
           </motion.p>
         </div>
       </section>
@@ -156,21 +284,25 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="hy-holo-container"
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  className="glass rounded-2xl p-8 cursor-default relative overflow-hidden group"
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 50px ${v.glow}`;
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 rgba(0,0,0,0)";
+                  }}
                 >
-                  <div className="hy-holo-inner">
-                    <div className="hy-card-3d">
-                      <span className="hy-corner-pip" />
-                      <div className="hy-depth-1">
-                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${v.gradient} flex items-center justify-center mb-5`}>
-                          <Icon size={20} className="text-white" />
-                        </div>
-                      </div>
-                      <div className="hy-depth-2 flex-1">
-                        <h2 className="hy-grad-text-flow hy-title-on-hover font-display font-semibold text-xl mb-3">{v.title}</h2>
-                        <p className="text-sm leading-relaxed" style={{ color: "#9292b8" }}>{v.text}</p>
-                      </div>
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ background: `radial-gradient(circle at top left, ${v.glow}, transparent 70%)` }}
+                  />
+                  <div className="relative">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${v.gradient} flex items-center justify-center mb-5`}>
+                      <Icon size={20} className="text-white" />
                     </div>
+                    <h2 className="font-display font-semibold text-xl text-white mb-3">{v.title}</h2>
+                    <p className="text-sm text-muted leading-relaxed">{v.text}</p>
                   </div>
                 </motion.div>
               );
@@ -183,28 +315,33 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7 }}
-              className="hy-holo-container"
+              className="glass-strong rounded-2xl p-8"
             >
-              <div className="hy-holo-inner p-8">
-                <div className="w-12 h-12 rounded-xl bg-grad-mix flex items-center justify-center mb-5">
-                  <Users size={20} className="text-background" />
-                </div>
-                <h2 className="font-display font-semibold text-xl text-white mb-2">
-                  Team <span className="hy-grad-text-flow">Expertise</span>
-                </h2>
-                <p className="text-sm leading-relaxed mb-5" style={{ color: "#9292b8" }}>
-                  Our multidisciplinary team covers every discipline needed to
-                  take a project from idea to launch — full-stack engineering,
-                  mobile development, design, content creation, and digital
-                  marketing, all in one place.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {teamRoles.map((role) => (
-                    <span key={role} className="hy-role-chip">
-                      {role}
-                    </span>
-                  ))}
-                </div>
+              <div className="w-12 h-12 rounded-xl bg-grad-mix flex items-center justify-center mb-5">
+                <Users size={20} className="text-background" />
+              </div>
+              <h2 className="font-display font-semibold text-xl text-white mb-2">
+                Team <span className="text-gradient">Expertise</span>
+              </h2>
+              <p className="text-sm text-muted leading-relaxed mb-5">
+                Our multidisciplinary team covers every discipline needed to
+                take a project from idea to launch — full-stack engineering,
+                mobile development, design, content creation, and digital
+                marketing, all in one place.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {teamRoles.map((role, i) => (
+                  <motion.span
+                    key={role}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                    className="text-xs bg-white/5 border border-border text-muted px-3 py-1.5 rounded-full hover:border-primary/40 hover:text-white transition-colors cursor-default"
+                  >
+                    {role}
+                  </motion.span>
+                ))}
               </div>
             </motion.div>
 
@@ -213,29 +350,192 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7 }}
-              className="hy-holo-container"
+              className="glass-strong rounded-2xl p-8"
             >
-              <div className="hy-holo-inner p-8">
-                <div className="w-12 h-12 rounded-xl bg-grad-mix flex items-center justify-center mb-5">
-                  <Code2 size={20} className="text-background" />
-                </div>
-                <h2 className="font-display font-semibold text-xl text-white mb-2">
-                  Tools &amp; <span className="hy-grad-text-flow">Technologies</span>
-                </h2>
-                <p className="text-sm leading-relaxed mb-5" style={{ color: "#9292b8" }}>
-                  We build on modern, production-tested tools so every product
-                  we deliver is fast, secure, and easy to maintain long after
-                  launch.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {skills.map((skill) => (
-                    <span key={skill} className="hy-role-chip">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+              <div className="w-12 h-12 rounded-xl bg-grad-mix flex items-center justify-center mb-5">
+                <Code2 size={20} className="text-background" />
+              </div>
+              <h2 className="font-display font-semibold text-xl text-white mb-2">
+                Tools &amp; <span className="text-gradient-warm">Technologies</span>
+              </h2>
+              <p className="text-sm text-muted leading-relaxed mb-5">
+                We build on modern, production-tested tools so every product
+                we deliver is fast, secure, and easy to maintain long after
+                launch.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {skills.map((skill, i) => (
+                  <motion.span
+                    key={skill}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                    className="text-xs bg-white/5 border border-border text-muted px-3 py-1.5 rounded-full hover:border-accent/40 hover:text-white transition-colors cursor-default"
+                  >
+                    {skill}
+                  </motion.span>
+                ))}
               </div>
             </motion.div>
+          </div>
+
+          <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              className="text-center max-w-2xl mx-auto mb-10"
+            >
+              <span className="badge mb-4">
+                <Gauge size={14} /> How We Work
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
+                A process built for{" "}
+                <span className="text-gradient">clarity, not chaos</span>
+              </h2>
+              <p className="text-sm text-muted leading-relaxed">
+                Every HEROY project moves through the same six stages —
+                so you always know what's happening, what's next, and
+                when to expect it.
+              </p>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {process.map((step, i) => {
+                const Icon = step.icon;
+                return (
+                  <motion.div
+                    key={step.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: i * 0.08 }}
+                    whileHover={{ y: -6 }}
+                    className="glass rounded-2xl p-6 relative overflow-hidden"
+                  >
+                    <span className="absolute top-4 right-5 font-display font-bold text-4xl text-white/5">
+                      {step.step}
+                    </span>
+                    <div className="w-11 h-11 rounded-xl bg-grad-mix flex items-center justify-center mb-4 relative">
+                      <Icon size={18} className="text-background" />
+                    </div>
+                    <h3 className="font-display font-semibold text-white text-base mb-2 relative">
+                      {step.title}
+                    </h3>
+                    <p className="text-xs text-muted leading-relaxed relative">
+                      {step.text}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              className="text-center max-w-2xl mx-auto mb-10"
+            >
+              <span className="badge mb-4">
+                <Award size={14} /> Why HEROY
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
+                Why businesses choose a{" "}
+                <span className="text-gradient-warm">small, focused team</span>
+              </h2>
+              <p className="text-sm text-muted leading-relaxed">
+                Being a lean studio isn't a limitation we work around — it's
+                the reason our clients get better outcomes.
+              </p>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 gap-6">
+              {advantages.map((adv, i) => {
+                const Icon = adv.icon;
+                return (
+                  <motion.div
+                    key={adv.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className="glass-strong rounded-2xl p-7 flex gap-4"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-white/5 border border-border flex items-center justify-center shrink-0">
+                      <Icon size={18} className="text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="font-display font-semibold text-white text-base mb-2">
+                        {adv.title}
+                      </h3>
+                      <p className="text-xs text-muted leading-relaxed">
+                        {adv.text}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              className="text-center max-w-2xl mx-auto mb-10"
+            >
+              <span className="badge mb-4">
+                <Users size={14} /> Our Team
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
+                Meet the <span className="text-gradient">founding team</span>
+              </h2>
+              <p className="text-sm text-muted leading-relaxed">
+                HEROY is a lean, hands-on starter team — three specialists
+                who each own their craft end to end, so every project gets
+                direct attention from the people actually building it.
+              </p>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-3 gap-6">
+              {team.map((member, i) => (
+                <motion.div
+                  key={member.name}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  whileHover={{ y: -6 }}
+                  className="glass rounded-2xl p-6 text-center group"
+                >
+                  <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-primary/30 group-hover:ring-primary/60 transition-all">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      sizes="96px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <h3 className="font-display font-semibold text-white text-base mb-1">
+                    {member.name}
+                  </h3>
+                  <p className="text-xs text-accent font-medium mb-3">
+                    {member.role}
+                  </p>
+                  <p className="text-xs text-muted leading-relaxed">
+                    {member.bio}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </div>
 
           <div className="grid sm:grid-cols-3 gap-6 mb-16">
@@ -250,22 +550,80 @@ export default function AboutPage() {
             ))}
           </div>
 
+          <div className="max-w-3xl mx-auto mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-10"
+            >
+              <span className="badge mb-4">
+                <MessageSquareHeart size={14} /> Common Questions
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
+                Questions people ask{" "}
+                <span className="text-gradient">before working with us</span>
+              </h2>
+            </motion.div>
+
+            <div className="flex flex-col gap-3">
+              {faqs.map((item, i) => {
+                const isOpen = openFaq === i;
+                return (
+                  <motion.div
+                    key={item.q}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.4, delay: i * 0.05 }}
+                    className="glass rounded-2xl overflow-hidden"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaq(isOpen ? null : i)}
+                      className="w-full flex items-center justify-between gap-4 text-left px-6 py-5"
+                    >
+                      <span className="font-display font-medium text-white text-sm sm:text-base">
+                        {item.q}
+                      </span>
+                      <span className="w-7 h-7 rounded-full bg-white/5 border border-border flex items-center justify-center shrink-0 text-muted">
+                        {isOpen ? <Minus size={14} /> : <Plus size={14} />}
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        transition={{ duration: 0.25 }}
+                        className="px-6 pb-5"
+                      >
+                        <p className="text-sm text-muted leading-relaxed">
+                          {item.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7 }}
-            className="hy-holo-container"
+            className="glass-strong rounded-3xl p-10 sm:p-16 text-center relative overflow-hidden"
           >
-            <div className="hy-holo-inner relative overflow-hidden p-10 sm:p-16 text-center">
             <div className="glow-orb w-64 h-64 bg-primary/25 -top-20 -left-20" />
             <div className="glow-orb w-48 h-48 bg-accent/20 -bottom-10 -right-10" style={{ animationDelay: "2s" }} />
             <div className="relative">
               <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl mb-4 text-white">
                 Built on code, driven by{" "}
-                <span className="hy-grad-text-flow">purpose</span>
+                <span className="text-gradient-warm">purpose</span>
               </h2>
-              <p className="max-w-2xl mx-auto leading-relaxed mb-8" style={{ color: "#9292b8" }}>
+              <p className="text-muted max-w-2xl mx-auto leading-relaxed mb-8">
                 Every line of code, every design decision, and every marketing
                 strategy we deliver is grounded in one goal — helping our
                 clients succeed. That is the standard we hold ourselves to on
@@ -281,7 +639,6 @@ export default function AboutPage() {
                   <ArrowRight size={16} />
                 </Link>
               </div>
-            </div>
             </div>
           </motion.div>
         </div>
