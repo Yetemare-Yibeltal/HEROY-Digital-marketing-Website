@@ -1,9 +1,19 @@
+
 "use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { Mail, Phone, MapPin } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  ShieldCheck,
+  Users2,
+  Zap,
+  MessageCircle,
+} from "lucide-react";
 
 const serviceLinks = [
   { label: "Digital Marketing", href: "/services/digital-marketing" },
@@ -19,9 +29,15 @@ const companyLinks = [
   { label: "Portfolio", href: "/portfolio" },
   { label: "Case Studies", href: "/case-studies" },
   { label: "Careers", href: "/careers" },
+  { label: "Industries", href: "/industries" },
+];
+
+const resourceLinks = [
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+  { label: "Pricing", href: "/pricing" },
   { label: "FAQ", href: "/faq" },
+  { label: "Testimonials", href: "/testimonials" },
+  { label: "Book a Consultation", href: "/consultation" },
 ];
 
 const socialLinks = [
@@ -38,6 +54,13 @@ const socialLinks = [
   { label: "X", short: "X", href: "#" },
   { label: "LinkedIn", short: "in", href: "#" },
   { label: "Instagram", short: "ig", href: "#" },
+];
+
+const trustBadges = [
+  { icon: MessageCircle, label: "Free Consultation" },
+  { icon: Users2, label: "Direct Team Access — No Middlemen" },
+  { icon: ShieldCheck, label: "NDA on Request" },
+  { icon: Zap, label: "Fast Turnaround" },
 ];
 
 export default function Footer() {
@@ -58,7 +81,24 @@ export default function Footer() {
   return (
     <footer className="relative border-t border-border bg-surface">
       <div className="container-px mx-auto max-w-7xl py-16">
-        <div className="grid gap-12 lg:grid-cols-[2fr_1fr_1fr_1.4fr]">
+        <div className="flex flex-wrap items-center justify-center lg:justify-between gap-4 mb-14 pb-10 border-b border-border">
+          {trustBadges.map((b) => {
+            const Icon = b.icon;
+            return (
+              <div
+                key={b.label}
+                className="flex items-center gap-2.5 text-sm text-muted"
+              >
+                <span className="w-8 h-8 rounded-full bg-white/5 border border-border flex items-center justify-center shrink-0">
+                  <Icon size={14} className="text-accent" />
+                </span>
+                {b.label}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="grid gap-12 lg:grid-cols-[1.8fr_1fr_1fr_1fr_1.3fr]">
           <div>
             <Link
               href="/"
@@ -134,6 +174,24 @@ export default function Footer() {
 
           <div>
             <h4 className="font-display font-semibold text-white mb-4 text-sm tracking-wide">
+              Resources
+            </h4>
+            <ul className="flex flex-col gap-2.5">
+              {resourceLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted hover:text-accent transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-display font-semibold text-white mb-4 text-sm tracking-wide">
               Get in Touch
             </h4>
 
@@ -191,7 +249,32 @@ export default function Footer() {
                   @heroy_digital_solution2026
                 </a>
               </li>
+
+              <li className="flex items-start gap-3 text-sm text-muted">
+                <Clock
+                  size={15}
+                  className="text-primary mt-0.5 shrink-0"
+                />
+                Mon – Sat, 9:00 AM – 7:00 PM (EAT)
+              </li>
             </ul>
+
+            <a
+              href="https://wa.me/251923853252"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-[#25D366]/10 border border-[#25D366]/30 hover:bg-[#25D366]/20 transition-colors rounded-full px-4 py-2.5 mb-6"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#25D366"
+              >
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.11c-.24.68-1.4 1.3-1.93 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.95-.31-1.63-.61-2.87-1.24-4.74-4.13-4.89-4.32-.14-.19-1.17-1.56-1.17-2.98 0-1.42.74-2.11 1.01-2.4.26-.29.57-.36.76-.36h.55c.18 0 .41-.07.64.49.24.58.81 2 .88 2.14.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.57.16.28.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.21 1.36.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.86.27.14.45.2.51.32.07.12.07.66-.17 1.34z" />
+              </svg>
+              Chat on WhatsApp
+            </a>
 
             <h4 className="font-display font-semibold text-white mb-3 text-sm tracking-wide">
               Newsletter
@@ -233,7 +316,7 @@ export default function Footer() {
             engineers.
           </p>
 
-          <div className="flex gap-5">
+          <div className="flex items-center gap-5">
             <Link
               href="/privacy-policy"
               className="hover:text-white transition-colors"
@@ -254,6 +337,15 @@ export default function Footer() {
             >
               FAQ
             </Link>
+
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Back to top"
+              className="w-8 h-8 rounded-full glass flex items-center justify-center text-muted hover:text-white hover:border-primary/50 transition-colors"
+            >
+              ↑
+            </button>
           </div>
         </div>
       </div>
