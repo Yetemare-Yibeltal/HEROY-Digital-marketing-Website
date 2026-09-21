@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 const serviceLinks = [
@@ -25,8 +25,16 @@ const companyLinks = [
 ];
 
 const socialLinks = [
-  { label: "Telegram", short: "TG", href: "https://t.me/HEROY_Team" },
-  { label: "Facebook", short: "f", href: "#" },
+  {
+    label: "Facebook",
+    short: "f",
+    href: "https://facebook.com/heroydigitalsolution",
+  },
+  {
+    label: "Telegram",
+    short: "tg",
+    href: "https://t.me/heroy_digital_solution2026",
+  },
   { label: "X", short: "X", href: "#" },
   { label: "LinkedIn", short: "in", href: "#" },
   { label: "Instagram", short: "ig", href: "#" },
@@ -37,148 +45,50 @@ export default function Footer() {
   const [subscribed, setSubscribed] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
 
-  const handleSubscribe = async (e: FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!email.trim()) return;
-
     setSubscribing(true);
-
     await new Promise((resolve) => setTimeout(resolve, 800));
-
     setSubscribed(true);
     setSubscribing(false);
     setEmail("");
   };
 
   return (
-    <footer
-      className="
-        relative
-        isolate
-        overflow-hidden
-        border-t border-border
-        bg-surface
-        [transform:translateZ(0)]
-        [will-change:transform]
-      "
-    >
-      {/* Decorative watermark logo */}
-      <Image
-        src="/images/logo-circular.png"
-        alt=""
-        width={215}
-        height={215}
-        aria-hidden
-        className="
-          absolute
-          -bottom-16
-          -right-16
-          z-[-1]
-          h-64
-          w-64
-          select-none
-          pointer-events-none
-          opacity-[0.04]
-          [transform:translateZ(0)]
-        "
-      />
-
-      {/* Decorative glow for modern / 3D-friendly layouts */}
-      <div
-        aria-hidden
-        className="
-          pointer-events-none
-          absolute
-          -top-32
-          left-1/2
-          h-72
-          w-72
-          -translate-x-1/2
-          rounded-full
-          bg-primary/5
-          blur-3xl
-          opacity-70
-        "
-      />
-
-      <div
-        className="
-          container-px
-          relative
-          z-10
-          mx-auto
-          max-w-7xl
-          py-16
-          [transform:translateZ(0)]
-        "
-      >
+    <footer className="relative border-t border-border bg-surface">
+      <div className="container-px mx-auto max-w-7xl py-16">
         <div className="grid gap-12 lg:grid-cols-[2fr_1fr_1fr_1.4fr]">
-          {/* Brand */}
           <div>
             <Link
               href="/"
-              className="
-                group
-                mb-4
-                flex
-                items-center
-                w-fit
-                [transform:translateZ(0)]
-              "
+              className="flex items-center gap-2 font-display font-bold text-xl mb-4"
             >
-              <Image
-                src="/images/logo-horizontal.png"
-                alt="HEROY Digital Solutions"
-                width={450}
-                height={130}
-                priority
-                className="
-                  h-10
-                  w-auto
-                  object-contain
-                  transition-transform
-                  duration-300
-                  ease-out
-                  group-hover:scale-[1.02]
-                  [transform:translateZ(0)]
-                "
-              />
+              <span className="relative w-9 h-9 rounded-full overflow-hidden shrink-0">
+                <Image
+                  src="/images/brand/heroy-logo.png"
+                  alt="HEROY Digital Solutions logo"
+                  fill
+                  sizes="36px"
+                  className="object-cover"
+                />
+              </span>
+              <span className="text-gradient">HEROY</span>
             </Link>
 
-            <p
-              className="
-                mb-6
-                max-w-sm
-                text-sm
-                leading-relaxed
-                text-muted
-              "
-            >
+            <p className="text-sm text-muted leading-relaxed max-w-sm mb-6">
               A full-service digital transformation agency built by software
               engineers and developers from Ethiopia, creating interactive,
               scalable digital products that grow businesses worldwide.
             </p>
 
-            {/* Social Links */}
-            <div className="flex flex-wrap gap-3">
+            <div className="flex gap-3 flex-wrap">
               {socialLinks.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
-                  target={s.href.startsWith("http") ? "_blank" : undefined}
-                  rel={
-                    s.href.startsWith("http")
-                      ? "noopener noreferrer"
-                      : undefined
-                  }
                   aria-label={s.label}
-                  title={
-                    s.href === "#"
-                      ? "Placeholder — real profile link pending"
-                      : s.label
-                  }
-                  className="hy-social-icon"
+                  className="w-10 h-10 rounded-lg glass flex items-center justify-center text-muted hover:text-white hover:border-primary/50 transition-colors text-xs font-bold"
                 >
                   {s.short}
                 </a>
@@ -186,74 +96,16 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Services */}
           <div>
-            <h4
-              className="
-                mb-4
-                font-display
-                text-sm
-                font-semibold
-                tracking-wide
-                text-white
-              "
-            >
+            <h4 className="font-display font-semibold text-white mb-4 text-sm tracking-wide">
               Services
             </h4>
-
             <ul className="flex flex-col gap-2.5">
               {serviceLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="
-                      group
-                      relative
-                      inline-block
-                      text-sm
-                      text-muted
-                      transition-all
-                      duration-300
-                      hover:translate-x-1
-                      hover:text-accent
-                    "
-                  >
-                    <span>{link.label}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4
-              className="
-                mb-4
-                font-display
-                text-sm
-                font-semibold
-                tracking-wide
-                text-white
-              "
-            >
-              Company
-            </h4>
-
-            <ul className="flex flex-col gap-2.5">
-              {companyLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="
-                      inline-block
-                      text-sm
-                      text-muted
-                      transition-all
-                      duration-300
-                      hover:translate-x-1
-                      hover:text-accent
-                    "
+                    className="text-sm text-muted hover:text-accent transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -262,248 +114,143 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
-            <h4
-              className="
-                mb-4
-                font-display
-                text-sm
-                font-semibold
-                tracking-wide
-                text-white
-              "
-            >
+            <h4 className="font-display font-semibold text-white mb-4 text-sm tracking-wide">
+              Company
+            </h4>
+            <ul className="flex flex-col gap-2.5">
+              {companyLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted hover:text-accent transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-display font-semibold text-white mb-4 text-sm tracking-wide">
               Get in Touch
             </h4>
 
-            <ul className="mb-6 flex flex-col gap-3">
-              {/* Location */}
+            <ul className="flex flex-col gap-3 mb-6">
               <li className="flex items-start gap-3 text-sm text-muted">
                 <MapPin
                   size={15}
-                  className="
-                    mt-0.5
-                    shrink-0
-                    text-primary
-                    transition-transform
-                    duration-300
-                    hover:scale-110
-                  "
+                  className="text-primary mt-0.5 shrink-0"
                 />
-
-                <span>Injibara, Awi Zone, Amhara, Ethiopia</span>
+                Injibara, Awi Zone, Amhara, Ethiopia
               </li>
 
-              {/* Email */}
               <li className="flex items-start gap-3 text-sm text-muted">
                 <Mail
                   size={15}
-                  className="
-                    mt-0.5
-                    shrink-0
-                    text-primary
-                    transition-transform
-                    duration-300
-                    hover:scale-110
-                  "
+                  className="text-primary mt-0.5 shrink-0"
                 />
-
                 <a
-                  href="mailto:hello@heroy.dev"
-                  className="
-                    transition-colors
-                    duration-300
-                    hover:text-accent
-                  "
+                  href="mailto:Heroydigitalsolution@gmail.com"
+                  className="hover:text-accent transition-colors"
                 >
-                  hello@heroy.dev
+                  Heroydigitalsolution@gmail.com
                 </a>
               </li>
 
-              {/* WhatsApp */}
               <li className="flex items-start gap-3 text-sm text-muted">
                 <Phone
                   size={15}
-                  className="
-                    mt-0.5
-                    shrink-0
-                    text-primary
-                    transition-transform
-                    duration-300
-                    hover:scale-110
-                  "
+                  className="text-primary mt-0.5 shrink-0"
                 />
-
                 <a
-                  href="https://wa.me/251900000000"
+                  href="tel:+251923853252"
+                  className="hover:text-accent transition-colors"
+                >
+                  +251 92 385 3252
+                </a>
+              </li>
+
+              <li className="flex items-start gap-3 text-sm text-muted">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="text-primary mt-0.5 shrink-0"
+                >
+                  <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.475-1.635z" />
+                </svg>
+                <a
+                  href="https://t.me/heroy_digital_solution2026"
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Placeholder — confirm real WhatsApp business number"
-                  className="
-                    transition-colors
-                    duration-300
-                    hover:text-accent
-                  "
+                  className="hover:text-accent transition-colors"
                 >
-                  +251 900 000 000* (WhatsApp)
+                  @heroy_digital_solution2026
                 </a>
               </li>
             </ul>
 
-            {/* Newsletter */}
-            <h4
-              className="
-                mb-3
-                font-display
-                text-sm
-                font-semibold
-                tracking-wide
-                text-white
-              "
-            >
+            <h4 className="font-display font-semibold text-white mb-3 text-sm tracking-wide">
               Newsletter
             </h4>
 
             {subscribed ? (
-              <div
-                className="
-                  flex
-                  items-center
-                  gap-2
-                  py-2
-                  text-sm
-                  font-semibold
-                  text-accent
-                  animate-in
-                  fade-in
-                  duration-500
-                "
-              >
-                <span
-                  className="
-                    flex
-                    h-5
-                    w-5
-                    items-center
-                    justify-center
-                    rounded-full
-                    bg-accent/20
-                    text-xs
-                  "
-                >
+              <div className="flex items-center gap-2 text-sm text-accent font-semibold py-2">
+                <span className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-xs">
                   ✓
                 </span>
-
                 Thanks for subscribing!
               </div>
             ) : (
-              <div className="hy-holo-container">
-                <form
-                  onSubmit={handleSubscribe}
-                  className="hy-holo-inner flex gap-2 p-1.5"
-                >
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email"
-                    required
-                    aria-label="Your email"
-                    className="
-                      min-w-0
-                      flex-1
-                      rounded-full
-                      bg-transparent
-                      border-none
-                      px-4
-                      py-2.5
-                      text-sm
-                      text-white
-                      outline-none
-                      placeholder:text-muted/60
-                    "
-                  />
+              <form onSubmit={handleSubscribe} className="flex gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Your email"
+                  required
+                  className="flex-1 rounded-full bg-white/5 border border-border px-4 py-2.5 text-sm text-white placeholder:text-muted/60 outline-none focus:border-primary transition-colors"
+                />
 
-                  <button
-                    type="submit"
-                    disabled={subscribing}
-                    className="
-                      btn-primary
-                      !px-5
-                      !py-2.5
-                      !text-xs
-                      shrink-0
-                      transition-all
-                      duration-300
-                      hover:-translate-y-0.5
-                      hover:shadow-lg
-                      hover:shadow-primary/20
-                      active:translate-y-0
-                      disabled:cursor-not-allowed
-                      disabled:opacity-60
-                    "
-                  >
-                    {subscribing ? "..." : "Subscribe"}
-                  </button>
-                </form>
-              </div>
+                <button
+                  type="submit"
+                  disabled={subscribing}
+                  className="btn-primary !px-5 !py-2.5 !text-xs disabled:opacity-60"
+                >
+                  {subscribing ? "..." : "Subscribe"}
+                </button>
+              </form>
             )}
           </div>
         </div>
 
-        {/* Bottom Footer */}
-        <div
-          className="
-            mt-12
-            flex
-            flex-col
-            items-center
-            justify-between
-            gap-4
-            border-t
-            border-border
-            pt-6
-            text-xs
-            text-muted
-            sm:flex-row
-          "
-        >
+        <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
           <p>
-            &copy; {new Date().getFullYear()} HEROY Digital Solution. Built by
-            Ethiopian engineers.
+            &copy; {new Date().getFullYear()} HEROY. Built by Ethiopian
+            engineers.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-5">
+          <div className="flex gap-5">
             <Link
               href="/privacy-policy"
-              className="
-                transition-all
-                duration-300
-                hover:text-white
-              "
+              className="hover:text-white transition-colors"
             >
               Privacy Policy
             </Link>
 
             <Link
               href="/terms"
-              className="
-                transition-all
-                duration-300
-                hover:text-white
-              "
+              className="hover:text-white transition-colors"
             >
               Terms
             </Link>
 
             <Link
               href="/faq"
-              className="
-                transition-all
-                duration-300
-                hover:text-white
-              "
+              className="hover:text-white transition-colors"
             >
               FAQ
             </Link>
