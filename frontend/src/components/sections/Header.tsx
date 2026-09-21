@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Mail, Phone, Send } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -61,6 +61,60 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
+      <AnimatePresence initial={false}>
+        {!scrolled && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="hidden md:block overflow-hidden border-b border-white/5"
+          >
+            <div className="container-px mx-auto max-w-7xl flex items-center justify-between h-9 text-xs text-muted">
+              <div className="flex items-center gap-5">
+                
+                  href="mailto:Heroydigitalsolution@gmail.com"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors"
+                >
+                  <Mail size={12} className="text-primary" />
+                  Heroydigitalsolution@gmail.com
+                </a>
+                
+                  href="tel:+251923853252"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors"
+                >
+                  <Phone size={12} className="text-primary" />
+                  +251 92 385 3252
+                </a>
+                
+                  href="https://t.me/heroy_digital_solution2026"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors"
+                >
+                  <Send size={12} className="text-primary" />
+                  Telegram
+                </a>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <span className="flex items-center gap-1.5 text-accent">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  Open to new projects
+                </span>
+                
+                  href="https://facebook.com/heroydigitalsolution"
+                  aria-label="Facebook"
+                  className="hover:text-white transition-colors"
+                >
+                  Facebook
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="container-px mx-auto max-w-7xl flex items-center justify-between h-18 py-4">
         <Link
           href="/"
