@@ -48,6 +48,7 @@ export default function Header() {
     } else {
       document.body.style.overflow = "";
     }
+
     return () => {
       document.body.style.overflow = "";
     };
@@ -72,21 +73,23 @@ export default function Header() {
           >
             <div className="container-px mx-auto max-w-7xl flex items-center justify-between h-9 text-xs text-muted">
               <div className="flex items-center gap-5">
-                
+                <a
                   href="mailto:Heroydigitalsolution@gmail.com"
                   className="flex items-center gap-1.5 hover:text-white transition-colors"
                 >
                   <Mail size={12} className="text-primary" />
                   Heroydigitalsolution@gmail.com
                 </a>
-                
+
+                <a
                   href="tel:+251923853252"
                   className="flex items-center gap-1.5 hover:text-white transition-colors"
                 >
                   <Phone size={12} className="text-primary" />
                   +251 92 385 3252
                 </a>
-                
+
+                <a
                   href="https://t.me/heroy_digital_solution2026"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -102,7 +105,8 @@ export default function Header() {
                   <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                   Open to new projects
                 </span>
-                
+
+                <a
                   href="https://facebook.com/heroydigitalsolution"
                   aria-label="Facebook"
                   className="hover:text-white transition-colors"
@@ -142,7 +146,9 @@ export default function Header() {
             <div
               key={link.href}
               className="relative"
-              onMouseEnter={() => link.children && setActiveDropdown(link.label)}
+              onMouseEnter={() =>
+                link.children && setActiveDropdown(link.label)
+              }
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <Link
@@ -152,7 +158,9 @@ export default function Header() {
                 {link.label}
                 {link.children && (
                   <motion.div
-                    animate={{ rotate: activeDropdown === link.label ? 180 : 0 }}
+                    animate={{
+                      rotate: activeDropdown === link.label ? 180 : 0,
+                    }}
                     transition={{ duration: 0.2 }}
                   >
                     <ChevronDown size={13} />
@@ -249,6 +257,7 @@ export default function Header() {
                   >
                     {link.label}
                   </Link>
+
                   {link.children && (
                     <div className="pl-4 flex flex-col gap-1 mt-1 mb-2">
                       {link.children.map((child) => (
@@ -266,6 +275,7 @@ export default function Header() {
                   )}
                 </motion.div>
               ))}
+
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
