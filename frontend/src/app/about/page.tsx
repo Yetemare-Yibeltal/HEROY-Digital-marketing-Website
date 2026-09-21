@@ -24,6 +24,16 @@ import {
   Handshake,
   Gauge,
   MessageSquareHeart,
+  BarChart3,
+  ShieldCheck,
+  Smartphone,
+  CloudCog,
+  Database,
+  Megaphone,
+  Layers3,
+  CheckCircle2,
+  MapPin,
+  CalendarDays,
   Plus,
   Minus,
 } from "lucide-react";
@@ -182,7 +192,69 @@ const faqs = [
   },
 ];
 
-const typewriterWords = ["Engineers", "Creators", "Innovators", "Builders", "Dreamers"];
+const typewriterWords = ["Engineers", "Creators", "Innovators", "Builders", "Digital Partners"];
+
+const capabilities = [
+  {
+    icon: Code2,
+    title: "Web & Full-Stack Engineering",
+    text: "Responsive websites and web applications designed around real business workflows, with maintainable frontend, backend, API, and database architecture.",
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile Product Development",
+    text: "Mobile experiences focused on practical usability, clear navigation, reliable data flows, and a consistent product experience across supported devices.",
+  },
+  {
+    icon: Megaphone,
+    title: "Digital Marketing & SEO",
+    text: "Search-friendly content, conversion-focused landing pages, campaign support, and measurable digital growth activities aligned with business objectives.",
+  },
+  {
+    icon: Layers3,
+    title: "UI/UX & Brand Experience",
+    text: "Structured user journeys, visual systems, interface design, and polished interaction details that make digital products easier to understand and use.",
+  },
+  {
+    icon: CloudCog,
+    title: "Cloud & Deployment",
+    text: "Production deployment support, hosting configuration, environment management, performance considerations, and practical launch preparation.",
+  },
+  {
+    icon: Database,
+    title: "Data & API Systems",
+    text: "Well-organized data models and API services that support secure, scalable communication between interfaces, business logic, and persistent storage.",
+  },
+];
+
+const industries = [
+  "Startups & New Ventures",
+  "Professional Services",
+  "Education & Training",
+  "Retail & E-commerce",
+  "Technology & SaaS",
+  "Creative Businesses",
+  "Nonprofits & Organizations",
+  "Growing Local Businesses",
+];
+
+const deliveryPrinciples = [
+  {
+    icon: ShieldCheck,
+    title: "Security-minded delivery",
+    text: "We consider authentication, authorization, validation, secure configuration, and responsible handling of application data throughout development.",
+  },
+  {
+    icon: BarChart3,
+    title: "Business-focused decisions",
+    text: "Technology is selected because it supports a business or user outcome—not simply because a tool is new or popular.",
+  },
+  {
+    icon: CheckCircle2,
+    title: "Quality before handoff",
+    text: "We review responsive behavior, user flows, integration points, and production readiness before considering a project ready to launch.",
+  },
+];
 
 function AnimatedCounter({ value, label, icon: Icon, color }: {
   value: string;
@@ -247,11 +319,12 @@ export default function AboutPageClient() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-muted text-lg leading-relaxed mb-4"
           >
-            HEROY is a full-service digital transformation agency built by a
-            team of Ethiopian software engineers, designers, and creatives.
-            We combine strategic marketing, premium design, and robust
-            full-stack engineering to help organizations grow through
-            technology — from Ethiopia to the world.
+            HEROY is a digital solutions studio bringing strategy, design,
+            engineering, content, and marketing together under one team.
+            We create modern digital experiences—from high-performance
+            websites and web applications to mobile products and growth
+            systems—designed to help organizations communicate clearly,
+            serve customers better, and build a stronger digital presence.
           </motion.p>
 
           <motion.p
@@ -260,14 +333,12 @@ export default function AboutPageClient() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="text-muted text-base leading-relaxed"
           >
-            Founded in 2025 and based in Injibara, Ethiopia, HEROY started
-            with a simple observation: too many businesses either overpay
-            large agencies for slow, templated work, or underpay freelancers
-            who disappear halfway through a project. We built HEROY to be
-            the alternative — a small, accountable team of specialists who
-            treat every client's product like it's our own, backed by the
-            same modern engineering practices used by top software teams
-            worldwide.
+            Founded in 2025 and based in Injibara, Ethiopia, HEROY was
+            created around a simple principle: digital work should combine
+            strong ideas with dependable execution. We aim to give clients
+            direct access to the people doing the work, clear communication
+            throughout delivery, and technology choices that make sense for
+            the product, audience, budget, and long-term goals.
           </motion.p>
         </div>
       </section>
@@ -378,6 +449,143 @@ export default function AboutPageClient() {
                 ))}
               </div>
             </motion.div>
+          </div>
+
+          <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              className="text-center max-w-3xl mx-auto mb-10"
+            >
+              <span className="badge mb-4">
+                <Layers3 size={14} /> What We Build
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
+                Digital capabilities designed around{" "}
+                <span className="text-gradient">real business needs</span>
+              </h2>
+              <p className="text-sm text-muted leading-relaxed">
+                From a focused company website to a connected full-stack platform,
+                we combine strategy, design, engineering, and ongoing improvement
+                into one practical delivery process.
+              </p>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {capabilities.map((capability, i) => {
+                const Icon = capability.icon;
+                return (
+                  <motion.div
+                    key={capability.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: i * 0.07 }}
+                    whileHover={{ y: -6 }}
+                    className="glass rounded-2xl p-6 group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-grad-mix flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-105">
+                      <Icon size={18} className="text-background" />
+                    </div>
+                    <h3 className="font-display font-semibold text-white text-base mb-2">
+                      {capability.title}
+                    </h3>
+                    <p className="text-xs text-muted leading-relaxed">
+                      {capability.text}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              className="text-center max-w-3xl mx-auto mb-10"
+            >
+              <span className="badge mb-4">
+                <MapPin size={14} /> Who We Work With
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
+                Technology for{" "}
+                <span className="text-gradient-warm">different stages of growth</span>
+              </h2>
+              <p className="text-sm text-muted leading-relaxed">
+                Our approach can adapt to organizations validating an idea,
+                modernizing an existing presence, launching a digital product,
+                or building systems that support the next stage of growth.
+              </p>
+            </motion.div>
+
+            <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
+              {industries.map((industry, i) => (
+                <motion.span
+                  key={industry}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="px-4 py-2 rounded-full bg-white/5 border border-border text-sm text-muted hover:text-white hover:border-primary/40 transition-colors"
+                >
+                  {industry}
+                </motion.span>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              className="text-center max-w-3xl mx-auto mb-10"
+            >
+              <span className="badge mb-4">
+                <CalendarDays size={14} /> Delivery Principles
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
+                Built for{" "}
+                <span className="text-gradient">long-term usefulness</span>
+              </h2>
+              <p className="text-sm text-muted leading-relaxed">
+                A professional digital product should remain understandable,
+                maintainable, and useful after launch. These principles shape
+                how we plan, build, review, and hand over our work.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {deliveryPrinciples.map((principle, i) => {
+                const Icon = principle.icon;
+                return (
+                  <motion.div
+                    key={principle.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: i * 0.08 }}
+                    className="glass-strong rounded-2xl p-7"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-white/5 border border-border flex items-center justify-center mb-4">
+                      <Icon size={18} className="text-accent" />
+                    </div>
+                    <h3 className="font-display font-semibold text-white text-base mb-2">
+                      {principle.title}
+                    </h3>
+                    <p className="text-xs text-muted leading-relaxed">
+                      {principle.text}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
 
           <div className="mb-16">
