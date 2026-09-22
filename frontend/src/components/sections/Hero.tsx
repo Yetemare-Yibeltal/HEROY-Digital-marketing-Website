@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import TypewriterText from "@/components/ui/TypewriterText";
@@ -14,10 +15,10 @@ const typewriterWords = [
 ];
 
 const stats = [
-  { value: "50+", label: "Projects" },
-  { value: "500+", label: "Clients" },
-  { value: "4+", label: "Years Active" },
-  { value: "12+", label: "Core Services" },
+  { value: "20+", label: "Projects" },
+  { value: "3", label: "Specialists" },
+  { value: "2025", label: "Founded" },
+  { value: "100%", label: "Custom Built" },
 ];
 
 const techTags = [
@@ -136,7 +137,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-base leading-relaxed mb-8 max-w-lg"
+            className="text-base leading-relaxed mb-4 max-w-lg"
             style={{ color: "#9292b8" }}
           >
             We help startups, enterprises, NGOs, and global brands grow
@@ -147,6 +148,38 @@ export default function Hero() {
             </span>{" "}
             from Ethiopia to the world.
           </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="text-sm leading-relaxed mb-8 max-w-lg"
+            style={{ color: "#75758f" }}
+          >
+            From landing pages to full-stack platforms, mobile apps to
+            AI-powered automation — every project is scoped, designed, and
+            engineered by the same small team from first call to launch day,
+            so nothing gets lost in translation along the way.
+          </motion.p>
+
+          {/* Differentiators */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.38 }}
+            className="flex flex-wrap gap-x-6 gap-y-2 mb-6"
+          >
+            {[
+              "Direct access to the people building your product",
+              "Transparent, fixed-scope pricing",
+              "Modern, production-grade tech stack",
+            ].map((line) => (
+              <div key={line} className="flex items-center gap-2 text-xs" style={{ color: "#9292b8" }}>
+                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#4ade80" }} />
+                {line}
+              </div>
+            ))}
+          </motion.div>
 
           {/* Tech tags */}
           <motion.div
@@ -219,6 +252,24 @@ export default function Hero() {
 
         {/* Right column — stats */}
         <div className="hidden lg:flex flex-col gap-6 items-end">
+          <motion.div
+            initial={{ opacity: 0, x: 40, scale: 0.96 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="relative w-full max-w-sm rounded-2xl overflow-hidden"
+            style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+          >
+            <Image
+              src="/images/brand/hero-team-banner.png"
+              alt="The HEROY Digital Solutions team"
+              width={1280}
+              height={511}
+              sizes="384px"
+              className="w-full h-auto"
+              priority
+            />
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
