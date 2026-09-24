@@ -2,7 +2,16 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, FileText, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  ChevronRight,
+  FileText,
+  LockKeyhole,
+  Scale,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 
 const sections = [
   {
@@ -189,100 +198,321 @@ const sections = [
 
 export default function TermsPageClient() {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden">
       <div className="glow-orb w-80 h-80 bg-primary/10 -top-20 -right-20" />
-      <div className="glow-orb w-64 h-64 bg-accent/8 bottom-0 -left-20" style={{ animationDelay: "4s" }} />
+      <div
+        className="glow-orb w-72 h-72 bg-accent/8 bottom-20 -left-24"
+        style={{ animationDelay: "4s" }}
+      />
 
-      <section className="section pt-36 pb-10 relative">
-        <div className="container-px mx-auto max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="badge mb-4">
-              <FileText size={14} /> Legal
-            </span>
-          </motion.div>
+      {/* Hero */}
+      <section className="section pt-32 sm:pt-36 pb-12 relative">
+        <div className="container-px mx-auto max-w-[1400px]">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_360px] gap-10 lg:gap-16 items-start">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="badge mb-5">
+                <FileText size={14} />
+                Legal
+              </span>
 
+              <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.02] tracking-tight text-white max-w-4xl">
+                Terms &amp;{" "}
+                <span className="text-gradient">Conditions</span>
+              </h1>
+
+              <p className="text-muted text-base sm:text-lg leading-relaxed max-w-3xl mt-6">
+                These Terms and Conditions govern your use of the HEROY
+                website and your engagement of our services. Please read
+                them carefully before using our website or commissioning
+                any work from our team.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 mt-7 text-sm text-muted">
+                <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2">
+                  <Sparkles size={14} className="text-accent" />
+                  <span>Effective date: July 1, 2026</span>
+                </div>
+
+                <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2">
+                  <FileText size={14} className="text-accent" />
+                  <span>Last updated: July 1, 2026</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Document overview */}
+            <motion.aside
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="glass-strong rounded-3xl p-6 lg:sticky lg:top-28"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <ShieldCheck size={20} className="text-primary" />
+                </div>
+
+                <div>
+                  <p className="text-white font-semibold">
+                    Terms overview
+                  </p>
+                  <p className="text-xs text-muted">
+                    HEROY Digital Solutions
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  {
+                    icon: FileText,
+                    label: "12",
+                    text: "Legal sections",
+                  },
+                  {
+                    icon: Scale,
+                    label: "Written",
+                    text: "Project agreements",
+                  },
+                  {
+                    icon: LockKeyhole,
+                    label: "Confidential",
+                    text: "Client information",
+                  },
+                ].map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <div
+                      key={item.text}
+                      className="flex items-center gap-3 rounded-2xl border border-border bg-background/20 p-3"
+                    >
+                      <Icon size={16} className="text-accent shrink-0" />
+
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-white">
+                          {item.label}
+                        </p>
+                        <p className="text-xs text-muted">{item.text}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-6 pt-5 border-t border-border">
+                <p className="text-xs text-muted leading-relaxed">
+                  Please review these terms alongside any project-specific
+                  proposal or service agreement before work begins.
+                </p>
+              </div>
+            </motion.aside>
+          </div>
+        </div>
+      </section>
+
+      {/* Section navigation */}
+      <section className="relative pb-8">
+        <div className="container-px mx-auto max-w-[1400px]">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="glass rounded-2xl p-4 sm:p-5"
           >
-            <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-4 text-white">
-              Terms &amp;{" "}
-              <span className="text-gradient">Conditions</span>
-            </h1>
-            <div className="flex items-center gap-3 text-sm text-muted mb-6">
-              <Sparkles size={14} className="text-accent" />
-              <span>Effective date: July 1, 2026</span>
-              <span className="text-border">·</span>
-              <span>Last updated: July 1, 2026</span>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                <FileText size={15} className="text-primary" />
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold text-white">
+                  On this page
+                </p>
+                <p className="text-xs text-muted">
+                  Navigate directly to a section
+                </p>
+              </div>
             </div>
-            <p className="text-muted leading-relaxed">
-              These Terms and Conditions govern your use of the HEROY
-              website and your engagement of our services. Please read
-              them carefully before using our website or commissioning
-              any work from our team.
-            </p>
+
+            <div className="flex flex-wrap gap-2">
+              {sections.map((section) => {
+                const sectionId = `terms-section-${section.title
+                  .split(".")[0]
+                  .trim()}`;
+
+                return (
+                  <a
+                    key={section.title}
+                    href={`#${sectionId}`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs text-muted hover:text-white hover:border-primary/40 hover:bg-primary/5 transition-colors"
+                  >
+                    {section.title}
+                    <ChevronRight size={12} />
+                  </a>
+                );
+              })}
+            </div>
           </motion.div>
         </div>
       </section>
 
-      <section className="section pt-0 relative">
-        <div className="container-px mx-auto max-w-3xl">
-          <div className="flex flex-col gap-8 mb-16">
-            {sections.map((section, i) => (
-              <motion.div
-                key={section.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: (i % 4) * 0.05 }}
-                className="glass rounded-2xl p-6 sm:p-8"
-              >
-                <h2 className="font-display font-semibold text-lg text-white mb-5 pb-3 border-b border-border">
-                  {section.title}
-                </h2>
-                <div className="flex flex-col gap-5">
-                  {section.content.map((item) => (
-                    <div key={item.subtitle}>
-                      <h3 className="text-sm font-semibold text-accent mb-1.5">
-                        {item.subtitle}
-                      </h3>
-                      <p className="text-sm text-muted leading-relaxed">
-                        {item.text}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+      {/* Terms content */}
+      <section className="section pt-4 relative">
+        <div className="container-px mx-auto max-w-[1400px]">
+          <div className="grid lg:grid-cols-[220px_minmax(0,1fr)] gap-8 lg:gap-12">
+            {/* Desktop document marker */}
+            <div className="hidden lg:block">
+              <div className="sticky top-28 glass rounded-2xl p-5">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted mb-4">
+                  Legal document
+                </p>
 
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-sm text-white">
+                    <CheckCircle2 size={15} className="text-accent" />
+                    <span>Current terms</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-sm text-white">
+                    <CheckCircle2 size={15} className="text-accent" />
+                    <span>Project engagements</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-sm text-white">
+                    <CheckCircle2 size={15} className="text-accent" />
+                    <span>Client responsibilities</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-sm text-white">
+                    <CheckCircle2 size={15} className="text-accent" />
+                    <span>Service conditions</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-7">
+              {sections.map((section, i) => {
+                const sectionId = `terms-section-${section.title
+                  .split(".")[0]
+                  .trim()}`;
+
+                return (
+                  <motion.article
+                    key={section.title}
+                    id={sectionId}
+                    initial={{ opacity: 0, y: 28 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{
+                      once: true,
+                      margin: "-60px",
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      delay: (i % 3) * 0.04,
+                    }}
+                    className="glass rounded-3xl overflow-hidden scroll-mt-28"
+                  >
+                    <div className="px-6 sm:px-8 lg:px-10 py-6 sm:py-7 border-b border-border bg-white/[0.015]">
+                      <div className="flex items-start gap-4">
+                        <div className="hidden sm:flex shrink-0 w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 items-center justify-center">
+                          <span className="text-sm font-bold text-primary">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                        </div>
+
+                        <div className="min-w-0">
+                          <p className="text-[11px] uppercase tracking-[0.18em] text-accent mb-1.5">
+                            Section {i + 1}
+                          </p>
+
+                          <h2 className="font-display font-semibold text-xl sm:text-2xl text-white leading-tight">
+                            {section.title}
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="px-6 sm:px-8 lg:px-10 py-7 sm:py-9">
+                      <div className="flex flex-col gap-8">
+                        {section.content.map((item, itemIndex) => (
+                          <div
+                            key={item.subtitle}
+                            className="relative pl-5 sm:pl-6"
+                          >
+                            <div className="absolute left-0 top-1.5 w-1 h-1 rounded-full bg-accent" />
+
+                            <div className="flex items-start gap-3 mb-2">
+                              <span className="text-[11px] font-medium text-muted tracking-wide pt-0.5">
+                                {String(itemIndex + 1).padStart(2, "0")}
+                              </span>
+
+                              <h3 className="text-sm sm:text-base font-semibold text-accent">
+                                {item.subtitle}
+                              </h3>
+                            </div>
+
+                            <p className="text-sm sm:text-[15px] text-muted leading-7 pl-8">
+                              {item.text}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="section pt-4 pb-20 relative">
+        <div className="container-px mx-auto max-w-[1000px]">
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="glass-strong rounded-3xl p-8 text-center relative overflow-hidden"
+            className="glass-strong rounded-[2rem] p-7 sm:p-10 lg:p-12 text-center relative overflow-hidden"
           >
-            <div className="glow-orb w-48 h-48 bg-primary/20 -top-10 -left-10" />
+            <div className="glow-orb w-56 h-56 bg-primary/20 -top-20 -left-20" />
+            <div
+              className="glow-orb w-48 h-48 bg-accent/10 -bottom-24 -right-20"
+              style={{ animationDelay: "3s" }}
+            />
+
             <div className="relative">
-              <h2 className="font-display font-bold text-xl sm:text-2xl text-white mb-3">
+              <div className="mx-auto mb-5 w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <FileText size={21} className="text-primary" />
+              </div>
+
+              <p className="text-xs uppercase tracking-[0.2em] text-accent mb-3">
+                Need clarification?
+              </p>
+
+              <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-4">
                 Questions about our{" "}
                 <span className="text-gradient">terms?</span>
               </h2>
-              <p className="text-muted text-sm max-w-md mx-auto mb-6">
+
+              <p className="text-muted text-sm sm:text-base leading-relaxed max-w-xl mx-auto mb-7">
                 We are happy to clarify anything before you engage our
                 services. Reach out and we will respond personally.
               </p>
+
               <div className="flex flex-wrap justify-center gap-3">
                 <Link href="/contact" className="btn-primary">
                   Contact Us
                   <ArrowRight size={16} />
                 </Link>
+
                 <Link href="/privacy-policy" className="btn-outline">
                   Privacy Policy
                   <ArrowRight size={16} />
