@@ -16,25 +16,66 @@ export async function generateMetadata({
   const post = postsData[slug];
 
   if (!post) {
-    return { title: "Post Not Found" };
+    return {
+      title: "Post Not Found | HEROY Digital Solutions",
+      description: "The requested HEROY Digital Solutions article could not be found.",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
   }
 
+  const canonicalUrl = `https://heroy.dev/blog/${slug}`;
+
   return {
-    title: post.title,
+    title: `${post.title} | HEROY Digital Solutions`,
     description: post.excerpt,
+    keywords: post.tags,
+    authors: [
+      {
+        name: post.author,
+        url: "https://heroy.dev",
+      },
+    ],
+    creator: "HEROY Digital Solutions",
+    publisher: "HEROY Digital Solutions",
+    category: post.category,
+
     openGraph: {
-      title: post.title,
+      title: `${post.title} | HEROY Digital Solutions`,
       description: post.excerpt,
-      url: `https://heroy.dev/blog/${slug}`,
+      url: canonicalUrl,
+      siteName: "HEROY Digital Solutions",
       type: "article",
+      locale: "en_US",
+      publishedTime: post.date,
+      authors: [post.author],
+      section: post.category,
+      tags: post.tags,
     },
+
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title: `${post.title} | HEROY Digital Solutions`,
       description: post.excerpt,
+      creator: "@heroy_digital_solution2026",
     },
+
     alternates: {
-      canonical: `https://heroy.dev/blog/${slug}`,
+      canonical: canonicalUrl,
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
     },
   };
 }
