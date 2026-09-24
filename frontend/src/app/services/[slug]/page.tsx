@@ -148,15 +148,16 @@ const serviceDetails: Record<string, ServiceDetail> = {
 };
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const service = services.find((s) => s.slug === params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const service = services.find((s) => s.slug === slug);
   if (!service) return {};
   return {
     title: service.title,
@@ -164,9 +165,10 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-export default function ServiceDetailPage({ params }: PageProps) {
-  const service = services.find((s) => s.slug === params.slug);
-  const detail = serviceDetails[params.slug];
+export default async function ServiceDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const service = services.find((s) => s.slug === slug);
+  const detail = serviceDetails[slug];
 
   if (!service || !detail) notFound();
 
@@ -202,12 +204,11 @@ export default function ServiceDetailPage({ params }: PageProps) {
       <section className="section pt-0">
         <div className="container-px mx-auto max-w-5xl">
           <div className="grid sm:grid-cols-2 gap-6 mb-10">
-            <div className="hy-holo-container">
-              <div className="hy-holo-inner p-6">
+            <div className="glass rounded-2xl p-6">
               <h2 className="font-display font-semibold text-lg text-white mb-4">Benefits</h2>
               <ul className="flex flex-col gap-3">
                 {detail.benefits.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-sm" style={{ color: "#9292b8" }}>
+                  <li key={b} className="flex items-start gap-3 text-sm text-muted">
                     <span className="w-5 h-5 rounded-full bg-grad-primary flex items-center justify-center shrink-0 mt-0.5">
                       <Check size={11} className="text-background" />
                     </span>
@@ -215,15 +216,13 @@ export default function ServiceDetailPage({ params }: PageProps) {
                   </li>
                 ))}
               </ul>
-              </div>
             </div>
 
-            <div className="hy-holo-container">
-              <div className="hy-holo-inner p-6">
+            <div className="glass rounded-2xl p-6">
               <h2 className="font-display font-semibold text-lg text-white mb-4">Features</h2>
               <ul className="flex flex-col gap-3">
                 {detail.features.map((f) => (
-                  <li key={f} className="flex items-start gap-3 text-sm" style={{ color: "#9292b8" }}>
+                  <li key={f} className="flex items-start gap-3 text-sm text-muted">
                     <span className="w-5 h-5 rounded-full bg-grad-mix flex items-center justify-center shrink-0 mt-0.5">
                       <Check size={11} className="text-background" />
                     </span>
@@ -231,7 +230,6 @@ export default function ServiceDetailPage({ params }: PageProps) {
                   </li>
                 ))}
               </ul>
-              </div>
             </div>
           </div>
 
@@ -239,25 +237,22 @@ export default function ServiceDetailPage({ params }: PageProps) {
             <h2 className="font-display font-semibold text-lg text-white mb-5">Our Process</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {detail.process.map((step, i) => (
-                <div key={step} className="hy-holo-container">
-                  <div className="hy-holo-inner p-5">
+                <div key={step} className="glass rounded-xl p-5">
                   <span className="font-display font-bold text-3xl text-white/10 block mb-2 leading-none">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <p className="text-sm text-white font-medium">{step}</p>
-                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="hy-holo-container mb-14">
-            <div className="hy-holo-inner p-10 text-center">
+          <div className="glass-strong rounded-3xl p-10 text-center mb-14">
             <h2 className="font-display font-bold text-2xl sm:text-3xl mb-4 text-white">
               Ready to get started with{" "}
-              <span className="hy-grad-text-flow">{service.title}</span>?
+              <span className="text-gradient">{service.title}</span>?
             </h2>
-            <p className="max-w-lg mx-auto mb-6" style={{ color: "#9292b8" }}>
+            <p className="text-muted max-w-lg mx-auto mb-6">
               Let&apos;s discuss your goals and put together a tailored plan
               for your project.
             </p>
@@ -265,7 +260,6 @@ export default function ServiceDetailPage({ params }: PageProps) {
               Start Your Project
               <ArrowRight size={16} />
             </Link>
-            </div>
           </div>
 
           <h2 className="font-display font-semibold text-lg text-white mb-5">Related Services</h2>
@@ -273,22 +267,21 @@ export default function ServiceDetailPage({ params }: PageProps) {
             {related.map((r) => {
               const RIcon = r.icon;
               return (
-                <div key={r.slug} className="hy-holo-container">
-                  <Link
-                    href={`/services/${r.slug}`}
-                    className="hy-holo-inner block p-6"
+                <Link
+                  key={r.slug}
+                  href={`/services/${r.slug}`}
+                  className="glass rounded-2xl p-6 hover:border-primary/40 transition-colors block"
+                >
+                  <div
+                    className={`w-10 h-10 rounded-lg bg-gradient-to-br ${r.gradient} flex items-center justify-center mb-4`}
                   >
-                    <div
-                      className={`w-10 h-10 rounded-lg bg-gradient-to-br ${r.gradient} flex items-center justify-center mb-4`}
-                    >
-                      <RIcon size={18} className="text-white" />
-                    </div>
-                    <h3 className="font-display font-semibold text-base text-white mb-1">
-                      {r.title}
-                    </h3>
-                    <p className="text-xs" style={{ color: "#9292b8" }}>{r.shortDescription}</p>
-                  </Link>
-                </div>
+                    <RIcon size={18} className="text-white" />
+                  </div>
+                  <h3 className="font-display font-semibold text-base text-white mb-1">
+                    {r.title}
+                  </h3>
+                  <p className="text-xs text-muted">{r.shortDescription}</p>
+                </Link>
               );
             })}
           </div>
