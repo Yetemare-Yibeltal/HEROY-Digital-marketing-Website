@@ -612,3 +612,8 @@ body {
     box-shadow: 0 6px 16px rgba(124,92,255,0.2);
   }
 }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
