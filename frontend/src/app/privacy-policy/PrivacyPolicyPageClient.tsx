@@ -1,9 +1,4 @@
-"use client";
-
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight, Shield, Sparkles } from "lucide-react";
-
+ 
 const sections = [
   {
     title: "1. Information We Collect",
