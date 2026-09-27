@@ -4,7 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Sparkles, Bot, AlertCircle } from "lucide-react";
 
-
+interface Message {
+  id: number;
+  role: "user" | "assistant";
+  content: string;
+}
 
 const quickReplies = [
   "What services do you offer?",
