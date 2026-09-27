@@ -4,11 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Sparkles, Bot, AlertCircle } from "lucide-react";
 
-interface Message {
-  id: number;
-  role: "user" | "assistant";
-  content: string;
-}
+
 
 const quickReplies = [
   "What services do you offer?",
@@ -179,6 +175,25 @@ export default function AIChatWidget() {
               ))}
 
               {isTyping && (
+                <div className="flex justify-start items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-grad-primary flex items-center justify-center shrink-0">
+                    <Bot size={12} className="text-background" />
+                  </div>
+                  <div className="bg-white/5 border border-border rounded-2xl rounded-bl-sm px-4 py-3 flex gap-1">
+                    {[0, 1, 2].map((i) => (
+                      <motion.span
+                        key={i}
+                        className="w-1.5 h-1.5 rounded-full bg-muted"
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity,
+                          delay: i * 0.2,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
               )}
 
               {error && (
