@@ -53,5 +53,5 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  return <PrivacyPolicyPageClient />;
+  return 
 }
