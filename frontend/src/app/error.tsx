@@ -2,8 +2,6 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { AlertTriangle, RotateCcw, Home, MessageCircle } from "lucide-react";
 
 export default function Error({
   error,
