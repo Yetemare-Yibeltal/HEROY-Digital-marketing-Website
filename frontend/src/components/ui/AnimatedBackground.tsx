@@ -101,12 +101,7 @@ export default function AnimatedBackground() {
 
     animate();
 
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("resize", resize);
-      bodyObserver.disconnect();
-    };
-  }, []);
+ 
 
   return (
     <canvas
