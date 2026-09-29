@@ -26,7 +26,14 @@ export default function CTABand() {
             style={{ animationDelay: "5s" }}
           />
 
-          
+          <div className="relative">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="badge mb-5 inline-flex items-center gap-2"
+            >
               <motion.span
                 animate={{ rotate: 360 }}
                 transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
