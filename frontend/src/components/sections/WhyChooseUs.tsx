@@ -31,11 +31,11 @@ const reasons = [
   },
   {
     icon: ShieldCheck,
-    title: "Security-First Development",
-    description: "Best-practice security built into every project from the architecture stage, not bolted on after.",
+    title: "Enterprise Security",
+    description: "Security-first development practices protecting your systems and user data.",
     color: "from-green-500 to-emerald-600",
     glow: "rgba(34,197,94,0.25)",
-    stat: "Security-First",
+    stat: "100% Secure",
   },
   {
     icon: Zap,
@@ -48,10 +48,10 @@ const reasons = [
   {
     icon: HeadphonesIcon,
     title: "Dedicated Support",
-    description: "Ongoing maintenance and technical support with fast, direct response times.",
+    description: "Ongoing maintenance and technical support whenever you need us.",
     color: "from-pink-500 to-rose-600",
     glow: "rgba(236,72,153,0.25)",
-    stat: "24h Response Time",
+    stat: "24/7 Available",
   },
   {
     icon: MessageSquare,
@@ -63,11 +63,11 @@ const reasons = [
   },
   {
     icon: TrendingUp,
-    title: "Proven Approach",
-    description: "Data-backed strategies and measurable outcomes we track and report on honestly.",
+    title: "Proven Results",
+    description: "Data-backed strategies and measurable outcomes that demonstrate real impact.",
     color: "from-teal-500 to-cyan-600",
     glow: "rgba(20,184,166,0.25)",
-    stat: "Data-Driven",
+    stat: "+300% Avg Growth",
   },
   {
     icon: Layers3,
@@ -99,7 +99,7 @@ export default function WhyChooseUs() {
             <span className="text-gradient-warm">built to deliver</span>
           </h2>
           <p className="text-muted">
-            What you can expect from working with our team on every project.
+            Every reason a client stays with us after the first project.
           </p>
         </motion.div>
 
@@ -113,44 +113,33 @@ export default function WhyChooseUs() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="glass rounded-2xl p-6 text-center cursor-default relative overflow-hidden group"
-                style={{
-                  transition: "box-shadow 0.3s ease",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.boxShadow =
-                    `0 20px 60px ${reason.glow}`;
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.boxShadow =
-                    `0 0 0 rgba(0,0,0,0)`;
-                }}
+                className="hy-holo-container h-full"
               >
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{
-                    background: `radial-gradient(circle at center, ${reason.glow}, transparent 70%)`,
-                  }}
-                />
+                <div className="hy-holo-inner h-full">
+                  <div className="hy-card-3d text-center items-center">
+                    <span className="hy-corner-pip" />
 
-                <div
-                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${reason.color} flex items-center justify-center mx-auto mb-4 relative`}
-                >
-                  <Icon size={22} className="text-white" />
+                    <div className="hy-depth-1">
+                      <div
+                        className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${reason.color} flex items-center justify-center mx-auto mb-4`}
+                      >
+                        <Icon size={22} className="text-white" />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-accent mb-2 block">
+                        {reason.stat}
+                      </span>
+                    </div>
+
+                    <div className="hy-depth-2 flex-1">
+                      <h3 className="hy-grad-text-flow hy-title-on-hover font-display font-semibold text-base mb-2">
+                        {reason.title}
+                      </h3>
+                      <p className="text-xs leading-relaxed" style={{ color: "#9292b8" }}>
+                        {reason.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-
-                <span className="text-[10px] font-bold uppercase tracking-widest text-accent mb-2 block relative">
-                  {reason.stat}
-                </span>
-
-                <h3 className="font-display font-semibold text-base text-white mb-2 relative">
-                  {reason.title}
-                </h3>
-
-                <p className="text-xs text-muted leading-relaxed relative">
-                  {reason.description}
-                </p>
               </motion.div>
             );
           })}
