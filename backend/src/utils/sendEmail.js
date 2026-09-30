@@ -176,4 +176,43 @@ const sendConsultationNotification = async (data) => {
   await transporter.sendMail(mailOptions);
 };
 
-module.exports = { sendContactNotification, sendConsultationNotification };
+const sendNewsletterConfirmation = async (email) => {
+  const transporter = createTransporter();
+
+  const mailOptions = {
+    from: process.env.EMAIL_FROM,
+    to: email,
+    subject: "You're subscribed to HEROY updates",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 8px;">
+        <div style="background: linear-gradient(135deg, #7c5cff, #22d3ee); padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+          <h1 style="color: white; margin: 0; font-size: 24px;">HEROY Digital Solutions</h1>
+          <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0 0;">You're on the list</p>
+        </div>
+        <div style="background: white; padding: 30px; border-radius: 0 0 8px 8px;">
+          <p style="color: #555; line-height: 1.7;">
+            Thanks for subscribing! We'll send occasional updates on new
+            services, projects, and things we've learned building digital
+            products — nothing more frequent than that.
+          </p>
+          <p style="color: #555; line-height: 1.7;">
+            If you ever want to stop receiving these, just reply to any
+            update email and we'll unsubscribe you right away.
+          </p>
+        </div>
+        <p style="text-align: center; color: #999; font-size: 12px; margin-top: 20px;">
+          HEROY Digital Solutions — Injibara, Awi Zone, Amhara, Ethiopia<br/>
+          Heroydigitalsolution@gmail.com
+        </p>
+      </div>
+    `,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
+module.exports = {
+  sendContactNotification,
+  sendConsultationNotification,
+  sendNewsletterConfirmation,
+};
