@@ -2,11 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
-const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
+const { generalLimiter, chatLimiter } = require("./middleware/rateLimiter");
 const contactRoutes = require("./routes/contactRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const consultationRoutes = require("./routes/consultationRoutes");
@@ -20,24 +20,12 @@ app.use(helmet());
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:3000",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-admin-key"],
   }),
 );
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: { error: "Too many requests, please try again later." },
-});
-
-const chatLimiter = rateLimit({
-  windowMs: 60 * 1000,
-  max: 20,
-  message: { error: "Too many chat messages, please slow down." },
-});
-
-app.use("/api/", limiter);
+app.use("/api/", generalLimiter);
 app.use("/api/chat", chatLimiter);
 
 app.use(express.json({ limit: "10kb" }));
