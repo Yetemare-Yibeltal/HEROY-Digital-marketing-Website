@@ -15,67 +15,75 @@ import {
 const reasons = [
   {
     icon: Lightbulb,
-    title: "Innovative Solutions",
-    description: "Fresh, modern approaches built on the latest frameworks and emerging technologies.",
+    title: "Practical, Modern Solutions",
+    description:
+      "We choose technologies and approaches based on the actual project requirements, business goals, maintainability, and long-term use—not simply because something is new.",
     color: "from-yellow-500 to-orange-500",
     glow: "rgba(234,179,8,0.25)",
-    stat: "35+ Technologies",
+    stat: "Purpose-Built",
   },
   {
     icon: GraduationCap,
-    title: "Experienced Team",
-    description: "Engineers, designers, and marketers with real production project experience.",
+    title: "Technical & Creative Expertise",
+    description:
+      "Our work brings together software development, design, digital marketing, and technical problem-solving so the product and its presentation can be considered together.",
     color: "from-violet-500 to-purple-700",
     glow: "rgba(124,92,255,0.25)",
-    stat: "10+ Disciplines",
+    stat: "Cross-Functional",
   },
   {
     icon: ShieldCheck,
-    title: "Security-First Development",
-    description: "Best-practice security built into every project from the architecture stage, not bolted on after.",
+    title: "Security Considered Early",
+    description:
+      "Authentication, authorization, input validation, secure configuration, access control, and responsible handling of sensitive data are considered as part of the development process.",
     color: "from-green-500 to-emerald-600",
     glow: "rgba(34,197,94,0.25)",
-    stat: "Security-First",
+    stat: "Security-Minded",
   },
   {
     icon: Zap,
-    title: "Fast Delivery",
-    description: "Agile workflows that keep every project on schedule without cutting corners.",
+    title: "Structured Delivery",
+    description:
+      "Projects are broken into clear stages so requirements, design, development, testing, feedback, and delivery can be reviewed without turning the process into unnecessary complexity.",
     color: "from-cyan-500 to-blue-600",
     glow: "rgba(34,211,238,0.25)",
-    stat: "On Time, Every Time",
+    stat: "Clear Process",
   },
   {
     icon: HeadphonesIcon,
-    title: "Dedicated Support",
-    description: "Ongoing maintenance and technical support with fast, direct response times.",
+    title: "Support After Delivery",
+    description:
+      "A website or application is not finished simply because it has been launched. We can continue with maintenance, improvements, troubleshooting, and technical support based on the project scope.",
     color: "from-pink-500 to-rose-600",
     glow: "rgba(236,72,153,0.25)",
-    stat: "24h Response Time",
+    stat: "Ongoing Support",
   },
   {
     icon: MessageSquare,
-    title: "Transparent Communication",
-    description: "Regular updates, clear timelines, and honest feedback on every project.",
+    title: "Direct Communication",
+    description:
+      "We keep communication straightforward through clear requirements, progress updates, feedback discussions, and documented project decisions so everyone understands what is being built.",
     color: "from-indigo-500 to-violet-600",
     glow: "rgba(99,102,241,0.25)",
-    stat: "Always Reachable",
+    stat: "Direct & Clear",
   },
   {
     icon: TrendingUp,
-    title: "Proven Approach",
-    description: "Data-backed strategies and measurable outcomes we track and report on honestly.",
+    title: "Outcome-Focused Strategy",
+    description:
+      "Digital work should support a real business objective. We connect design, development, marketing, and SEO decisions to the goals the project is intended to achieve.",
     color: "from-teal-500 to-cyan-600",
     glow: "rgba(20,184,166,0.25)",
-    stat: "Data-Driven",
+    stat: "Goal-Oriented",
   },
   {
     icon: Layers3,
-    title: "Scalable Systems",
-    description: "Architectures designed to grow with your business from MVP to enterprise.",
+    title: "Built for the Next Stage",
+    description:
+      "We consider future changes when choosing the structure of a project, making it easier to extend features, update content, integrate services, and continue development as needs evolve.",
     color: "from-orange-500 to-red-600",
     glow: "rgba(249,115,22,0.25)",
-    stat: "Built to Scale",
+    stat: "Ready to Evolve",
   },
 ];
 
@@ -83,7 +91,10 @@ export default function WhyChooseUs() {
   return (
     <section className="section relative overflow-hidden">
       <div className="glow-orb w-96 h-96 bg-accent/10 -top-20 -left-20" />
-      <div className="glow-orb w-80 h-80 bg-primary/10 bottom-0 right-0" style={{ animationDelay: "4s" }} />
+      <div
+        className="glow-orb w-80 h-80 bg-primary/10 bottom-0 right-0"
+        style={{ animationDelay: "4s" }}
+      />
 
       <div className="container-px mx-auto max-w-7xl">
         <motion.div
@@ -94,18 +105,23 @@ export default function WhyChooseUs() {
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="badge mb-4">Why Choose HEROY</span>
+
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-white leading-tight mb-4">
-            Built different,{" "}
-            <span className="text-gradient-warm">built to deliver</span>
+            A practical approach to{" "}
+            <span className="text-gradient-warm">digital work</span>
           </h2>
-          <p className="text-muted">
-            What you can expect from working with our team on every project.
+
+          <p className="text-muted leading-relaxed">
+            We focus on building useful digital products and experiences with
+            clear communication, thoughtful technology choices, and a process
+            that keeps the work aligned with your actual goals.
           </p>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {reasons.map((reason, i) => {
             const Icon = reason.icon;
+
             return (
               <motion.div
                 key={reason.title}
@@ -124,7 +140,7 @@ export default function WhyChooseUs() {
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.boxShadow =
-                    `0 0 0 rgba(0,0,0,0)`;
+                    "0 0 0 rgba(0,0,0,0)";
                 }}
               >
                 <div
