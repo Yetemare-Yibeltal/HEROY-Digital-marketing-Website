@@ -17,13 +17,13 @@ const consultationSchema = new mongoose.Schema(
     },
     date: {
       type: String,
+      required: [true, "Preferred date is required"],
       trim: true,
-      default: "",
     },
     time: {
       type: String,
+      required: [true, "Preferred time is required"],
       trim: true,
-      default: "",
     },
     platform: {
       type: String,
@@ -38,8 +38,8 @@ const consultationSchema = new mongoose.Schema(
     notes: {
       type: String,
       trim: true,
-      maxlength: [1000, "Notes cannot exceed 1000 characters"],
       default: "",
+      maxlength: [1000, "Notes cannot exceed 1000 characters"],
     },
     status: {
       type: String,
