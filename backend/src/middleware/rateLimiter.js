@@ -11,12 +11,12 @@ const contactLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-const chatLimiter = rateLimit({
-  windowMs: 60 * 1000,
-  max: 20,
+const newsletterLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
   message: {
     success: false,
-    error: "Too many messages. Please slow down.",
+    error: "Too many subscription attempts. Please try again after an hour.",
   },
   standardHeaders: true,
   legacyHeaders: false,
@@ -33,4 +33,4 @@ const generalLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-module.exports = { contactLimiter, chatLimiter, generalLimiter };
+module.exports = { contactLimiter, newsletterLimiter, generalLimiter };
