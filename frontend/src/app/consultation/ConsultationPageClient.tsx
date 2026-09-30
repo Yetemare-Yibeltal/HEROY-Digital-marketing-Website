@@ -123,6 +123,7 @@ export default function ConsultationPageClient() {
   const [selectedTopic, setSelectedTopic] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState("Google Meet");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -133,7 +134,11 @@ export default function ConsultationPageClient() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+
     setError(null);
   };
 
@@ -174,7 +179,9 @@ export default function ConsultationPageClient() {
         `${process.env.NEXT_PUBLIC_API_URL}/api/contact`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             name: formData.name.trim(),
             email: formData.email.trim(),
@@ -215,15 +222,18 @@ export default function ConsultationPageClient() {
     setSelectedTopic("");
     setSelectedTime("");
     setSelectedPlatform("Google Meet");
+    setError(null);
   };
 
   return (
     <div className="relative overflow-hidden">
       <div className="glow-orb w-96 h-96 bg-primary/15 -top-20 -right-20" />
+
       <div
         className="glow-orb w-80 h-80 bg-accent/10 top-1/2 -left-20"
         style={{ animationDelay: "3s" }}
       />
+
       <div
         className="glow-orb w-64 h-64 bg-accent-pink/10 bottom-20 right-1/4"
         style={{ animationDelay: "6s" }}
@@ -385,6 +395,7 @@ export default function ConsultationPageClient() {
                     <p className="font-display font-semibold text-white">
                       30 Minutes
                     </p>
+
                     <p className="text-xs text-muted">
                       Free, no commitment
                     </p>
@@ -402,6 +413,7 @@ export default function ConsultationPageClient() {
                     <p className="text-xs uppercase tracking-wide text-muted mb-1">
                       Format
                     </p>
+
                     <p className="text-sm text-white font-medium">
                       Online conversation
                     </p>
@@ -411,6 +423,7 @@ export default function ConsultationPageClient() {
                     <p className="text-xs uppercase tracking-wide text-muted mb-1">
                       Focus
                     </p>
+
                     <p className="text-sm text-white font-medium">
                       Your project
                     </p>
@@ -514,10 +527,7 @@ export default function ConsultationPageClient() {
                   className="glass-strong rounded-3xl p-8 sm:p-12 text-center min-h-[600px] flex flex-col items-center justify-center gap-4"
                 >
                   <div className="w-16 h-16 rounded-full bg-grad-primary flex items-center justify-center mb-2">
-                    <Calendar
-                      size={28}
-                      className="text-background"
-                    />
+                    <Calendar size={28} className="text-background" />
                   </div>
 
                   <p className="text-xs uppercase tracking-[0.18em] text-accent">
@@ -539,6 +549,7 @@ export default function ConsultationPageClient() {
                       <p className="text-[10px] uppercase tracking-wide text-muted mb-1">
                         Next step
                       </p>
+
                       <p className="text-sm text-white">
                         Consultation confirmation
                       </p>
@@ -548,6 +559,7 @@ export default function ConsultationPageClient() {
                       <p className="text-[10px] uppercase tracking-wide text-muted mb-1">
                         Communication
                       </p>
+
                       <p className="text-sm text-white">
                         Via your email address
                       </p>
@@ -564,6 +576,7 @@ export default function ConsultationPageClient() {
                 </motion.div>
               ) : (
                 <form
+                  id="consultation-form"
                   onSubmit={handleSubmit}
                   className="glass-strong rounded-3xl p-6 sm:p-8 lg:p-10 flex flex-col gap-6"
                 >
@@ -592,6 +605,7 @@ export default function ConsultationPageClient() {
                         size={16}
                         className="shrink-0 mt-0.5"
                       />
+
                       <span>{error}</span>
                     </div>
                   )}
@@ -783,6 +797,7 @@ export default function ConsultationPageClient() {
                     {loading
                       ? "Sending..."
                       : "Book My Free Consultation"}
+
                     <Send size={16} />
                   </button>
 
@@ -839,10 +854,7 @@ export default function ConsultationPageClient() {
                     {stage.number}
                   </span>
 
-                  <ArrowRight
-                    size={16}
-                    className="text-accent"
-                  />
+                  <ArrowRight size={16} className="text-accent" />
                 </div>
 
                 <h3 className="font-display font-semibold text-lg text-white mb-3">
@@ -1006,6 +1018,7 @@ export default function ConsultationPageClient() {
                   className="btn-primary"
                   onClick={(event) => {
                     event.preventDefault();
+
                     document
                       .getElementById("consultation-form")
                       ?.scrollIntoView({
