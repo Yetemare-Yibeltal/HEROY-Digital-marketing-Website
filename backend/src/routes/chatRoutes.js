@@ -6,6 +6,7 @@ const {
 } = require("../controllers/chatController");
 const { chatLimiter } = require("../middleware/rateLimiter");
 const validateRequest = require("../middleware/validateRequest");
+const adminAuth = require("../middleware/adminAuth");
 const { body, param } = require("express-validator");
 
 const messageValidationRules = [
@@ -50,6 +51,7 @@ router.post(
 
 router.get(
   "/history/:sessionId",
+  adminAuth,
   sessionValidationRules,
   validateRequest,
   getChatHistory,
