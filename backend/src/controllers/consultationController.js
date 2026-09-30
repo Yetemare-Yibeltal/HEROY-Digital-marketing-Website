@@ -6,8 +6,13 @@ const { sendConsultationNotification } = require("../utils/sendEmail");
 exports.submitConsultation = asyncHandler(async (req, res, next) => {
   const { name, email, date, time, platform, topic, notes } = req.body;
 
-  if (!name || !email) {
-    return next(new ErrorResponse("Name and email are required", 400));
+  if (!name || !email || !date || !time) {
+    return next(
+      new ErrorResponse(
+        "Name, email, preferred date, and preferred time are required",
+        400,
+      ),
+    );
   }
 
   const emailRegex = /^\S+@\S+\.\S+$/;
@@ -18,12 +23,12 @@ exports.submitConsultation = asyncHandler(async (req, res, next) => {
   const consultation = await Consultation.create({
     name: name.trim(),
     email: email.trim().toLowerCase(),
-    date: date?.trim() || "",
-    time: time?.trim() || "",
+    date: String(date).trim(),
+    time: String(time).trim(),
     platform: platform?.trim() || "Google Meet",
-    topic: topic?.trim() || "",
+    topic: topic?.trim() || "Not specified",
     notes: notes?.trim() || "",
-    ipAddress: req.ip || req.connection.remoteAddress || "",
+    ipAddress: req.ip || req.connection?.remoteAddress || "",
     userAgent: req.headers["user-agent"] || "",
   });
 
@@ -38,17 +43,19 @@ exports.submitConsultation = asyncHandler(async (req, res, next) => {
       notes: consultation.notes,
     });
   } catch (emailError) {
-    console.error("Consultation email sending failed:", emailError.message);
+    console.error("Consultation email failed to send:", emailError.message);
   }
 
   res.status(201).json({
     success: true,
     message:
-      "Your consultation request has been received. We will confirm a time within 24 hours.",
+      "Your consultation request has been received. We will confirm your slot within 24 hours via email.",
     data: {
       id: consultation._id,
       name: consultation.name,
       email: consultation.email,
+      date: consultation.date,
+      time: consultation.time,
       submittedAt: consultation.createdAt,
     },
   });
@@ -74,5 +81,29 @@ exports.getConsultations = asyncHandler(async (req, res, next) => {
     page,
     pages: Math.ceil(total / limit),
     data: consultations,
+  });
+});
+
+exports.updateConsultationStatus = asyncHandler(async (req, res, next) => {
+  const { status } = req.body;
+  const validStatuses = ["pending", "confirmed", "completed", "cancelled"];
+
+  if (!validStatuses.includes(status)) {
+    return next(new ErrorResponse("Invalid status value", 400));
+  }
+
+  const consultation = await Consultation.findByIdAndUpdate(
+    req.params.id,
+    { status },
+    { new: true, runValidators: true },
+  );
+
+  if (!consultation) {
+    return next(new ErrorResponse("Consultation not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: consultation,
   });
 });
