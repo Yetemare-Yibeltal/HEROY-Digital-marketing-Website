@@ -6,56 +6,64 @@ const steps = [
   {
     number: "01",
     title: "Research",
-    description: "We study your business, audience, and competitors to uncover real growth opportunities and define the right direction before writing a single line of code.",
+    description:
+      "We learn about your business, target audience, existing digital presence, competitors, and the problem you want to solve. This gives us useful context before decisions are made about design, technology, or marketing.",
     color: "from-violet-500 to-purple-700",
     glow: "rgba(124,92,255,0.3)",
   },
   {
     number: "02",
     title: "Discovery",
-    description: "Through focused workshops and stakeholder conversations we clarify goals, technical requirements, and what success looks like for your specific project.",
+    description:
+      "We turn the initial conversation into a clearer project definition by discussing goals, users, required features, content, technical requirements, priorities, constraints, and how the finished work will be evaluated.",
     color: "from-cyan-500 to-blue-600",
     glow: "rgba(34,211,238,0.3)",
   },
   {
     number: "03",
     title: "Strategy",
-    description: "We build a tailored roadmap covering technology choices, design direction, marketing strategy, milestones, and timelines aligned to your goals and budget.",
+    description:
+      "We define a practical direction for the project, including the recommended technology, content structure, user experience, marketing or SEO priorities, development stages, and the work that should be included in the initial scope.",
     color: "from-pink-500 to-rose-600",
     glow: "rgba(236,72,153,0.3)",
   },
   {
     number: "04",
     title: "Design",
-    description: "Our designers craft wireframes, UI mockups, and interactive prototypes that bring your brand vision to life before any development begins.",
+    description:
+      "We develop the visual direction and user experience through layouts, interface concepts, responsive design, and prototypes where appropriate. Feedback is incorporated before the approved direction moves into development.",
     color: "from-orange-500 to-amber-600",
     glow: "rgba(249,115,22,0.3)",
   },
   {
     number: "05",
     title: "Development",
-    description: "Our engineers build your product using modern, scalable frameworks with clean architecture, regular code reviews, and weekly progress demos.",
+    description:
+      "Our engineers turn the approved direction into a working website, application, or digital system using technologies suited to the project. Development is organized around the agreed scope, priorities, integrations, and technical requirements.",
     color: "from-green-500 to-emerald-600",
     glow: "rgba(34,197,94,0.3)",
   },
   {
     number: "06",
     title: "Testing",
-    description: "We rigorously test functionality, performance, security, and accessibility across all devices and browsers before anything goes live.",
+    description:
+      "Before launch, we review the implementation for functional issues, responsive behavior, forms, navigation, integrations, performance considerations, accessibility basics, and other requirements that are relevant to the project.",
     color: "from-teal-500 to-cyan-600",
     glow: "rgba(20,184,166,0.3)",
   },
   {
     number: "07",
     title: "Launch",
-    description: "We handle deployment, DNS setup, hosting configuration, and ensure a smooth zero-downtime go-live with full monitoring in place from day one.",
+    description:
+      "Once the project is ready, we prepare the production environment and coordinate deployment, domain or DNS configuration, environment settings, and final checks required to make the new experience available to users.",
     color: "from-indigo-500 to-violet-600",
     glow: "rgba(99,102,241,0.3)",
   },
   {
     number: "08",
     title: "Optimization",
-    description: "Post-launch we monitor performance metrics, gather user feedback, and continuously refine — from SEO and speed to UX and conversion rates.",
+    description:
+      "After launch, we use available performance data, feedback, analytics, SEO observations, and real-world usage to identify useful improvements. Depending on the project, this can include content, UX, performance, technical, or conversion-focused updates.",
     color: "from-yellow-500 to-orange-500",
     glow: "rgba(234,179,8,0.3)",
   },
@@ -76,12 +84,13 @@ export default function Process() {
         >
           <span className="badge mb-4">How We Work</span>
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-white leading-tight mb-4">
-            Our proven{" "}
-            <span className="text-gradient">8-step process</span>
+            Our{" "}
+            <span className="text-gradient">8-step project process</span>
           </h2>
           <p className="text-muted">
-            A clear, structured approach that keeps every project on
-            track — from first conversation to post-launch growth.
+            A clear, collaborative approach that takes a project from initial
+            research and planning through design, development, launch, and
+            continued improvement.
           </p>
         </motion.div>
 
@@ -98,7 +107,8 @@ export default function Process() {
               transition={{ duration: 1.6, ease: "easeOut" }}
               className="w-full"
               style={{
-                background: "linear-gradient(180deg,#7c5cff,#22d3ee,#f472b6)",
+                background:
+                  "linear-gradient(180deg,#7c5cff,#22d3ee,#f472b6)",
               }}
             />
           </div>
@@ -130,7 +140,10 @@ export default function Process() {
                     <h3 className="hy-grad-text-flow hy-title-on-hover font-display font-semibold text-lg mb-2">
                       {step.title}
                     </h3>
-                    <p className="text-sm leading-relaxed" style={{ color: "#9292b8" }}>
+                    <p
+                      className="text-sm leading-relaxed"
+                      style={{ color: "#9292b8" }}
+                    >
                       {step.description}
                     </p>
                   </div>
