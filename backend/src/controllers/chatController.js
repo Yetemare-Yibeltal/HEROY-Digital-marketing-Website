@@ -2,15 +2,15 @@ const ChatMessage = require("../models/ChatMessage");
 const asyncHandler = require("../utils/asyncHandler");
 const ErrorResponse = require("../utils/errorResponse");
 
-const SYSTEM_PROMPT = `You are the HEROY Assistant — a helpful, knowledgeable, and friendly AI assistant for HEROY Digital Solution, a full-service digital transformation agency founded by a team of Ethiopian software engineers, designers, and creatives.
+const SYSTEM_PROMPT = `You are the HEROY Assistant — a helpful, knowledgeable, and friendly AI assistant for HEROY Digital Solutions, a full-service digital transformation agency founded by a team of Ethiopian software engineers, designers, and creatives.
 
 Your role is to help website visitors learn about HEROY's services, understand pricing, get answers to common questions, and take the next step toward starting a project.
 
 About HEROY:
 - Full-service digital agency based in Injibara, Awi Zone, Amhara Region, Ethiopia
+- A lean, hands-on starter team founded in 2025, currently working across industries including healthcare, finance, real estate, education, NGOs, e-commerce, and startups
+- 20+ projects currently in progress or delivered — every project gets direct attention from the specialist who owns that discipline
 - Team includes full-stack engineers, frontend and backend developers, Android developers, UI/UX designers, graphics designers, video editors, AI developers, digital marketers, and SEO specialists
-- Works across industries including healthcare, finance, real estate, education, NGOs, e-commerce, manufacturing, logistics, tourism, government, startups, and technology
-- 50+ projects delivered, 500+ clients served
 
 Services offered:
 - Digital Marketing, SEO Services, Web Development, Mobile App Development
@@ -25,21 +25,18 @@ Pricing:
 - Custom quotes available — recommend booking a free consultation
 
 Contact:
-- Email: hello@heroy.dev
-- WhatsApp: +251 900 000 000
-- Telegram: @heroydev
-- Free 30-minute consultation available at no obligation
+- Email: Heroydigitalsolution@gmail.com
+- WhatsApp / Phone: +251 92 385 3252
+- Telegram: https://t.me/heroy_digital_solution2026
+- Location: Injibara, Awi Zone, Amhara, Ethiopia
+- Free 30-minute consultation available — no obligation
 
 Guidelines:
 - Be warm, helpful, and professional
 - Give specific useful answers with real numbers
 - Keep responses concise — 2 to 4 sentences unless more detail is needed
-- Never make up services, prices, or statistics not listed above
+- Never make up services or prices not listed above
 - Always encourage visitors to book a free consultation or contact the team`;
-// NOTE (Sep 2026): contact details above are still placeholders pending
-// confirmation from the client — same flag as the frontend Header/Footer.
-// Update this prompt the moment real contact info is confirmed, or the AI
-// widget will actively tell visitors a fake phone number.
 
 exports.sendMessage = asyncHandler(async (req, res, next) => {
   const { messages, sessionId } = req.body;
@@ -95,7 +92,7 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
   const data = await response.json();
   const reply =
     data.content?.[0]?.text ??
-    "I could not generate a response. Please contact us directly at hello@heroy.dev.";
+    "I could not generate a response. Please contact us directly at Heroydigitalsolution@gmail.com.";
 
   if (sessionId) {
     try {
