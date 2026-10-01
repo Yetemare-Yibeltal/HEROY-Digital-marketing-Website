@@ -1,19 +1,9 @@
-
 "use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
-  ShieldCheck,
-  Users2,
-  Zap,
-  MessageCircle,
-} from "lucide-react";
+import { Mail, Phone, MapPin, Clock, ShieldCheck, Users2, Zap, MessageCircle } from "lucide-react";
 
 const serviceLinks = [
   { label: "Digital Marketing", href: "/services/digital-marketing" },
@@ -41,16 +31,8 @@ const resourceLinks = [
 ];
 
 const socialLinks = [
-  {
-    label: "Facebook",
-    short: "f",
-    href: "https://facebook.com/heroydigitalsolution",
-  },
-  {
-    label: "Telegram",
-    short: "tg",
-    href: "https://t.me/heroy_digital_solution2026",
-  },
+  { label: "Facebook", short: "f", href: "https://facebook.com/heroydigitalsolution" },
+  { label: "Telegram", short: "tg", href: "https://t.me/heroy_digital_solution2026" },
   { label: "X", short: "X", href: "#" },
   { label: "LinkedIn", short: "in", href: "#" },
   { label: "Instagram", short: "ig", href: "#" },
@@ -67,15 +49,39 @@ export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
+  const [subscribeError, setSubscribeError] = useState<string | null>(null);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
     setSubscribing(true);
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    setSubscribed(true);
-    setSubscribing(false);
-    setEmail("");
+    setSubscribeError(null);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/newsletter`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.trim() }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong. Please try again.");
+      }
+
+      setSubscribed(true);
+      setEmail("");
+    } catch (err) {
+      setSubscribeError(
+        err instanceof Error ? err.message : "Something went wrong. Please try again."
+      );
+    } finally {
+      setSubscribing(false);
+    }
   };
 
   return (
@@ -265,12 +271,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-[#25D366]/10 border border-[#25D366]/30 hover:bg-[#25D366]/20 transition-colors rounded-full px-4 py-2.5 mb-6"
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="#25D366"
-              >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366">
                 <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.11c-.24.68-1.4 1.3-1.93 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.95-.31-1.63-.61-2.87-1.24-4.74-4.13-4.89-4.32-.14-.19-1.17-1.56-1.17-2.98 0-1.42.74-2.11 1.01-2.4.26-.29.57-.36.76-.36h.55c.18 0 .41-.07.64.49.24.58.81 2 .88 2.14.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.57.16.28.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.21 1.36.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.86.27.14.45.2.51.32.07.12.07.66-.17 1.34z" />
               </svg>
               Chat on WhatsApp
@@ -288,24 +289,29 @@ export default function Footer() {
                 Thanks for subscribing!
               </div>
             ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email"
-                  required
-                  className="flex-1 rounded-full bg-white/5 border border-border px-4 py-2.5 text-sm text-white placeholder:text-muted/60 outline-none focus:border-primary transition-colors"
-                />
+              <>
+                <form onSubmit={handleSubscribe} className="flex gap-2">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your email"
+                    required
+                    className="flex-1 rounded-full bg-white/5 border border-border px-4 py-2.5 text-sm text-white placeholder:text-muted/60 outline-none focus:border-primary transition-colors"
+                  />
 
-                <button
-                  type="submit"
-                  disabled={subscribing}
-                  className="btn-primary !px-5 !py-2.5 !text-xs disabled:opacity-60"
-                >
-                  {subscribing ? "..." : "Subscribe"}
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    disabled={subscribing}
+                    className="btn-primary !px-5 !py-2.5 !text-xs disabled:opacity-60"
+                  >
+                    {subscribing ? "..." : "Subscribe"}
+                  </button>
+                </form>
+                {subscribeError && (
+                  <p className="text-xs text-red-400 mt-2">{subscribeError}</p>
+                )}
+              </>
             )}
           </div>
         </div>
