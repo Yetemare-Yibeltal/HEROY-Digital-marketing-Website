@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Sparkles,
+} from "lucide-react";
 import { services } from "../page";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import type { Metadata } from "next";
 
 interface ServiceDetail {
@@ -14,7 +20,7 @@ interface ServiceDetail {
 const serviceDetails: Record<string, ServiceDetail> = {
   "digital-marketing": {
     description:
-      "We design and execute data-driven digital marketing campaigns across search, social, and email, built to grow awareness, leads, and revenue for your business.",
+      "We design and execute data-driven digital marketing campaigns across search, social, email, and paid media, built to grow awareness, qualified leads, and revenue across local and international markets.",
     benefits: [
       "Higher qualified traffic",
       "Improved brand awareness",
@@ -37,30 +43,30 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   seo: {
     description:
-      "Technical SEO, content strategy, and authoritative link building that drive long-term organic growth and search visibility across competitive markets.",
+      "Technical SEO, content strategy, international search optimization, and authoritative link building that drive long-term organic growth and search visibility across competitive markets.",
     benefits: [
-      "Higher search rankings",
+      "Higher search visibility",
       "Sustainable organic traffic",
       "Improved site health",
-      "Long-term cost efficiency",
+      "Long-term acquisition efficiency",
     ],
     process: [
       "Technical audit",
-      "Keyword research",
+      "Keyword and market research",
       "On-page optimization",
-      "Link building and monitoring",
+      "Authority building and monitoring",
     ],
     features: [
       "Technical SEO audits",
+      "International and local SEO",
       "Content optimization",
-      "Local SEO",
       "Backlink strategy",
     ],
   },
 
   "web-development": {
     description:
-      "We build fast, secure, and scalable websites using Next.js, React, and TypeScript, optimized for performance, SEO, and long-term maintainability.",
+      "We build fast, secure, accessible, and scalable websites using modern technologies such as Next.js, React, and TypeScript, optimized for performance, SEO, and long-term maintainability.",
     benefits: [
       "Fast load times",
       "SEO-friendly architecture",
@@ -83,12 +89,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "mobile-app-development": {
     description:
-      "We design and build mobile applications that deliver smooth performance and intuitive experiences for both iOS and Android platforms.",
+      "We design and build mobile applications that deliver smooth performance and intuitive experiences for iOS and Android users, from product discovery through launch and ongoing improvement.",
     benefits: [
       "Wider audience reach",
       "Native-like performance",
       "Offline capabilities",
-      "App store optimization",
+      "App store readiness",
     ],
     process: [
       "Product discovery",
@@ -98,7 +104,7 @@ const serviceDetails: Record<string, ServiceDetail> = {
     ],
     features: [
       "iOS and Android development",
-      "Cross-platform (React Native)",
+      "Cross-platform React Native",
       "Push notifications",
       "App analytics",
     ],
@@ -106,12 +112,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "android-development": {
     description:
-      "Dedicated native Android development for products that need maximum performance and deep integration with Android-specific features.",
+      "Dedicated native Android development for products that need strong performance, platform-specific capabilities, and deep integration with Android APIs and services.",
     benefits: [
-      "Best possible performance",
-      "Full access to native APIs",
+      "High native performance",
+      "Full access to Android APIs",
       "Tailored Android UX",
-      "Play Store optimization",
+      "Play Store readiness",
     ],
     process: [
       "Requirements analysis",
@@ -129,11 +135,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "ui-ux-design": {
     description:
-      "We research, design, and test interfaces that are intuitive, accessible, and perfectly aligned with both user needs and business objectives.",
+      "We research, design, prototype, and test interfaces that are intuitive, accessible, and aligned with user needs, business objectives, and modern digital product standards.",
     benefits: [
       "Improved product usability",
       "Higher user satisfaction",
       "Reduced development rework",
+      "Stronger conversion experiences",
     ],
     process: [
       "User research",
@@ -151,11 +158,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "graphics-design": {
     description:
-      "Social media graphics, marketing materials, and digital assets designed to capture attention and reinforce your brand identity consistently.",
+      "Social media graphics, marketing materials, presentation assets, and digital brand visuals designed to capture attention and reinforce your brand identity consistently across channels.",
     benefits: [
       "Consistent visual presence",
-      "Higher engagement rates",
+      "Higher engagement potential",
       "Professional brand image",
+      "Reusable design assets",
     ],
     process: [
       "Brief and research",
@@ -173,11 +181,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "video-editing": {
     description:
-      "From promotional videos to social media reels, we produce and edit video content tailored to your brand, audience, and platform requirements.",
+      "From promotional videos to social media reels, we produce and edit video content tailored to your brand, audience, storytelling goals, and platform requirements.",
     benefits: [
       "Higher engagement rates",
       "Stronger storytelling impact",
       "Multi-platform content",
+      "Professional visual consistency",
     ],
     process: [
       "Scripting and planning",
@@ -195,11 +204,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   photography: {
     description:
-      "High-quality product, event, and brand photography that elevates your visual presence and gives you a consistent, professional content library.",
+      "High-quality product, event, and brand photography that elevates your visual presence and gives you a consistent, professional content library for digital marketing and communications.",
     benefits: [
       "Professional brand imagery",
       "Consistent visual quality",
       "Versatile content library",
+      "Stronger campaign assets",
     ],
     process: [
       "Planning and shot list",
@@ -217,11 +227,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "content-creation": {
     description:
-      "Blog posts, website copy, and marketing content crafted to educate your audience, support SEO goals, and drive measurable conversions.",
+      "Blog posts, website copy, campaign content, and marketing materials crafted to educate audiences, support SEO goals, strengthen brand positioning, and drive measurable conversions.",
     benefits: [
       "Improved SEO performance",
       "Stronger brand voice",
       "Higher audience engagement",
+      "Consistent publishing",
     ],
     process: [
       "Content strategy",
@@ -239,16 +250,17 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "social-media-marketing": {
     description:
-      "We manage and grow your social presence with content strategy, community engagement, and targeted campaigns that convert followers into customers.",
+      "We manage and grow your social presence through content strategy, community engagement, paid social campaigns, and performance analysis designed to turn attention into meaningful business outcomes.",
     benefits: [
       "Larger engaged audience",
       "Improved brand loyalty",
       "Increased website traffic",
+      "Better campaign visibility",
     ],
     process: [
       "Audit and strategy",
       "Content planning",
-      "Posting and engagement",
+      "Publishing and engagement",
       "Performance analysis",
     ],
     features: [
@@ -261,11 +273,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   ecommerce: {
     description:
-      "We build custom e-commerce platforms with seamless checkout, inventory management, and payment integrations that maximize conversion rates.",
+      "We build custom e-commerce platforms with seamless customer journeys, secure checkout, inventory management, payment integrations, and analytics designed to support sustainable online sales.",
     benefits: [
       "Increased online sales",
       "Streamlined order management",
       "Secure payment processing",
+      "Improved customer experience",
     ],
     process: [
       "Platform planning",
@@ -283,11 +296,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "saas-development": {
     description:
-      "End-to-end SaaS product development, multi-tenant architecture, subscription billing, admin dashboards, and scalable cloud infrastructure.",
+      "End-to-end SaaS product development including product discovery, multi-tenant architecture, subscription billing, admin dashboards, API integrations, and scalable infrastructure.",
     benefits: [
-      "Recurring revenue model",
-      "Scalable architecture",
+      "Scalable product architecture",
+      "Recurring revenue capability",
       "Faster time to market",
+      "Foundation for continuous iteration",
     ],
     process: [
       "Product discovery",
@@ -305,17 +319,18 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "ai-solutions": {
     description:
-      "We integrate AI capabilities, chatbots, recommendation engines, and workflow automation into your products and internal processes.",
+      "We integrate practical AI capabilities, conversational interfaces, recommendation systems, data workflows, and automation into digital products and internal business processes.",
     benefits: [
       "Automated workflows",
       "Smarter user experiences",
+      "Operational efficiency",
       "Competitive differentiation",
     ],
     process: [
       "Use case discovery",
-      "Model selection and training",
+      "Model and architecture selection",
       "Integration and testing",
-      "Monitoring and tuning",
+      "Monitoring and optimization",
     ],
     features: [
       "AI chatbots",
@@ -327,11 +342,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "cloud-solutions": {
     description:
-      "We design and manage cloud infrastructure on AWS and Vercel, helping products scale reliably with security, observability, and operational resilience in mind.",
+      "We design and manage cloud infrastructure on platforms such as AWS and Vercel, helping digital products scale reliably with security, observability, automation, and operational resilience in mind.",
     benefits: [
       "Improved scalability",
       "Reduced operational risk",
       "Cost-aware infrastructure",
+      "Better deployment reliability",
     ],
     process: [
       "Infrastructure audit",
@@ -349,11 +365,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   cybersecurity: {
     description:
-      "Security audits, vulnerability assessments, and implementation of security best practices to help protect digital assets, data, applications, and users.",
+      "Security audits, vulnerability assessments, secure development practices, and implementation guidance designed to help protect digital assets, applications, data, and users.",
     benefits: [
       "Reduced security risks",
-      "Compliance support",
+      "Security best-practice adoption",
       "Greater customer confidence",
+      "Improved operational resilience",
     ],
     process: [
       "Security audit",
@@ -371,11 +388,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "erp-crm": {
     description:
-      "We build tailored ERP and CRM systems that streamline business operations, sales pipelines, and customer relationship management at different organizational scales.",
+      "We build tailored ERP and CRM systems that streamline business operations, sales pipelines, customer relationship management, reporting, and internal workflows at different organizational scales.",
     benefits: [
       "Streamlined operations",
       "Better business data visibility",
       "Improved customer relationships",
+      "Centralized workflows",
     ],
     process: [
       "Requirements analysis",
@@ -393,11 +411,12 @@ const serviceDetails: Record<string, ServiceDetail> = {
 
   "3d-experiences": {
     description:
-      "We create interactive 3D websites, product configurators, and WebGL experiences designed to create distinctive digital brand experiences.",
+      "We create interactive 3D websites, product configurators, WebGL experiences, and immersive digital interfaces designed to create distinctive and memorable brand experiences.",
     benefits: [
       "Memorable brand experience",
       "Higher engagement potential",
       "Strong competitive differentiation",
+      "Interactive product storytelling",
     ],
     process: [
       "Concept and storyboard",
@@ -420,6 +439,7 @@ const serviceDetails: Record<string, ServiceDetail> = {
       "Reduced operational overhead",
       "Improved team efficiency",
       "Informed technology decisions",
+      "Clearer technology roadmap",
     ],
     process: [
       "Needs assessment",
@@ -441,14 +461,16 @@ interface PageProps {
 }
 
 export function generateStaticParams() {
-  return services.map((s) => ({ slug: s.slug }));
+  return services.map((service) => ({
+    slug: service.slug,
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = services.find((s) => s.slug === slug);
+  const service = services.find((item) => item.slug === slug);
 
   if (!service) {
     return {
@@ -467,20 +489,25 @@ export async function generateMetadata({
   return {
     title: `${service.title} | HEROY Digital Solutions`,
     description: service.shortDescription,
+
     keywords: [
       service.title,
       `${service.title} services`,
       `${service.title} Ethiopia`,
+      `${service.title} agency`,
       "HEROY Digital Solutions",
       "digital solutions Ethiopia",
       "digital agency Ethiopia",
+      "digital transformation agency",
     ],
+
     authors: [
       {
         name: "HEROY Digital Solutions",
         url: "https://heroy.dev",
       },
     ],
+
     creator: "HEROY Digital Solutions",
     publisher: "HEROY Digital Solutions",
     category: "Technology",
@@ -519,10 +546,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function ServiceDetailPage({ params }: PageProps) {
+export default async function ServiceDetailPage({
+  params,
+}: PageProps) {
   const { slug } = await params;
 
-  const service = services.find((s) => s.slug === slug);
+  const service = services.find((item) => item.slug === slug);
   const detail = serviceDetails[slug];
 
   if (!service || !detail) {
@@ -530,20 +559,58 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   }
 
   const Icon = service.icon;
+
   const related = services
-    .filter((s) => s.slug !== service.slug)
+    .filter((item) => item.slug !== service.slug)
     .slice(0, 3);
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: detail.description,
+    serviceType: service.title,
+    provider: {
+      "@type": "Organization",
+      name: "HEROY Digital Solutions",
+      url: "https://heroy.dev",
+    },
+    areaServed: {
+      "@type": "Place",
+      name: "Worldwide",
+    },
+    availableChannel: {
+      "@type": "ServiceChannel",
+      serviceUrl: `https://heroy.dev/services/${slug}`,
+    },
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceSchema),
+        }}
+      />
+
       <section className="section pt-32 sm:pt-36 pb-12 relative overflow-hidden">
         <div className="glow-orb w-96 h-96 bg-primary/15 -top-24 -right-24" />
+
         <div
           className="glow-orb w-64 h-64 bg-accent/10 top-48 -left-24"
           style={{ animationDelay: "3s" }}
         />
 
         <div className="container-px mx-auto max-w-6xl relative">
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Services", href: "/services" },
+              { label: service.title },
+            ]}
+          />
+
           <Link
             href="/services"
             className="inline-flex items-center gap-2 text-sm text-muted hover:text-white mb-8 transition-colors"
@@ -581,7 +648,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
               <p className="text-sm text-white leading-relaxed">
                 Strategy, implementation, quality, and measurable digital
-                progress aligned with your project requirements.
+                progress aligned with your business objectives and project
+                requirements.
               </p>
             </div>
           </div>
@@ -658,19 +726,19 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
               <p className="text-sm text-muted mt-2 max-w-2xl leading-relaxed">
                 A structured delivery process helps keep scope, priorities,
-                technical decisions, and validation aligned throughout the
-                engagement.
+                technical decisions, communication, and validation aligned
+                throughout the engagement.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {detail.process.map((step, i) => (
+              {detail.process.map((step, index) => (
                 <div
                   key={step}
                   className="glass rounded-xl p-5 hover:border-primary/30 transition-colors"
                 >
                   <span className="font-display font-bold text-3xl text-white/10 block mb-3 leading-none">
-                    {String(i + 1).padStart(2, "0")}
+                    {String(index + 1).padStart(2, "0")}
                   </span>
 
                   <p className="text-sm text-white font-medium leading-relaxed">
@@ -702,7 +770,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               <p className="text-muted max-w-2xl mx-auto mb-7 leading-relaxed">
                 Tell us what you are trying to achieve, where the project
                 stands today, and what constraints or priorities matter most.
-                We can then discuss an appropriate scope and delivery approach.
+                We can then discuss an appropriate scope, delivery approach,
+                and next steps.
               </p>
 
               <div className="flex flex-wrap justify-center gap-3">
