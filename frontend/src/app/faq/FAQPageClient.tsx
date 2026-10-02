@@ -907,3 +907,29 @@ export default function FAQPageClient() {
     </div>
   );
 }
+export default function FAQPageClient() {
+  const [active, setActive] = useState("All");
+  const [openId, setOpenId] = useState<number | null>(null);
+  const [query, setQuery] = useState("");
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
+  const filtered = useMemo(() => {
+      return (
+    <div className="relative overflow-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <div className="glow-orb w-96 h-96 bg-primary/15 -top-20 -right-20" />
