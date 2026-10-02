@@ -1,215 +1,534 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { ChevronDown, Sparkles, ArrowRight, Search, X } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  Search,
+  Sparkles,
+  X,
+} from "lucide-react";
 import TypewriterText from "@/components/ui/TypewriterText";
 
-const categories = [
+type FAQCategory =
+  | "Company"
+  | "Services"
+  | "Pricing"
+  | "Process"
+  | "Technical"
+  | "Support"
+  | "Digital Marketing"
+  | "International Growth";
+
+type FAQ = {
+  id: number;
+  category: FAQCategory;
+  question: string;
+  answer: string;
+};
+
+const categories: Array<"All" | FAQCategory> = [
   "All",
   "Company",
   "Services",
+  "Digital Marketing",
+  "International Growth",
   "Pricing",
   "Process",
   "Technical",
   "Support",
 ];
 
-const faqs = [
+const faqs: FAQ[] = [
   {
     id: 1,
     category: "Services",
     question: "What services does HEROY offer?",
     answer:
-      "HEROY offers a complete range of digital services including digital marketing, SEO, web development, mobile app development, UI/UX design, graphics design, video editing, AI solutions, branding, e-commerce development, SaaS development, cloud solutions, cybersecurity, ERP and CRM systems, 3D interactive experiences, and IT consulting. We are a full-service agency, meaning you can get everything you need in one place rather than coordinating multiple vendors.",
+      "HEROY offers a complete range of digital services including digital marketing, SEO, web development, mobile app development, UI/UX design, graphics design, video editing, AI solutions, branding, e-commerce development, SaaS development, cloud solutions, cybersecurity, ERP and CRM systems, 3D interactive experiences, and IT consulting. We bring strategy, creative work, technology, and growth services together so clients can work with one coordinated team.",
   },
   {
     id: 2,
     category: "Services",
     question: "Do you work with clients outside Ethiopia?",
     answer:
-      "Yes — we work with clients remotely regardless of location. We communicate entirely in English, work flexibly across time zones, and use tools like WhatsApp, Telegram, email, and scheduled video calls to keep projects running smoothly no matter where you're based.",
+      "Yes. HEROY works remotely with clients in Ethiopia and internationally. We communicate in English and can coordinate projects across different time zones using email, WhatsApp, Telegram, video meetings, project-management tools, and shared documents.",
   },
   {
     id: 3,
     category: "Services",
     question: "Can you handle both design and development for my project?",
     answer:
-      "Absolutely — this is one of our core strengths. Having design and development under one roof means there is no handoff friction between teams. Our designers work directly alongside our developers, which results in faster delivery, fewer misunderstandings, and a final product that looks exactly as designed. You also deal with a single team rather than managing separate agencies.",
+      "Yes. Design and development can be handled within the same project team. This allows UI/UX, branding, frontend, backend, and product requirements to be discussed together instead of being passed between unrelated vendors.",
   },
   {
     id: 4,
     category: "Services",
     question: "Do you offer ongoing maintenance and support after launch?",
     answer:
-      "Yes. Every project includes a post-launch support period — 30 days for Starter projects, 3 months for Growth, and 6 months for Enterprise. Beyond that, we offer monthly retainer-based maintenance packages covering bug fixes, content updates, performance monitoring, security patches, and feature additions. Ask us about our maintenance plans when discussing your project.",
+      "Yes. We can provide post-launch support, maintenance, content updates, performance monitoring, security updates, bug fixes, and feature development. The exact support period and response expectations depend on the project scope and selected maintenance arrangement.",
   },
   {
     id: 5,
     category: "Services",
     question: "Can you help if I already have a website but it needs improvement?",
     answer:
-      "Yes, we regularly take on redesign and improvement projects. Whether you need a full redesign, a performance overhaul, an SEO audit and fix, or new feature development on an existing codebase, we can help. We will review what you have and give you an honest assessment of what makes sense to improve versus rebuild from scratch.",
+      "Yes. We can review an existing website or application and recommend whether it needs a redesign, technical improvements, performance optimization, SEO work, accessibility improvements, new features, or a complete rebuild. We prefer to assess the existing system before recommending a rebuild.",
   },
   {
     id: 6,
     category: "Pricing",
     question: "How much does a website cost?",
     answer:
-      "Our website projects start from $499 for a 5-page professional site and go up depending on complexity, features, and customization required. A typical business website with CMS, blog, and SEO setup usually falls between $1,000 and $3,000. Custom web applications, SaaS platforms, and e-commerce systems are scoped individually. We are transparent about pricing — check our Pricing page for details or book a free consultation for a custom quote.",
+      "Website pricing depends on the number of pages, design requirements, content, integrations, CMS requirements, e-commerce functionality, SEO scope, and custom development. HEROY's published packages start from $499 for selected starter projects. Larger business websites, e-commerce platforms, web applications, and SaaS products are quoted according to their requirements.",
   },
   {
     id: 7,
     category: "Pricing",
     question: "Do you require payment upfront?",
     answer:
-      "We typically work on a 50% deposit upfront and 50% on delivery for most projects. For larger projects, we use milestone-based payments — you pay for each phase as it is completed. This protects both parties and keeps the project moving forward with mutual accountability. We never ask for full payment upfront.",
+      "Most projects use a 50% deposit and 50% payment at delivery. Larger projects may use milestone-based payments tied to agreed project phases. The exact payment schedule is included in the written proposal before work begins.",
   },
   {
     id: 8,
     category: "Pricing",
     question: "Are there any hidden fees?",
     answer:
-      "No. Everything is itemized in your proposal before you commit to anything. The only additional costs that can arise are scope changes you request during the project — and we always discuss and agree on the cost impact of any change before implementing it. There are no surprise invoices.",
+      "Project costs are outlined in the proposal before work begins. If you request additional work outside the agreed scope, we discuss the change and its cost before implementing it. Third-party expenses such as hosting, paid software, advertising spend, domains, premium plugins, or licensed assets are identified separately when applicable.",
   },
   {
     id: 9,
     category: "Pricing",
     question: "Do you offer discounts for startups or nonprofits?",
     answer:
-      "Yes. We have a startup program for early-stage companies with limited budgets, and we offer preferential pricing for NGOs and nonprofit organizations. Book a free consultation and tell us about your organization — we will do our best to find a structure that works within your constraints.",
+      "We can consider startup, nonprofit, and organization-specific project structures depending on the scope and available budget. The appropriate pricing or payment arrangement is discussed during the consultation rather than being automatically applied to every project.",
   },
   {
     id: 10,
     category: "Pricing",
     question: "What payment methods do you accept?",
     answer:
-      "We accept bank transfer, Telebirr, PayPal, and Stripe. Payment currency is flexible — we can invoice in USD, EUR, GBP, or ETB depending on your preference.",
+      "Depending on the client's location and project arrangement, HEROY can work with bank transfer, Telebirr, PayPal, and Stripe. The available payment method and invoicing currency are confirmed before the project begins.",
   },
   {
     id: 11,
     category: "Process",
     question: "What does your project process look like?",
     answer:
-      "Every project follows the same six stages: Discover, Design, Build, Test & Refine, Launch, and Support. We start with a discovery call to understand your goals, then send a written proposal. Once approved, we move through design and development with regular check-ins before a final review and launch. Post-launch we remain reachable for fixes and the next phase of your product.",
+      "Our general process is Discover, Strategy, Design, Build, Test and Refine, Launch, and Support. The exact stages vary according to the project. Marketing engagements also include research, audience definition, channel planning, campaign setup, measurement, reporting, and continuous optimization.",
   },
   {
     id: 12,
     category: "Process",
     question: "How long does a typical project take?",
     answer:
-      "A simple 5-page website takes about 2 weeks. A full business website with CMS takes 3 to 4 weeks. A custom web application or SaaS product typically takes 2 to 4 months depending on complexity. Mobile apps take 3 to 5 months. We provide a detailed timeline in every proposal before work begins, so you always know exactly when to expect each deliverable.",
+      "Timelines depend on scope. A simple business website may take a few weeks, while a custom web application, SaaS platform, mobile application, or larger digital transformation project can take several months. Marketing engagements are normally structured around monthly or campaign-based cycles. A detailed timeline is provided after requirements are understood.",
   },
   {
     id: 13,
     category: "Process",
     question: "How many revisions are included?",
     answer:
-      "Revision rounds are included in every plan — 1 round for Starter, 3 rounds for Growth, and unlimited rounds for Enterprise. A revision round means you review the work, provide consolidated feedback, and we implement all changes from that feedback session. We ask that feedback be bundled into single submissions rather than sent in pieces, which keeps the project moving efficiently.",
+      "The number of included revision rounds depends on the selected package and project scope. We encourage clients to provide consolidated feedback during review stages because this reduces unnecessary back-and-forth and keeps delivery predictable.",
   },
   {
     id: 14,
     category: "Process",
     question: "How do you handle project communication?",
     answer:
-      "You communicate directly with the specialist working on your project — no account managers or middlemen. Day-to-day communication happens via WhatsApp, Telegram, or email depending on your preference, with regular progress updates and milestone review calls, so you always have a direct line to someone who knows your project inside and out.",
+      "Clients communicate directly with the project team through agreed channels such as email, WhatsApp, Telegram, and scheduled video calls. We use written scopes, milestone updates, review points, and documented decisions to keep international projects clear and organized.",
   },
   {
     id: 15,
     category: "Process",
     question: "What do you need from me to get started?",
     answer:
-      "For most projects, we need: your brand assets (logo, colors, fonts if you have them), access to any existing platforms or accounts, content for the project (text, images, videos), and clear feedback during review stages. We guide you through exactly what we need at each step — you do not need to have everything ready before we start.",
+      "Depending on the project, we may need your business information, goals, target audience, existing brand assets, website or platform access, content, analytics access, advertising-account access, competitors, previous campaign information, and any technical requirements. We provide a project-specific checklist so you know what is required.",
   },
   {
     id: 16,
     category: "Technical",
     question: "What technology stack do you use for websites?",
     answer:
-      "Our primary web stack is Next.js 15, TypeScript, Tailwind CSS, and Framer Motion on the frontend, with Node.js and Express on the backend, and MongoDB or PostgreSQL depending on the project. We also work with headless CMS platforms like Sanity or Contentful for content management. All our choices are made based on what is best for the specific project, not just what we are comfortable with.",
+      "Our web projects commonly use technologies such as Next.js, React, TypeScript, Tailwind CSS, Node.js, Express, MongoDB, PostgreSQL, and modern deployment platforms. We also work with CMS platforms and third-party services where they are appropriate. Technology decisions are made according to the project's requirements rather than forcing every client into one stack.",
   },
   {
     id: 17,
     category: "Technical",
     question: "Will my website work on mobile devices?",
     answer:
-      "Every website and application we build is fully responsive and tested across mobile, tablet, and desktop at multiple screen sizes. Mobile performance is a primary concern, not an afterthought. We also test on both iOS Safari and Android Chrome since they have different rendering behaviors for certain CSS properties.",
+      "Yes. Responsive behavior is considered from the beginning of the design and development process. We build interfaces for mobile, tablet, and desktop layouts and test important pages and interactions across common browser and device configurations.",
   },
   {
     id: 18,
     category: "Technical",
     question: "Do you build SEO into the website from the start?",
     answer:
-      "Yes. Technical SEO is built into every website we develop — proper heading structure, semantic HTML, server-side rendering for correct indexing, fast Core Web Vitals, meta tags, Open Graph tags, canonical URLs, and XML sitemaps. If you also want an ongoing SEO strategy (keyword research, content, link building), that is a separate service we offer.",
+      "Yes. Technical SEO can be incorporated during development through semantic HTML, appropriate heading structures, metadata, canonical URLs, structured data where appropriate, crawlable pages, responsive layouts, performance optimization, sitemap configuration, and other technical foundations. Ongoing SEO strategy is available as a separate service.",
   },
   {
     id: 19,
     category: "Technical",
     question: "Who hosts the website after you build it?",
     answer:
-      "We typically deploy to Vercel for Next.js frontend projects, which gives excellent global performance and automatic scaling. For backend services we use Railway, Render, or similar platforms depending on the project's requirements. We can also deploy to hosting you already have. We handle the full deployment and hand over all access credentials to you at launch.",
+      "Hosting depends on the project's architecture and requirements. Next.js projects may use platforms such as Vercel, while backend systems may use appropriate cloud or application-hosting providers. We can deploy to infrastructure we recommend or help configure infrastructure that your organization already owns.",
   },
   {
     id: 20,
     category: "Technical",
     question: "Will I own the code and design after the project?",
     answer:
-      "Yes, completely. Upon full payment, all source code, design files, and digital assets created specifically for your project become your property. We retain the right to showcase the completed work in our portfolio unless you request otherwise in writing. Any third-party licensed assets (stock photos, licensed fonts, plugins) remain subject to their respective licenses.",
+      "Ownership and licensing are defined in the project agreement. For custom work, the agreement can specify transfer of the project source code and project-specific design assets after the agreed payments are completed. Third-party software, fonts, stock media, plugins, and other licensed assets remain subject to their original licenses.",
   },
   {
     id: 21,
     category: "Support",
     question: "What happens if something breaks after launch?",
     answer:
-      "Every project includes a post-launch warranty period during which we fix any bugs or issues related to our development work at no additional cost. For issues caused by third-party integrations, hosting environment changes, or client-made modifications, we assess on a case-by-case basis. For ongoing peace of mind, our maintenance retainer plans cover continuous monitoring and rapid response to any issues.",
+      "Projects normally include an agreed post-launch support or warranty period for issues caused by the delivered work. Problems caused by third-party services, hosting changes, unauthorized modifications, or new requirements may require additional work. Ongoing maintenance plans can provide continued technical support.",
   },
   {
     id: 22,
     category: "Support",
     question: "Can I update the website content myself after launch?",
     answer:
-      "Yes, if your project includes a CMS (which we recommend for content-heavy sites). We set up an easy-to-use content management system and provide a walkthrough so you can add blog posts, update pages, and manage content without needing to touch any code. For sites without a CMS, we offer affordable content update packages.",
+      "Yes. If the project includes a CMS, we can provide a content-management interface that allows authorized team members to update supported content without changing the source code. We can also provide documentation or a walkthrough after launch.",
   },
   {
     id: 23,
     category: "Support",
     question: "How do I get in touch if I have an urgent issue?",
     answer:
-      "For clients on active projects or maintenance plans, we provide a direct WhatsApp line for urgent issues. Response time for urgent matters is typically under 2 hours during business hours. For general inquiries, email us at Heroydigitalsolution@gmail.com and we respond within 24 hours.",
+      "Active clients can use the agreed project communication channel for urgent issues. For general inquiries, you can contact HEROY through the contact page or the published company email. Response times depend on the support arrangement, time of day, and severity of the issue.",
   },
   {
     id: 24,
     category: "Company",
     question: "Is HEROY a registered company or a freelance collective?",
     answer:
-      "HEROY is a growing digital solutions studio based in Injibara, Ethiopia, operating with the structure and processes of a professional agency — written agreements, defined scopes, and a dedicated team working full-time on client projects.",
+      "HEROY is a growing digital solutions studio based in Ethiopia. Our projects use defined scopes, written agreements, documented deliverables, and a structured team workflow. Any formal legal or registration information should be confirmed through the company's official documentation.",
   },
   {
     id: 25,
     category: "Company",
     question: "What makes HEROY different from hiring a freelancer?",
     answer:
-      "You get the reliability of an agency — written contracts, defined process, multiple specialists covering different disciplines — with the direct access and speed of a freelancer. There's no account manager relaying messages between you and the person doing the work; you talk to them directly.",
+      "HEROY is structured around multiple digital disciplines, including engineering, design, marketing, and creative production. This allows projects that require several specialties to be coordinated within one team while maintaining direct communication with the people involved in the work.",
   },
   {
     id: 26,
     category: "Company",
     question: "How big is the HEROY team?",
     answer:
-      "We're a lean, three-person founding team, each owning a full discipline end-to-end — frontend, backend, and data. As demand grows, we bring in vetted specialists (designers, marketers, video editors) for specific project needs.",
+      "HEROY currently operates with a lean core team and can bring in specialized professionals for specific project requirements. This model allows the project team to be matched to the work instead of maintaining a large fixed structure for every service.",
   },
   {
     id: 27,
     category: "Company",
     question: "Can I visit your office or meet in person?",
     answer:
-      "Our team is based in Injibara, Ethiopia. We primarily work remotely with clients worldwide via video calls, WhatsApp, and Telegram, but we're happy to meet in person if you're in the area — just ask when you reach out.",
+      "The HEROY team is based in Ethiopia and works with clients remotely. When practical, in-person meetings can be discussed for clients in the local area. International clients can work with the team through video meetings and digital collaboration tools.",
+  },
+
+  // ---------------------------------------------------------------------------
+  // INTERNATIONAL DIGITAL MARKETING
+  // ---------------------------------------------------------------------------
+
+  {
+    id: 28,
+    category: "Digital Marketing",
+    question: "What does digital marketing include at HEROY?",
+    answer:
+      "Our digital marketing work can include strategy, audience research, SEO, content marketing, social media, paid advertising, email marketing, creative production, landing pages, conversion optimization, analytics, reporting, lead generation, remarketing, and marketing automation. The mix depends on your objectives, audience, market, and available budget.",
+  },
+  {
+    id: 29,
+    category: "Digital Marketing",
+    question: "Can HEROY create a complete digital marketing strategy?",
+    answer:
+      "Yes. We can develop a strategy around your business objectives, target audiences, positioning, customer journey, competitors, channels, content requirements, conversion goals, measurement framework, and budget. The strategy can then be translated into an execution roadmap with priorities and measurable objectives.",
+  },
+  {
+    id: 30,
+    category: "Digital Marketing",
+    question: "Do you offer international SEO?",
+    answer:
+      "Yes. International SEO can include country and language targeting, international keyword research, localized content strategy, technical international SEO, appropriate URL structures, hreflang implementation where required, international landing pages, local search considerations, and performance measurement by market.",
+  },
+  {
+    id: 31,
+    category: "International Growth",
+    question: "Can you help a business enter a new international market?",
+    answer:
+      "Yes. We can support the digital side of market expansion through audience research, competitor research, localization planning, international SEO, localized landing pages, content strategy, paid-media testing, analytics, and conversion optimization. Market-entry decisions should also consider legal, regulatory, operational, cultural, and commercial requirements outside the scope of digital marketing.",
+  },
+  {
+    id: 32,
+    category: "International Growth",
+    question: "How do you approach marketing in different countries?",
+    answer:
+      "We start by identifying differences in audience behavior, search demand, language, culture, competition, purchasing processes, available channels, and business objectives. We then adapt messaging, creative assets, landing pages, campaigns, and measurement to the relevant market instead of simply translating one campaign word-for-word.",
+  },
+  {
+    id: 33,
+    category: "International Growth",
+    question: "Do you provide multilingual marketing?",
+    answer:
+      "We can support multilingual digital campaigns and localized content workflows. Depending on the language and market, we may work with qualified translators, native-language specialists, or client-provided reviewers to ensure that localization is appropriate for the intended audience.",
+  },
+  {
+    id: 34,
+    category: "International Growth",
+    question: "What is the difference between translation and localization?",
+    answer:
+      "Translation focuses primarily on converting language from one language to another. Localization goes further by adapting terminology, messaging, examples, offers, calls to action, imagery, formats, and user experience to the cultural and commercial context of the target market.",
+  },
+  {
+    id: 35,
+    category: "Digital Marketing",
+    question: "Do you provide keyword research?",
+    answer:
+      "Yes. Keyword research can identify relevant search demand, user intent, competition, commercial opportunities, geographic variations, and content opportunities. For international campaigns, keyword research should normally be performed for each relevant market and language rather than simply translating keywords from another country.",
+  },
+  {
+    id: 36,
+    category: "Digital Marketing",
+    question: "Do you provide content marketing?",
+    answer:
+      "Yes. Content marketing can include strategic blog content, landing pages, educational resources, case studies, social content, email content, video concepts, and other assets designed around audience needs and business objectives. Content plans can be connected to SEO and conversion goals.",
+  },
+  {
+    id: 37,
+    category: "Digital Marketing",
+    question: "Do you manage social media marketing?",
+    answer:
+      "Social media support can include strategy, content planning, creative direction, copywriting, campaign concepts, publishing workflows, community-oriented content, paid social campaigns, and performance reporting. The exact platforms depend on where your target audience actually spends time.",
+  },
+  {
+    id: 38,
+    category: "Digital Marketing",
+    question: "Which social media platforms do you work with?",
+    answer:
+      "The appropriate platforms depend on your audience and objectives. Depending on the project, campaigns may involve platforms such as Facebook, Instagram, LinkedIn, TikTok, YouTube, X, and other relevant channels. We recommend selecting platforms based on audience fit rather than trying to maintain every platform simultaneously.",
+  },
+  {
+    id: 39,
+    category: "Digital Marketing",
+    question: "Do you manage Google Ads and paid advertising?",
+    answer:
+      "Yes. Paid advertising services can include campaign planning, account and campaign structure, audience targeting, keyword selection, ad creative, landing-page recommendations, conversion tracking, budget management, testing, and performance analysis. Advertising spend is normally separate from agency service fees.",
+  },
+  {
+    id: 40,
+    category: "Digital Marketing",
+    question: "Can you manage Meta advertising campaigns?",
+    answer:
+      "Yes. Depending on the campaign, we can support Meta advertising across relevant placements and objectives, including audience research, creative direction, campaign structure, conversion tracking, testing, remarketing, and performance reporting. Results depend on the market, offer, creative, landing page, audience, budget, and other factors.",
+  },
+  {
+    id: 41,
+    category: "Digital Marketing",
+    question: "Do you offer email marketing?",
+    answer:
+      "Yes. Email marketing can include strategy, list segmentation, campaign planning, newsletter design, automated sequences, lead nurturing, promotional campaigns, copywriting, analytics, and optimization. We can work with the email platform that best fits the client's requirements.",
+  },
+  {
+    id: 42,
+    category: "Digital Marketing",
+    question: "Do you provide lead-generation campaigns?",
+    answer:
+      "Yes. Lead-generation work can combine advertising, landing pages, content, forms, calls to action, CRM integration, email follow-up, remarketing, and conversion optimization. The campaign should be designed around the quality of leads required rather than simply maximizing the number of form submissions.",
+  },
+  {
+    id: 43,
+    category: "Digital Marketing",
+    question: "Do you build landing pages for marketing campaigns?",
+    answer:
+      "Yes. Campaign landing pages can be designed specifically around the target audience, offer, traffic source, message, and conversion goal. We can also integrate forms, analytics, CRM systems, tracking tools, and other required marketing technology.",
+  },
+  {
+    id: 44,
+    category: "Digital Marketing",
+    question: "What is conversion rate optimization?",
+    answer:
+      "Conversion rate optimization, or CRO, is the process of improving a digital experience so that a larger proportion of qualified visitors complete a desired action. This can involve analyzing user behavior, improving messaging, simplifying forms, strengthening calls to action, improving page speed, testing layouts, and measuring the results.",
+  },
+  {
+    id: 45,
+    category: "Digital Marketing",
+    question: "Do you provide marketing analytics and reporting?",
+    answer:
+      "Yes. Reporting can cover traffic, acquisition channels, search visibility, campaign performance, leads, conversions, engagement, landing-page behavior, and other agreed KPIs. We aim to connect marketing activity to measurable business objectives rather than reporting only surface-level metrics.",
+  },
+  {
+    id: 46,
+    category: "Digital Marketing",
+    question: "Can you set up Google Analytics and conversion tracking?",
+    answer:
+      "Yes. Depending on the project, we can help configure analytics, conversion events, campaign tracking, dashboards, and related measurement infrastructure. Access requirements and privacy responsibilities are agreed with the client before implementation.",
+  },
+  {
+    id: 47,
+    category: "Digital Marketing",
+    question: "How do you measure whether a marketing campaign is successful?",
+    answer:
+      "Success should be defined using the campaign objective. Depending on the business, useful measures can include qualified leads, sales, conversion rate, customer acquisition cost, return on advertising spend, organic visibility, qualified traffic, engagement, email performance, or other agreed business KPIs. No single metric is appropriate for every campaign.",
+  },
+  {
+    id: 48,
+    category: "Digital Marketing",
+    question: "Do you provide monthly marketing reports?",
+    answer:
+      "Yes. For ongoing marketing engagements, reporting frequency is agreed as part of the engagement. Monthly reporting can summarize activity, performance, key observations, completed work, opportunities, and recommended next steps.",
+  },
+  {
+    id: 49,
+    category: "Digital Marketing",
+    question: "How quickly can SEO produce results?",
+    answer:
+      "SEO timelines vary significantly by website authority, technical condition, competition, search demand, content quality, industry, market, and starting position. Some technical improvements can have relatively quick effects, while competitive search terms and new domains can require sustained work over a longer period. We do not guarantee specific rankings or fixed timelines.",
+  },
+  {
+    id: 50,
+    category: "Digital Marketing",
+    question: "Do you guarantee first-page or number-one Google rankings?",
+    answer:
+      "No. Ethical SEO work cannot guarantee a specific Google ranking because search results depend on many external and changing factors. We can establish a clear strategy, improve technical and content foundations, measure progress, and optimize based on evidence.",
+  },
+  {
+    id: 51,
+    category: "Digital Marketing",
+    question: "Do you offer technical SEO audits?",
+    answer:
+      "Yes. A technical SEO audit can examine crawlability, indexation, site architecture, metadata, canonicalization, structured data, internal linking, redirects, page performance, mobile usability, sitemap configuration, and other technical factors relevant to organic search.",
+  },
+  {
+    id: 52,
+    category: "International Growth",
+    question: "How do you handle international domains and URL structures?",
+    answer:
+      "The appropriate structure depends on the business and technical requirements. Options can include country-code domains, subdomains, subdirectories, or other architectures. We consider market targeting, brand strategy, technical complexity, content management, SEO requirements, and long-term scalability before recommending an approach.",
+  },
+  {
+    id: 53,
+    category: "International Growth",
+    question: "What is hreflang and when is it useful?",
+    answer:
+      "Hreflang is a technical SEO mechanism that helps search engines understand relationships between localized versions of pages for different languages or regional audiences. It can be useful for websites with substantially equivalent content targeted to different languages or regions. Correct implementation requires careful URL and language-region mapping.",
+  },
+  {
+    id: 54,
+    category: "International Growth",
+    question: "Can you optimize a website for both local and international audiences?",
+    answer:
+      "Yes. A website can be structured around multiple audience groups when the information architecture, content, technical SEO, analytics, and conversion paths are designed appropriately. We can separate local and international requirements while maintaining a consistent overall brand experience.",
+  },
+  {
+    id: 55,
+    category: "Digital Marketing",
+    question: "Do you use AI in digital marketing?",
+    answer:
+      "AI can be used as part of marketing workflows for research, ideation, content assistance, data analysis, automation, personalization, customer-support workflows, and other appropriate tasks. Human review remains important for brand accuracy, factual quality, originality, privacy, and strategic decisions.",
+  },
+  {
+    id: 56,
+    category: "Digital Marketing",
+    question: "Can AI-generated content be used for SEO?",
+    answer:
+      "AI can assist with research, outlines, drafts, and content workflows, but publishing should focus on useful, accurate, original content that genuinely serves the audience. Content should be reviewed and improved by people who understand the subject, brand, and target market.",
+  },
+  {
+    id: 57,
+    category: "Digital Marketing",
+    question: "Do you help with marketing automation?",
+    answer:
+      "Yes. Depending on the business, automation can connect forms, CRM systems, email campaigns, lead qualification, notifications, analytics, customer support, and other workflows. The goal is to reduce repetitive manual work while maintaining an appropriate customer experience.",
+  },
+  {
+    id: 58,
+    category: "Digital Marketing",
+    question: "Can you integrate marketing with a CRM?",
+    answer:
+      "Yes. Marketing systems can be connected to CRM platforms where the required APIs and permissions are available. This can help connect campaign sources, leads, follow-up workflows, customer information, and reporting.",
+  },
+  {
+    id: 59,
+    category: "Digital Marketing",
+    question: "Do you create marketing graphics and video content?",
+    answer:
+      "Yes. Depending on the engagement, we can support social graphics, advertising creatives, branded visual assets, short-form video, promotional content, motion graphics, and other creative materials. Creative production is planned around the campaign's audience, platform, brand, and objective.",
+  },
+  {
+    id: 60,
+    category: "International Growth",
+    question: "Can you work with an international marketing team we already have?",
+    answer:
+      "Yes. HEROY can work as an external specialist team alongside an existing internal marketing department, development team, agency, or consultant. Responsibilities, ownership, communication channels, access, and deliverables are defined before the engagement begins.",
+  },
+  {
+    id: 61,
+    category: "International Growth",
+    question: "Can you work with international clients remotely?",
+    answer:
+      "Yes. Remote delivery is a core part of our workflow. International projects can use video meetings, email, messaging platforms, shared documents, project-management tools, and version-controlled development workflows. Meeting schedules can be coordinated across time zones.",
+  },
+  {
+    id: 62,
+    category: "International Growth",
+    question: "How do you protect client marketing and business information?",
+    answer:
+      "Access should be limited to the systems and information required for the project. Where appropriate, clients can use role-based access, shared business accounts, password managers, secure credentials, signed agreements, and other access controls. Specific security and confidentiality requirements should be documented before sensitive systems are accessed.",
+  },
+  {
+    id: 63,
+    category: "Digital Marketing",
+    question: "Do you work with existing marketing data?",
+    answer:
+      "Yes. Existing analytics, advertising data, CRM information, search data, previous campaign results, and customer research can provide useful context. We review available data before making recommendations where the data is sufficiently reliable and relevant to the project.",
+  },
+  {
+    id: 64,
+    category: "Digital Marketing",
+    question: "Can you audit an existing digital marketing campaign?",
+    answer:
+      "Yes. A campaign audit can review targeting, messaging, creative, landing pages, tracking, conversion events, budget allocation, search terms, audience performance, funnel behavior, and other relevant campaign factors. Recommendations depend on the platforms and data available.",
+  },
+  {
+    id: 65,
+    category: "Digital Marketing",
+    question: "Do you manage advertising budgets directly?",
+    answer:
+      "Advertising spend and agency fees are normally treated separately. Depending on the engagement, the client may pay advertising platforms directly or use another agreed payment arrangement. Budget ownership, approval requirements, and spending limits should always be documented before campaigns launch.",
+  },
+  {
+    id: 66,
+    category: "Digital Marketing",
+    question: "Can you help improve an existing brand's online presence?",
+    answer:
+      "Yes. We can review the current website, search visibility, social profiles, content, visual identity, customer journey, conversion paths, and marketing channels to identify opportunities for improvement. The resulting roadmap can combine brand, design, development, SEO, content, and marketing work.",
+  },
+  {
+    id: 67,
+    category: "International Growth",
+    question: "Can you help an Ethiopian business market internationally?",
+    answer:
+      "Yes. We can support the digital side of international expansion through positioning, website improvements, international SEO, content, social media, paid advertising, landing pages, analytics, and conversion optimization. The appropriate strategy depends on the business, target countries, product or service, competition, and available resources.",
+  },
+  {
+    id: 68,
+    category: "International Growth",
+    question: "Can you help international companies reach customers in Ethiopia?",
+    answer:
+      "Yes. We can support market-specific digital work for organizations interested in reaching audiences in Ethiopia, subject to the project's industry, target audience, regulatory requirements, available channels, and commercial objectives. Local market research and audience understanding are important parts of the planning process.",
   },
 ];
 
 const typewriterWords = [
   "Services",
+  "Digital Marketing",
+  "International Growth",
   "Pricing",
   "Process",
   "Technical",
@@ -218,157 +537,69 @@ const typewriterWords = [
 
 const relatedLinks = [
   {
-    label: "Pricing FAQ",
-    href: "/pricing",
-    text: "Specific questions about our plans, add-ons, and billing.",
-  },
-  {
-    label: "Services FAQ",
+    label: "Services",
     href: "/services",
-    text: "Questions about engagement models and industries we serve.",
+    text: "Explore HEROY's digital services, technology capabilities, and engagement options.",
   },
   {
-    label: "Careers FAQ",
+    label: "Pricing",
+    href: "/pricing",
+    text: "Review our available packages and understand how project pricing is structured.",
+  },
+  {
+    label: "Careers",
     href: "/careers",
-    text: "Questions about joining the team, remote work, and hiring.",
+    text: "Learn about our hiring process, open roles, and opportunities to work with HEROY.",
   },
 ];
-
-/* ============================================================
-   ADDED: Professional FAQ content framework
-   These additions use practical agency/project concepts rather
-   than invented statistics, client results, or testimonials.
-   ============================================================ */
-
-const projectReadiness = [
-  {
-    title: "Business context",
-    text:
-      "The most useful starting point is understanding what the organization does, who it serves, what currently works, and what needs to improve. This gives the project a practical foundation before design or development begins.",
-  },
-  {
-    title: "Project objective",
-    text:
-      "A website, application, campaign, or digital platform should have a clear purpose. Depending on the project, that may involve presenting information, generating qualified inquiries, supporting operations, selling products, publishing content, or enabling a digital workflow.",
-  },
-  {
-    title: "Existing assets",
-    text:
-      "Existing websites, brand guidelines, logos, photography, copy, analytics, repositories, domains, hosting accounts, CMS content, and third-party integrations can all affect project scope. Reviewing these early helps avoid unnecessary rebuilding.",
-  },
-  {
-    title: "Technical requirements",
-    text:
-      "Authentication, payments, databases, APIs, CMS functionality, user roles, dashboards, integrations, file uploads, search, multilingual content, and deployment requirements should be identified before implementation wherever possible.",
-  },
-];
-
-const deliveryPrinciples = [
-  {
-    title: "Clear scope",
-    text:
-      "The agreed scope should describe the major deliverables, functionality, responsibilities, assumptions, and exclusions so everyone understands what is being built.",
-  },
-  {
-    title: "Design before unnecessary implementation",
-    text:
-      "Important interface decisions are easier to review when they are visible before large amounts of development work are completed. This creates an opportunity to align structure, content, navigation, and interaction patterns early.",
-  },
-  {
-    title: "Responsive by default",
-    text:
-      "Modern digital products need to work across different viewport sizes and input methods. Responsive layouts, readable typography, accessible controls, and touch-friendly interaction are considered throughout the interface rather than added at the end.",
-  },
-  {
-    title: "Performance-aware development",
-    text:
-      "Performance is influenced by images, fonts, JavaScript, CSS, third-party services, network requests, rendering strategy, and page structure. These factors should be considered during implementation and tested against the actual product.",
-  },
-  {
-    title: "Accessible interaction",
-    text:
-      "Keyboard navigation, visible focus states, meaningful labels, readable contrast, semantic structure, text alternatives, and usable interactive controls are important parts of professional interface development.",
-  },
-  {
-    title: "Maintainable systems",
-    text:
-      "Reusable components, consistent naming, predictable data structures, environment configuration, validation, error handling, and clear deployment practices make a digital product easier to maintain after launch.",
-  },
-];
-
-const qualityAreas = [
-  {
-    title: "Experience",
-    text:
-      "Navigation, information hierarchy, content clarity, responsive behavior, interaction feedback, forms, and user journeys should work together rather than being treated as separate visual details.",
-  },
-  {
-    title: "Search visibility",
-    text:
-      "Technical foundations can include semantic markup, descriptive metadata, canonical URLs, structured content, crawlable navigation, appropriate headings, XML sitemaps, and content that genuinely answers user intent.",
-  },
-  {
-    title: "Accessibility",
-    text:
-      "Accessibility work can include semantic HTML, keyboard operation, focus management, appropriate labels, text alternatives, color and contrast considerations, and testing across different interaction needs.",
-  },
-  {
-    title: "Security",
-    text:
-      "Application security should consider authentication, authorization, input validation, dependency management, secure configuration, secrets handling, data protection, logging, and the risks associated with third-party integrations.",
-  },
-  {
-    title: "Measurement",
-    text:
-      "When analytics are required, useful measurement starts with defined questions. Events and conversions should correspond to meaningful user actions instead of collecting data without a clear purpose.",
-  },
-  {
-    title: "Handover",
-    text:
-      "A professional launch should leave the client with appropriate access, deployment information, relevant credentials, content-management guidance, and an understanding of how the system is maintained.",
-  },
-];
-
-const categoryDescriptions: Record<string, string> = {
-  All:
-    "A complete reference for common questions about working with HEROY Digital Solutions.",
-  Company:
-    "Learn how HEROY is structured, how the team works, and how client collaboration is handled.",
-  Services:
-    "Understand the types of digital products, services, platforms, and ongoing support HEROY can provide.",
-  Pricing:
-    "Review the way project pricing, payments, revisions, scope changes, and budgeting are approached.",
-  Process:
-    "Understand discovery, planning, design, development, review, launch, and post-launch collaboration.",
-  Technical:
-    "Explore technology choices, responsive development, SEO foundations, hosting, ownership, and technical delivery.",
-  Support:
-    "Learn what happens after launch, how maintenance works, and how support is handled.",
-};
 
 export default function FAQPageClient() {
-  const [active, setActive] = useState("All");
+  const [active, setActive] = useState<"All" | FAQCategory>("All");
   const [openId, setOpenId] = useState<number | null>(null);
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
     let list =
-      active === "All" ? faqs : faqs.filter((f) => f.category === active);
+      active === "All"
+        ? faqs
+        : faqs.filter((faq) => faq.category === active);
 
-    if (query.trim()) {
-      const q = query.trim().toLowerCase();
+    const normalizedQuery = query.trim().toLowerCase();
+
+    if (normalizedQuery) {
       list = list.filter(
-        (f) =>
-          f.question.toLowerCase().includes(q) ||
-          f.answer.toLowerCase().includes(q),
+        (faq) =>
+          faq.question.toLowerCase().includes(normalizedQuery) ||
+          faq.answer.toLowerCase().includes(normalizedQuery) ||
+          faq.category.toLowerCase().includes(normalizedQuery)
       );
     }
 
     return list;
   }, [active, query]);
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
     <div className="relative overflow-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
+
       <div className="glow-orb w-96 h-96 bg-primary/15 -top-20 -right-20" />
       <div
         className="glow-orb w-80 h-80 bg-accent/10 top-1/2 -left-20"
@@ -387,7 +618,8 @@ export default function FAQPageClient() {
             transition={{ duration: 0.5 }}
           >
             <span className="badge mb-4">
-              <Sparkles size={14} /> FAQ
+              <Sparkles size={14} />
+              FAQ
             </span>
           </motion.div>
 
@@ -410,8 +642,9 @@ export default function FAQPageClient() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-muted text-lg leading-relaxed mb-8"
           >
-            Honest answers to the questions we get asked most often. If you do
-            not find what you are looking for, just ask us directly.
+            Clear answers about HEROY's services, digital marketing,
+            international growth, technology, pricing, process, and support.
+            If you do not find what you are looking for, contact us directly.
           </motion.p>
 
           <motion.div
@@ -424,13 +657,16 @@ export default function FAQPageClient() {
               size={16}
               className="absolute left-4 top-1/2 -translate-y-1/2 text-muted"
             />
+
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(event) => setQuery(event.target.value)}
               placeholder="Search questions..."
+              aria-label="Search frequently asked questions"
               className="w-full rounded-full bg-white/5 border border-border pl-11 pr-10 py-3 text-sm text-white placeholder:text-muted/60 outline-none focus:border-primary transition-colors"
             />
+
             {query && (
               <button
                 type="button"
@@ -453,397 +689,140 @@ export default function FAQPageClient() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-wrap gap-3 mb-10"
           >
-            {categories.map((cat) => (
+            {categories.map((category) => (
               <button
-                key={cat}
+                key={category}
                 type="button"
                 onClick={() => {
-                  setActive(cat);
+                  setActive(category);
                   setOpenId(null);
                 }}
+                aria-pressed={active === category}
                 className={`text-sm font-medium px-5 py-2 rounded-full border transition-all ${
-                  active === cat
+                  active === category
                     ? "bg-grad-primary text-background border-transparent"
                     : "border-border text-muted hover:text-white hover:border-primary/40"
                 }`}
                 style={
-                  active === cat
-                    ? { boxShadow: "0 8px 24px rgba(124,92,255,0.4)" }
+                  active === category
+                    ? {
+                        boxShadow:
+                          "0 8px 24px rgba(124,92,255,0.4)",
+                      }
                     : undefined
                 }
               >
-                {cat}
+                {category}
               </button>
             ))}
           </motion.div>
 
-          {/* =====================================================
-              ADDED: Active FAQ category context panel
-              ===================================================== */}
-          <motion.div
-            key={`context-${active}`}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
-            className="glass rounded-2xl p-5 sm:p-6 mb-8"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <span className="text-xs uppercase tracking-[0.18em] text-accent font-semibold">
-                  {active === "All" ? "Knowledge Center" : `${active} Questions`}
-                </span>
-                <p className="text-sm text-muted leading-relaxed mt-2 max-w-2xl">
-                  {categoryDescriptions[active]}
-                </p>
-              </div>
-
-              <div className="shrink-0 rounded-xl bg-white/5 border border-border px-4 py-3 text-center">
-                <span className="block text-xl font-display font-bold text-white">
-                  {filtered.length}
-                </span>
-                <span className="text-[11px] text-muted uppercase tracking-wider">
-                  {query ? "Matches" : "Questions"}
-                </span>
-              </div>
-            </div>
-          </motion.div>
-
           <AnimatePresence mode="wait">
             <motion.div
-              key={active + query}
+              key={`${active}-${query}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
               className="flex flex-col gap-3 mb-16"
             >
-              {filtered.map((faq, i) => (
-                <motion.div
-                  key={faq.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: i * 0.04 }}
-                  className="glass rounded-2xl overflow-hidden"
-                  onMouseEnter={(e) => {
-                    if (openId !== faq.id) {
-                      (e.currentTarget as HTMLElement).style.borderColor =
-                        "rgba(124,92,255,0.4)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (openId !== faq.id) {
-                      (e.currentTarget as HTMLElement).style.borderColor = "";
-                    }
-                  }}
-                >
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setOpenId(openId === faq.id ? null : faq.id)
-                    }
-                    className="w-full flex items-center justify-between px-6 py-5 text-left gap-4"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded-full shrink-0">
-                        {faq.category}
-                      </span>
-                      <span className="font-display font-semibold text-sm sm:text-base text-white">
-                        {faq.question}
-                      </span>
-                    </div>
-                    <motion.div
-                      animate={{ rotate: openId === faq.id ? 180 : 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="shrink-0"
-                    >
-                      <ChevronDown size={18} className="text-muted" />
-                    </motion.div>
-                  </button>
+              {filtered.map((faq, index) => {
+                const isOpen = openId === faq.id;
 
-                  <AnimatePresence>
-                    {openId === faq.id && (
+                return (
+                  <motion.div
+                    key={faq.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: Math.min(index * 0.025, 0.25),
+                    }}
+                    className="glass rounded-2xl overflow-hidden border border-transparent"
+                    onMouseEnter={(event) => {
+                      if (!isOpen) {
+                        event.currentTarget.style.borderColor =
+                          "rgba(124,92,255,0.4)";
+                      }
+                    }}
+                    onMouseLeave={(event) => {
+                      if (!isOpen) {
+                        event.currentTarget.style.borderColor = "";
+                      }
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setOpenId(isOpen ? null : faq.id)
+                      }
+                      aria-expanded={isOpen}
+                      aria-controls={`faq-answer-${faq.id}`}
+                      className="w-full flex items-center justify-between px-6 py-5 text-left gap-4"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded-full shrink-0">
+                          {faq.category}
+                        </span>
+
+                        <span className="font-display font-semibold text-sm sm:text-base text-white">
+                          {faq.question}
+                        </span>
+                      </div>
+
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden"
+                        animate={{ rotate: isOpen ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="shrink-0"
                       >
-                        <p className="px-6 pb-5 text-sm text-muted leading-relaxed border-t border-border pt-4">
-                          {faq.answer}
-                        </p>
+                        <ChevronDown
+                          size={18}
+                          className="text-muted"
+                        />
                       </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              ))}
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          id={`faq-answer-${faq.id}`}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="px-6 pb-5 text-sm text-muted leading-relaxed border-t border-border pt-4">
+                            {faq.answer}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              })}
 
               {filtered.length === 0 && (
-                <p className="text-center text-muted py-16">
-                  No questions match "{query}". Try a different search or ask
-                  us directly below.
-                </p>
+                <div className="text-center py-16">
+                  <p className="text-muted mb-4">
+                    No questions match &quot;{query}&quot;.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setQuery("");
+                      setActive("All");
+                    }}
+                    className="text-sm text-accent hover:text-white transition-colors"
+                  >
+                    Clear filters
+                  </button>
+                </div>
               )}
             </motion.div>
           </AnimatePresence>
 
-          {/* =====================================================
-              ADDED: Project readiness section
-              ===================================================== */}
-          <section className="mb-20">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6 }}
-              className="max-w-3xl mb-8"
-            >
-              <span className="badge mb-4">
-                <Sparkles size={14} /> Before You Start
-              </span>
-
-              <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-4">
-                What makes a digital project easier to plan?
-              </h2>
-
-              <p className="text-muted leading-relaxed">
-                Good digital work starts with useful information. You do not
-                need a perfect specification before contacting HEROY, but
-                having context around your goals, audience, existing assets,
-                and technical requirements makes discovery more productive.
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              {projectReadiness.map((item, index) => (
-                <motion.article
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{
-                    duration: 0.5,
-                    delay: index * 0.06,
-                  }}
-                  className="glass rounded-2xl p-6 hover:border-primary/30 transition-colors"
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 border border-primary/20 text-sm font-bold text-accent">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-
-                    <div>
-                      <h3 className="font-display font-semibold text-white mb-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-muted leading-relaxed">
-                        {item.text}
-                      </p>
-                    </div>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-          </section>
-
-          {/* =====================================================
-              ADDED: Professional delivery principles
-              ===================================================== */}
-          <section className="mb-20">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6 }}
-              className="text-center max-w-3xl mx-auto mb-10"
-            >
-              <span className="badge mb-4">
-                <Sparkles size={14} /> Delivery Principles
-              </span>
-
-              <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-4">
-                What professional delivery should look like
-              </h2>
-
-              <p className="text-muted leading-relaxed">
-                The technology can change from project to project. The
-                underlying discipline should not. These principles help turn a
-                collection of pages and features into a maintainable digital
-                product.
-              </p>
-            </motion.div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {deliveryPrinciples.map((item, index) => (
-                <motion.article
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{
-                    duration: 0.45,
-                    delay: index * 0.05,
-                  }}
-                  className="glass rounded-2xl p-6 group hover:border-primary/30 transition-all"
-                >
-                  <div className="flex items-center justify-between gap-4 mb-5">
-                    <span className="text-xs font-bold tracking-[0.16em] uppercase text-accent">
-                      0{index + 1}
-                    </span>
-
-                    <ArrowRight
-                      size={16}
-                      className="text-muted group-hover:text-accent group-hover:translate-x-1 transition-all"
-                    />
-                  </div>
-
-                  <h3 className="font-display font-semibold text-white mb-3">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-sm text-muted leading-relaxed">
-                    {item.text}
-                  </p>
-                </motion.article>
-              ))}
-            </div>
-          </section>
-
-          {/* =====================================================
-              ADDED: Technical quality framework
-              ===================================================== */}
-          <section className="mb-20">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6 }}
-              className="glass-strong rounded-3xl p-7 sm:p-10 relative overflow-hidden"
-            >
-              <div className="glow-orb w-64 h-64 bg-primary/10 -top-28 -right-20" />
-
-              <div className="relative">
-                <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10">
-                  <div>
-                    <span className="badge mb-4">
-                      <Sparkles size={14} /> Quality Framework
-                    </span>
-
-                    <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-4">
-                      A digital product is more than its visual design.
-                    </h2>
-
-                    <p className="text-muted leading-relaxed mb-6">
-                      A polished interface is only one part of a professional
-                      delivery. Depending on the project, quality also involves
-                      discoverability, accessibility, performance, security,
-                      measurement, maintainability, and a clear handover.
-                    </p>
-
-                    <Link href="/services" className="btn-outline">
-                      Explore Our Services
-                      <ArrowRight size={16} />
-                    </Link>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {qualityAreas.map((item, index) => (
-                      <div
-                        key={item.title}
-                        className="rounded-2xl bg-white/[0.03] border border-border p-5"
-                      >
-                        <div className="flex items-center gap-3 mb-3">
-                          <span className="h-7 w-7 rounded-lg bg-accent/10 text-accent text-xs font-bold flex items-center justify-center">
-                            {index + 1}
-                          </span>
-
-                          <h3 className="font-display font-semibold text-white text-sm">
-                            {item.title}
-                          </h3>
-                        </div>
-
-                        <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                          {item.text}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </section>
-
-          {/* =====================================================
-              ADDED: FAQ coverage / category navigation
-              ===================================================== */}
-          <section className="mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-70px" }}
-              transition={{ duration: 0.6 }}
-              className="mb-8"
-            >
-              <span className="text-xs uppercase tracking-[0.18em] text-accent font-semibold">
-                Explore by topic
-              </span>
-
-              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mt-3 mb-3">
-                Find the information you need faster
-              </h2>
-
-              <p className="text-muted max-w-2xl leading-relaxed">
-                Use the categories above to narrow the FAQ library. Each area
-                covers a different part of the client journey, from deciding
-                what to build to understanding technical delivery and ongoing
-                support.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {categories
-                .filter((category) => category !== "All")
-                .map((category) => {
-                  const count = faqs.filter(
-                    (faq) => faq.category === category,
-                  ).length;
-
-                  return (
-                    <button
-                      key={category}
-                      type="button"
-                      onClick={() => {
-                        setActive(category);
-                        setOpenId(null);
-                        setQuery("");
-                        window.scrollTo({
-                          top: 0,
-                          behavior: "smooth",
-                        });
-                      }}
-                      className="glass rounded-xl p-4 text-left hover:border-primary/40 transition-all group"
-                    >
-                      <span className="block text-xs text-accent font-semibold mb-2">
-                        {String(count).padStart(2, "0")} answers
-                      </span>
-
-                      <span className="font-display font-semibold text-sm text-white">
-                        {category}
-                      </span>
-
-                      <ArrowRight
-                        size={14}
-                        className="mt-4 text-muted group-hover:text-accent group-hover:translate-x-1 transition-all"
-                      />
-                    </button>
-                  );
-                })}
-            </div>
-          </section>
-
-          {/* =====================================================
-              EXISTING: Related FAQ links
-              ===================================================== */}
           <div className="grid sm:grid-cols-3 gap-4 mb-16">
             {relatedLinks.map((link) => (
               <Link
@@ -853,11 +832,13 @@ export default function FAQPageClient() {
               >
                 <p className="text-sm font-semibold text-white mb-1 flex items-center justify-between">
                   {link.label}
+
                   <ArrowRight
                     size={14}
                     className="text-accent group-hover:translate-x-1 transition-transform"
                   />
                 </p>
+
                 <p className="text-xs text-muted leading-relaxed">
                   {link.text}
                 </p>
@@ -873,6 +854,7 @@ export default function FAQPageClient() {
             className="glass-strong rounded-3xl p-10 text-center relative overflow-hidden"
           >
             <div className="glow-orb w-48 h-48 bg-primary/25 -top-10 -left-10" />
+
             <div
               className="glow-orb w-40 h-40 bg-accent/20 -bottom-10 -right-10"
               style={{ animationDelay: "2s" }}
@@ -881,12 +863,15 @@ export default function FAQPageClient() {
             <div className="relative">
               <h2 className="font-display font-bold text-xl sm:text-2xl text-white mb-3">
                 Still have questions?{" "}
-                <span className="text-gradient">Just ask us directly</span>
+                <span className="text-gradient">
+                  Talk to our team
+                </span>
               </h2>
 
               <p className="text-muted text-sm max-w-md mx-auto mb-6">
-                Our team responds to every message personally. No bots, no
-                templates — just honest answers to your specific questions.
+                Tell us about your business, audience, project, or
+                growth goal. We can help identify the appropriate next
+                steps and scope.
               </p>
 
               <div className="flex flex-wrap justify-center gap-3">
@@ -907,29 +892,3 @@ export default function FAQPageClient() {
     </div>
   );
 }
-export default function FAQPageClient() {
-  const [active, setActive] = useState("All");
-  const [openId, setOpenId] = useState<number | null>(null);
-  const [query, setQuery] = useState("");
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-
-  const filtered = useMemo(() => {
-      return (
-    <div className="relative overflow-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <div className="glow-orb w-96 h-96 bg-primary/15 -top-20 -right-20" />
