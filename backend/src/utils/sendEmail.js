@@ -1,5 +1,20 @@
 const nodemailer = require("nodemailer");
 
+// Any text a visitor submits (name, message, notes, etc.) gets inserted
+// into HTML emails below via template literals. Without escaping,
+// someone could submit a message containing HTML or a <script> tag
+// that would render in the admin's or client's email client. This
+// escapes the five characters that matter for HTML injection.
+const escapeHtml = (value) => {
+  if (value === null || value === undefined) return "";
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+};
+
 const createTransporter = () => {
   return nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -21,7 +36,7 @@ const sendContactNotification = async (contactData) => {
   const adminMailOptions = {
     from: process.env.EMAIL_FROM,
     to: process.env.EMAIL_TO,
-    subject: `New Contact Form Submission — ${contactData.service || "General Inquiry"}`,
+    subject: `New Contact Form Submission — ${escapeHtml(contactData.service || "General Inquiry")}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 8px;">
         <div style="background: linear-gradient(135deg, #7c5cff, #22d3ee); padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
@@ -32,33 +47,33 @@ const sendContactNotification = async (contactData) => {
           <table style="width: 100%; border-collapse: collapse;">
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 12px 0; font-weight: bold; color: #555; width: 35%;">Full Name</td>
-              <td style="padding: 12px 0; color: #333;">${contactData.name}</td>
+              <td style="padding: 12px 0; color: #333;">${escapeHtml(contactData.name)}</td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 12px 0; font-weight: bold; color: #555;">Email</td>
               <td style="padding: 12px 0; color: #333;">
-                <a href="mailto:${contactData.email}" style="color: #7c5cff;">${contactData.email}</a>
+                <a href="mailto:${escapeHtml(contactData.email)}" style="color: #7c5cff;">${escapeHtml(contactData.email)}</a>
               </td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 12px 0; font-weight: bold; color: #555;">Phone</td>
-              <td style="padding: 12px 0; color: #333;">${contactData.phone || "Not provided"}</td>
+              <td style="padding: 12px 0; color: #333;">${escapeHtml(contactData.phone || "Not provided")}</td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 12px 0; font-weight: bold; color: #555;">Company</td>
-              <td style="padding: 12px 0; color: #333;">${contactData.company || "Not provided"}</td>
+              <td style="padding: 12px 0; color: #333;">${escapeHtml(contactData.company || "Not provided")}</td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 12px 0; font-weight: bold; color: #555;">Service Needed</td>
-              <td style="padding: 12px 0; color: #333;">${contactData.service || "Not specified"}</td>
+              <td style="padding: 12px 0; color: #333;">${escapeHtml(contactData.service || "Not specified")}</td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 12px 0; font-weight: bold; color: #555;">Budget</td>
-              <td style="padding: 12px 0; color: #333;">${contactData.budget || "Not specified"}</td>
+              <td style="padding: 12px 0; color: #333;">${escapeHtml(contactData.budget || "Not specified")}</td>
             </tr>
             <tr>
               <td style="padding: 12px 0; font-weight: bold; color: #555; vertical-align: top;">Message</td>
-              <td style="padding: 12px 0; color: #333; line-height: 1.6;">${contactData.message}</td>
+              <td style="padding: 12px 0; color: #333; line-height: 1.6;">${escapeHtml(contactData.message)}</td>
             </tr>
           </table>
           <div style="margin-top: 20px; padding: 15px; background: #f0f0ff; border-radius: 6px; border-left: 4px solid #7c5cff;">
@@ -68,8 +83,8 @@ const sendContactNotification = async (contactData) => {
             </p>
           </div>
           <div style="margin-top: 20px; text-align: center;">
-            <a href="mailto:${contactData.email}" style="background: linear-gradient(135deg, #7c5cff, #22d3ee); color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: bold; display: inline-block;">
-              Reply to ${contactData.name}
+            <a href="mailto:${escapeHtml(contactData.email)}" style="background: linear-gradient(135deg, #7c5cff, #22d3ee); color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: bold; display: inline-block;">
+              Reply to ${escapeHtml(contactData.name)}
             </a>
           </div>
         </div>
@@ -91,7 +106,7 @@ const sendContactNotification = async (contactData) => {
           <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0 0;">We got your message</p>
         </div>
         <div style="background: white; padding: 30px; border-radius: 0 0 8px 8px;">
-          <h2 style="color: #333; margin-top: 0;">Hi ${contactData.name},</h2>
+          <h2 style="color: #333; margin-top: 0;">Hi ${escapeHtml(contactData.name)},</h2>
           <p style="color: #555; line-height: 1.7;">
             Thank you for reaching out to HEROY. We have received your message and our team will review it shortly.
           </p>
@@ -101,8 +116,8 @@ const sendContactNotification = async (contactData) => {
           <div style="margin: 25px 0; padding: 20px; background: #f0f0ff; border-radius: 8px; border-left: 4px solid #7c5cff;">
             <p style="margin: 0; color: #555; font-size: 14px; font-weight: bold;">Your message summary:</p>
             <p style="margin: 8px 0 0 0; color: #333; font-size: 14px; line-height: 1.6;">
-              <strong>Service:</strong> ${contactData.service || "Not specified"}<br/>
-              <strong>Budget:</strong> ${contactData.budget || "Not specified"}
+              <strong>Service:</strong> ${escapeHtml(contactData.service || "Not specified")}<br/>
+              <strong>Budget:</strong> ${escapeHtml(contactData.budget || "Not specified")}
             </p>
           </div>
           <p style="color: #555; line-height: 1.7;">
@@ -131,7 +146,7 @@ const sendConsultationNotification = async (data) => {
   const mailOptions = {
     from: process.env.EMAIL_FROM,
     to: process.env.EMAIL_TO,
-    subject: `New Consultation Request — ${data.name}`,
+    subject: `New Consultation Request — ${escapeHtml(data.name)}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #7c5cff, #22d3ee); padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
@@ -141,31 +156,31 @@ const sendConsultationNotification = async (data) => {
           <table style="width: 100%; border-collapse: collapse;">
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 10px 0; font-weight: bold; color: #555;">Name</td>
-              <td style="padding: 10px 0;">${data.name}</td>
+              <td style="padding: 10px 0;">${escapeHtml(data.name)}</td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 10px 0; font-weight: bold; color: #555;">Email</td>
-              <td style="padding: 10px 0;">${data.email}</td>
+              <td style="padding: 10px 0;">${escapeHtml(data.email)}</td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 10px 0; font-weight: bold; color: #555;">Preferred Date</td>
-              <td style="padding: 10px 0;">${data.date || "Not specified"}</td>
+              <td style="padding: 10px 0;">${escapeHtml(data.date || "Not specified")}</td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 10px 0; font-weight: bold; color: #555;">Preferred Time</td>
-              <td style="padding: 10px 0;">${data.time || "Not specified"}</td>
+              <td style="padding: 10px 0;">${escapeHtml(data.time || "Not specified")}</td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 10px 0; font-weight: bold; color: #555;">Platform</td>
-              <td style="padding: 10px 0;">${data.platform || "Google Meet"}</td>
+              <td style="padding: 10px 0;">${escapeHtml(data.platform || "Google Meet")}</td>
             </tr>
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 10px 0; font-weight: bold; color: #555;">Topic</td>
-              <td style="padding: 10px 0;">${data.topic || "Not specified"}</td>
+              <td style="padding: 10px 0;">${escapeHtml(data.topic || "Not specified")}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-weight: bold; color: #555; vertical-align: top;">Notes</td>
-              <td style="padding: 10px 0;">${data.notes || "None"}</td>
+              <td style="padding: 10px 0;">${escapeHtml(data.notes || "None")}</td>
             </tr>
           </table>
         </div>
