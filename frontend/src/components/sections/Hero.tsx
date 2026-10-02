@@ -19,7 +19,7 @@ import {
   Zap,
 } from "lucide-react";
 
-import TypewriterText from "@/components/TypewriterText";
+import TypewriterText from "@/components/ui/TypewriterText";
 
 const typewriterWords = [
   "Digital Marketing",
