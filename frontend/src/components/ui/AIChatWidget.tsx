@@ -2,7 +2,14 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Sparkles, Bot, AlertCircle } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  Send,
+  Sparkles,
+  Bot,
+  AlertCircle,
+} from "lucide-react";
 
 interface Message {
   id: number;
@@ -79,7 +86,7 @@ export default function AIChatWidget() {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch {
       setError(
-        "Something went wrong. Please try again or contact us at hello@heroy.dev"
+        "Something went wrong. Please try again or contact us at hello@heroy.dev",
       );
     } finally {
       setIsTyping(false);
@@ -138,118 +145,128 @@ export default function AIChatWidget() {
             className="fixed bottom-24 right-6 z-[100] w-[360px] max-w-[calc(100vw-3rem)] hy-holo-container"
           >
             <div className="hy-holo-inner h-[500px] flex flex-col">
-            <div className="bg-grad-primary p-4 flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                <Bot size={18} className="text-background" />
-              </div>
-              <div className="flex-1">
-                <p className="font-display font-bold text-sm text-background">
-                  HEROY Assistant
-                </p>
-                <p className="text-[10px] text-background/70 flex items-center gap-1">
-                  <Sparkles size={10} /> Powered by Claude AI
-                </p>
-              </div>
-              <span className="hy-blink-dot" style={{ background: "#86efac" }} />
-            </div>
+              <div className="bg-grad-primary p-4 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                  <Bot size={18} className="text-background" />
+                </div>
 
-            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${
-                    msg.role === "user" ? "justify-end" : "justify-start"
-                  }`}
-                >
-                  {msg.role === "assistant" && (
-                    <div className="w-6 h-6 rounded-full bg-grad-primary flex items-center justify-center shrink-0 mr-2 mt-1">
-                      <Bot size={12} className="text-background" />
-                    </div>
-                  )}
+                <div className="flex-1">
+                  <p className="font-display font-bold text-sm text-background">
+                    HEROY Assistant
+                  </p>
+                  <p className="text-[10px] text-background/70 flex items-center gap-1">
+                    <Sparkles size={10} /> Powered by Claude AI
+                  </p>
+                </div>
+
+                <span
+                  className="hy-blink-dot"
+                  style={{ background: "#86efac" }}
+                />
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+                {messages.map((msg) => (
                   <div
-                    className={`max-w-[78%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                      msg.role === "user"
-                        ? "bg-grad-primary text-background rounded-br-sm"
-                        : "bg-white/5 text-white border border-border rounded-bl-sm"
+                    key={msg.id}
+                    className={`flex ${
+                      msg.role === "user" ? "justify-end" : "justify-start"
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === "assistant" && (
+                      <div className="w-6 h-6 rounded-full bg-grad-primary flex items-center justify-center shrink-0 mr-2 mt-1">
+                        <Bot size={12} className="text-background" />
+                      </div>
+                    )}
+
+                    <div
+                      className={`max-w-[78%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                        msg.role === "user"
+                          ? "bg-grad-primary text-background rounded-br-sm"
+                          : "bg-white/5 text-white border border-border rounded-bl-sm"
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
                   </div>
-                </div>
-              ))}
-
-              {isTyping && (
-                <div className="flex justify-start items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-grad-primary flex items-center justify-center shrink-0">
-                    <Bot size={12} className="text-background" />
-                  </div>
-                  <div className="bg-white/5 border border-border rounded-2xl rounded-bl-sm px-4 py-3 flex gap-1">
-                    {[0, 1, 2].map((i) => (
-                      <motion.span
-                        key={i}
-                        className="w-1.5 h-1.5 rounded-full bg-muted"
-                        animate={{ opacity: [0.3, 1, 0.3] }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity,
-                          delay: i * 0.2,
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {error && (
-                <div className="flex items-start gap-2 text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-xl px-3 py-2.5">
-                  <AlertCircle size={13} className="shrink-0 mt-0.5" />
-                  {error}
-                </div>
-              )}
-
-              <div ref={messagesEndRef} />
-            </div>
-
-            {messages.length === 1 && (
-              <div className="px-4 pb-3 flex flex-wrap gap-2">
-                {quickReplies.map((reply) => (
-                  <button
-                    key={reply}
-                    type="button"
-                    onClick={() => sendMessage(reply)}
-                    disabled={isTyping}
-                    className="text-xs bg-white/5 hover:bg-primary/20 border border-border text-muted hover:text-white px-3 py-1.5 rounded-full transition-colors disabled:opacity-50"
-                  >
-                    {reply}
-                  </button>
                 ))}
-              </div>
-            )}
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                sendMessage(input);
-              }}
-              className="p-3 border-t border-border flex gap-2"
-            >
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                disabled={isTyping}
-                placeholder={isTyping ? "HEROY is typing..." : "Ask me anything..."}
-                className="flex-1 bg-white/5 border border-border rounded-full px-4 py-2.5 text-sm text-white placeholder:text-muted/50 outline-none focus:border-primary transition-colors disabled:opacity-60"
-              />
-              <button
-                type="submit"
-                disabled={isTyping || !input.trim()}
-                aria-label="Send message"
-                className="w-10 h-10 rounded-full bg-grad-primary flex items-center justify-center shrink-0 hover:opacity-90 transition-opacity disabled:opacity-40"
+                {isTyping && (
+                  <div className="flex justify-start items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-grad-primary flex items-center justify-center shrink-0">
+                      <Bot size={12} className="text-background" />
+                    </div>
+
+                    <div className="bg-white/5 border border-border rounded-2xl rounded-bl-sm px-4 py-3 flex gap-1">
+                      {[0, 1, 2].map((i) => (
+                        <motion.span
+                          key={i}
+                          className="w-1.5 h-1.5 rounded-full bg-muted"
+                          animate={{ opacity: [0.3, 1, 0.3] }}
+                          transition={{
+                            duration: 1,
+                            repeat: Infinity,
+                            delay: i * 0.2,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {error && (
+                  <div className="flex items-start gap-2 text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-xl px-3 py-2.5">
+                    <AlertCircle size={13} className="shrink-0 mt-0.5" />
+                    {error}
+                  </div>
+                )}
+
+                <div ref={messagesEndRef} />
+              </div>
+
+              {messages.length === 1 && (
+                <div className="px-4 pb-3 flex flex-wrap gap-2">
+                  {quickReplies.map((reply) => (
+                    <button
+                      key={reply}
+                      type="button"
+                      onClick={() => sendMessage(reply)}
+                      disabled={isTyping}
+                      className="text-xs bg-white/5 hover:bg-primary/20 border border-border text-muted hover:text-white px-3 py-1.5 rounded-full transition-colors disabled:opacity-50"
+                    >
+                      {reply}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  sendMessage(input);
+                }}
+                className="p-3 border-t border-border flex gap-2"
               >
-                <Send size={16} className="text-background" />
-              </button>
-            </form>
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  disabled={isTyping}
+                  placeholder={
+                    isTyping ? "HEROY is typing..." : "Ask me anything..."
+                  }
+                  className="flex-1 bg-white/5 border border-border rounded-full px-4 py-2.5 text-sm text-white placeholder:text-muted/50 outline-none focus:border-primary transition-colors disabled:opacity-60"
+                />
+
+                <button
+                  type="submit"
+                  disabled={isTyping || !input.trim()}
+                  aria-label="Send message"
+                  className="w-10 h-10 rounded-full bg-grad-primary flex items-center justify-center shrink-0 hover:opacity-90 transition-opacity disabled:opacity-40"
+                >
+                  <Send size={16} className="text-background" />
+                </button>
+              </form>
             </div>
           </motion.div>
         )}
