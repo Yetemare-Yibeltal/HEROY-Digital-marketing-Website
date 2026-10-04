@@ -46,6 +46,7 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
   }
 
   const lastMessage = messages[messages.length - 1];
+
   if (
     !lastMessage ||
     !lastMessage.content ||
@@ -61,36 +62,59 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
+
   if (!apiKey) {
     return next(new ErrorResponse("AI service not configured", 500));
   }
 
-  const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-goog-api-key": apiKey,
+  const response = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [
+            {
+              text: SYSTEM_PROMPT,
+            },
+          ],
+        },
+        contents: messages.map((msg) => ({
+          role: msg.role === "assistant" ? "model" : "user",
+          parts: [
+            {
+              text: msg.content,
+            },
+          ],
+        })),
+        generationConfig: {
+          maxOutputTokens: 500,
+        },
+      }),
     },
-    body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 500,
-      system: SYSTEM_PROMPT,
-      messages: messages.map((msg) => ({
-        role: msg.role,
-        content: msg.content,
-      })),
-    }),
-  });
+  );
 
   if (!response.ok) {
     const errorData = await response.text();
-    console.error("Anthropic API error:", errorData);
-    return next(new ErrorResponse("AI service temporarily unavailable", 502));
+
+    console.error("Gemini API error:", errorData);
+
+    return next(
+      new ErrorResponse("AI service temporarily unavailable", 502),
+    );
   }
 
   const data = await response.json();
+
   const reply =
-    data.content?.[0]?.text ??
+    data.candidates?.[0]?.content?.parts
+      ?.map((part) => part.text || "")
+      .join("")
+      .trim() ||
     "I could not generate a response. Please contact us directly at Heroydigitalsolution@gmail.com.";
 
   if (sessionId) {
