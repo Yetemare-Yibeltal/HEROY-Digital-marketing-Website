@@ -442,7 +442,7 @@ export default function Hero() {
                     duration: 0.5,
                     delay: index * 0.05,
                   }}
-                  className="group rounded-2xl border border-border/70 bg-card/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-card/70 hover:shadow-lg"
+                  className="group rounded-2xl border border-border/70 bg-card/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
                 >
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
                     <Icon className="h-5 w-5" />

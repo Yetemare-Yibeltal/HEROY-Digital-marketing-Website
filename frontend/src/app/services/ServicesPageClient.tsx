@@ -181,9 +181,7 @@ export default function ServicesPageClient() {
                     aria-label={`View ${service.title} service details`}
                     className="group glass rounded-2xl p-6 sm:p-7 hover:border-primary/40 hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden block h-full"
                   >
-                    <div className="absolute inset-0 bg-grad-primary opacity-0 group-hover:opacity-[0.06] transition-opacity duration-300" />
 
-                    <div className="absolute top-0 right-0 w-28 h-28 bg-primary/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
 
                     <div className="relative flex flex-col h-full">
                       <div className="flex items-start justify-between gap-4 mb-5">

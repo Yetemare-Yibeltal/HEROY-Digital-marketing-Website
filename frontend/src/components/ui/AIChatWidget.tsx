@@ -232,7 +232,7 @@ export default function AIChatWidget() {
                       type="button"
                       onClick={() => sendMessage(reply)}
                       disabled={isTyping}
-                      className="text-xs bg-white/5 hover:bg-primary/20 border border-border text-muted hover:text-white px-3 py-1.5 rounded-full transition-colors disabled:opacity-50"
+                      className="text-xs bg-white/5 border border-border text-muted hover:text-white px-3 py-1.5 rounded-full transition-colors disabled:opacity-50"
                     >
                       {reply}
                     </button>
