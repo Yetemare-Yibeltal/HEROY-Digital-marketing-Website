@@ -197,7 +197,7 @@ export default function AIChatWidget() {
                       <Bot size={12} className="text-background" />
                     </div>
 
-                    <div className="bg-white/5 border border-border rounded-2xl rounded-bl-sm px-4 py-3 flex gap-1">
+                    <div className="border border-border rounded-2xl rounded-bl-sm px-4 py-3 flex gap-1">
                       {[0, 1, 2].map((i) => (
                         <motion.span
                           key={i}

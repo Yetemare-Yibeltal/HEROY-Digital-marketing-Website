@@ -457,7 +457,7 @@ export default function ServicesPageClient() {
                       onClick={() => setOpenFaq(isOpen ? null : i)}
                       aria-expanded={isOpen}
                       aria-controls={`service-faq-answer-${i}`}
-                      className="w-full flex items-center justify-between gap-4 text-left px-6 py-5 hover:bg-white/[0.02] transition-colors"
+                      className="w-full flex items-center justify-between gap-4 text-left px-6 py-5 transition-colors"
                     >
                       <span className="font-display font-semibold text-white text-sm sm:text-base">
                         {item.q}
