@@ -60,17 +60,16 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
     );
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return next(new ErrorResponse("AI service not configured", 500));
   }
 
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
+  const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
+      "x-goog-api-key": apiKey,
     },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001",
