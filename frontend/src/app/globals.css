@@ -367,9 +367,7 @@ body {
     transition: opacity 0.5s ease;
     z-index: 0;
   }
-  .hy-holo-container:hover::before {
-    opacity: 1;
-  }
+  
   .hy-holo-container:hover {
     box-shadow: 0 50px 100px rgba(0,0,0,0.7), 0 0 40px rgba(124,92,255,0.15), 0 0 80px rgba(34,211,238,0.1);
   }
