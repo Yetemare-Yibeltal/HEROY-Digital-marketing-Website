@@ -1,39 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [hovering, setHovering] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    let animationFrame = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+
+    const updateCursor = () => {
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      }
+
+      animationFrame = requestAnimationFrame(updateCursor);
+    };
+
     const moveCursor = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      mouseX = e.clientX;
+      mouseY = e.clientY;
       setVisible(true);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const isInteractive = target.closest("a, button, [role='button']");
-      setHovering(Boolean(isInteractive));
+      setHovering(Boolean(target.closest("a, button, [role='button']")));
     };
 
     const handleMouseLeave = (e: MouseEvent) => {
-      // mouseleave on `window` isn't a standard, reliably-firing event in
-      // most browsers. Detecting the cursor actually leaving the viewport
-      // via `mouseout` + relatedTarget === null on `document` is the
-      // correct, cross-browser way to do this.
       if (!e.relatedTarget) {
         setVisible(false);
       }
     };
 
-    window.addEventListener("mousemove", moveCursor);
-    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mousemove", moveCursor, { passive: true });
+    window.addEventListener("mouseover", handleMouseOver, { passive: true });
     document.addEventListener("mouseout", handleMouseLeave);
 
+    animationFrame = requestAnimationFrame(updateCursor);
+
     return () => {
+      cancelAnimationFrame(animationFrame);
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mouseover", handleMouseOver);
       document.removeEventListener("mouseout", handleMouseLeave);
@@ -42,23 +53,30 @@ export default function CustomCursor() {
 
   return (
     <div
+      ref={cursorRef}
       aria-hidden="true"
-      className="hidden lg:block fixed top-0 left-0 z-[9999] pointer-events-none transition-opacity duration-200"
-      style={{ opacity: visible ? 1 : 0 }}
+      className="hidden lg:block fixed top-0 left-0 z-[9999] pointer-events-none"
+      style={{
+        opacity: visible ? 1 : 0,
+        willChange: "transform",
+      }}
     >
       <div
-        className="rounded-full border border-primary/60 transition-all duration-200 ease-out"
+        className="rounded-full border border-primary/60"
         style={{
           width: hovering ? 48 : 24,
           height: hovering ? 48 : 24,
-          transform: `translate(${position.x}px, ${position.y}px) translate(-50%, -50%)`,
-          backgroundColor: hovering ? "rgba(124,92,255,0.12)" : "transparent",
+          backgroundColor: hovering
+            ? "rgba(124,92,255,0.12)"
+            : "transparent",
+          transition: "width 120ms ease-out, height 120ms ease-out, background-color 120ms ease-out",
         }}
       />
+
       <div
         className="absolute top-0 left-0 w-1.5 h-1.5 rounded-full bg-accent"
         style={{
-          transform: `translate(${position.x}px, ${position.y}px) translate(-50%, -50%)`,
+          transform: "translate(-50%, -50%)",
         }}
       />
     </div>
