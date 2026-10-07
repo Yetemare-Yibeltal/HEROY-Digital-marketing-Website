@@ -21,7 +21,6 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
   weight: ["400", "500", "600", "700"],
 });
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://heroy.dev"),
 
