@@ -30,6 +30,140 @@ h6 {
   letter-spacing: -0.01em;
   line-height: 1.15;
 }
+/* Premium HEROY Typography */
+:root {
+  --font-display: var(--font-space-grotesk);
+}
+
+body {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Large display headings */
+h1,
+h2 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+/* Section headings */
+h3,
+h4 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+/* Interactive heading effect */
+.heading-interactive {
+  transition: letter-spacing 300ms ease, transform 300ms ease;
+}
+
+.heading-interactive:hover {
+  letter-spacing: -0.055em;
+  transform: translateY(-1px);
+}
+
+/* Premium gradient text */
+.text-gradient {
+  background: linear-gradient(
+    110deg,
+    currentColor 0%,
+    rgba(255, 255, 255, 0.72) 45%,
+    currentColor 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  transition: background-position 500ms ease;
+}
+
+.text-gradient:hover {
+  background-position: 100% center;
+}
+
+/* Eyebrow / category text */
+.eyebrow {
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* Premium body copy */
+.text-premium {
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.7;
+}
+
+/* Interactive navigation text */
+.nav-text {
+  position: relative;
+  font-weight: 500;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.nav-text::after {
+  position: absolute;
+  right: 0;
+  bottom: -5px;
+  left: 0;
+  height: 1px;
+  content: '';
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 300ms ease;
+  background: currentColor;
+}
+
+.nav-text:hover {
+  transform: translateY(-1px);
+}
+
+.nav-text:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Smooth interactive cards */
+.interactive-card {
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.interactive-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+/* Respect reduced-motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .heading-interactive,
+  .text-gradient,
+  .nav-text,
+  .interactive-card {
+    transition: none;
+  }
+
+  .heading-interactive:hover,
+  .nav-text:hover,
+  .interactive-card:hover {
+    transform: none;
+  }
+}
 
 
 ::selection {
