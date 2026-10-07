@@ -665,6 +665,17 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(124,92,255,0.2);
   }
+
+  /* ── Title hover glow — add alongside any text-gradient class ── */
+  .hy-title-hover {
+    display: inline-block;
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+  .hy-title-hover:hover {
+    filter: drop-shadow(0 0 18px rgba(124,92,255,0.5)) drop-shadow(0 0 32px rgba(34,211,238,0.3));
+    transform: translateY(-2px);
+    animation-duration: 2.5s !important;
+  }
 }
 @keyframes spin {
   to {
