@@ -26,7 +26,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.15;
 }
