@@ -167,19 +167,66 @@ export default function Hero() {
               <span>Welcome to HEROY Universe</span>
             </div>
 
-            {/* Main heading */}
-            <h1 className="font-sans text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] text-foreground sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5rem]">
-              We Build{" "}
-              <span className="bg-gradient-to-r from-primary via-primary to-foreground bg-clip-text text-transparent">
-                Digital Systems
-              </span>{" "}
-              That Scale.
-            </h1>
+           {/* Hero heading */}
+<div className="max-w-5xl">
+  <h1 className="font-display text-[2.8rem] font-extrabold leading-[0.94] tracking-[-0.055em] text-foreground sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem]">
+    <span className="block">We Build</span>
 
-            {/* Typewriter */}
-            <div className="mt-7 min-h-[3.5rem] text-xl font-bold tracking-tight text-foreground sm:text-2xl md:text-3xl">
-              <TypewriterText words={typewriterWords} />
-            </div>
+    <span className="relative mt-1 block">
+      {/* Static depth layer */}
+      <span
+        aria-hidden="true"
+        className="absolute left-0 top-[0.08em] -z-10 select-none text-[inherit] font-extrabold text-primary/10 blur-[10px]"
+      >
+        Digital Systems
+      </span>
+
+      {/* Main 7-color gradient */}
+      <span className="relative inline-block bg-[linear-gradient(100deg,#7c3aed_0%,#2563eb_16%,#0891b2_31%,#059669_46%,#ca8a04_62%,#ea580c_78%,#db2777_92%,#7c3aed_100%)] bg-clip-text text-transparent">
+        Digital Systems
+      </span>
+
+      {/* Fine highlight */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 select-none bg-[linear-gradient(180deg,rgba(255,255,255,0.45)_0%,transparent_38%)] bg-clip-text text-transparent"
+      >
+        Digital Systems
+      </span>
+    </span>
+
+    <span className="mt-1 block">
+      That{" "}
+      <span className="relative inline-block">
+        <span className="relative z-10">Scale.</span>
+
+        {/* Static gradient underline */}
+        <span
+          aria-hidden="true"
+          className="absolute -bottom-2 left-0 h-[3px] w-full rounded-full bg-[linear-gradient(90deg,#7c3aed,#2563eb,#0891b2,#059669,#ca8a04,#ea580c,#db2777)]"
+        />
+
+        {/* Small depth accent */}
+        <span
+          aria-hidden="true"
+          className="absolute -bottom-[5px] left-[4%] h-[2px] w-[92%] rounded-full bg-primary/20 blur-sm"
+        />
+      </span>
+    </span>
+  </h1>
+
+  {/* Typewriter */}
+  <div className="mt-8 flex min-h-[3.75rem] items-center text-lg font-semibold tracking-[-0.02em] text-foreground sm:text-xl md:text-2xl lg:text-[1.75rem]">
+    <span
+      aria-hidden="true"
+      className="mr-3 h-2.5 w-2.5 shrink-0 rounded-full bg-primary shadow-[0_0_12px_rgba(99,102,241,0.45)]"
+    />
+
+    <span className="bg-[linear-gradient(100deg,#7c3aed,#2563eb,#0891b2,#059669,#ca8a04,#ea580c,#db2777)] bg-clip-text text-transparent">
+      <TypewriterText words={typewriterWords} />
+    </span>
+  </div>
+</div>
 
             {/* Description */}
             <div className="mt-7 max-w-2xl space-y-5">

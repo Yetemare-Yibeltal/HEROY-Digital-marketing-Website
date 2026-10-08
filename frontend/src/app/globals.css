@@ -16,6 +16,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Guarantees every heading on every page uses the display font,
+   correct weight, and tight tracking — independent of whether any
+   component remembered to add a font-display utility class. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
 ::selection {
   background: rgba(124, 92, 255, 0.3);
   color: #fff;
@@ -682,4 +697,111 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+/* ── Gradient title text: font, weight, size, color, motion, hover — ──
+     ── automatically applies everywhere .text-gradient* is used ──       */
+.text-gradient,
+.text-gradient-warm,
+.text-gradient-green,
+.text-gradient-fire,
+.text-gradient-aurora {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  background-size: 300% auto;
+  transition: filter 0.35s ease, transform 0.35s ease, background-size 0.6s ease;
+}
+
+.text-gradient {
+  background-image: linear-gradient(
+    90deg,
+    #7c5cff,
+    #22d3ee,
+    #4ade80,
+    #fbbf24,
+    #f472b6,
+    #7c5cff
+  );
+  animation: hy-grad-flow 8s ease infinite;
+}
+.text-gradient-warm {
+  background-image: linear-gradient(
+    90deg,
+    #f472b6,
+    #fbbf24,
+    #fb923c,
+    #ef4444,
+    #f472b6
+  );
+  animation: hy-grad-flow 7s ease infinite;
+}
+.text-gradient-green {
+  background-image: linear-gradient(90deg, #22d3ee, #4ade80, #fbbf24, #22d3ee);
+  animation: hy-grad-flow 6s ease infinite;
+}
+.text-gradient-fire {
+  background-image: linear-gradient(
+    90deg,
+    #fbbf24,
+    #fb923c,
+    #ef4444,
+    #f472b6,
+    #fb923c
+  );
+  animation: hy-grad-flow 6s ease infinite;
+}
+/* New: 6-stop option for one standout word, e.g. a single hero keyword */
+.text-gradient-aurora {
+  background-image: linear-gradient(
+    90deg,
+    #7c5cff,
+    #22d3ee,
+    #4ade80,
+    #fbbf24,
+    #fb923c,
+    #f472b6
+  );
+  background-size: 400% auto;
+  animation: hy-grad-flow 10s ease infinite;
+}
+
+/* Hover: every gradient title word gets a glow + lift automatically,
+     no per-page class needed since it targets the existing classes */
+.text-gradient:hover,
+.text-gradient-warm:hover,
+.text-gradient-green:hover,
+.text-gradient-fire:hover,
+.text-gradient-aurora:hover {
+  filter: drop-shadow(0 0 18px rgba(124, 92, 255, 0.55))
+    drop-shadow(0 0 34px rgba(34, 211, 238, 0.3));
+  transform: translateY(-2px);
+  background-size: 150% auto;
+}
+
+/* Formal heading scale — apply to the <h1>/<h2>/<h3> wrapping a
+     gradient span if you want the parent sized+weighted consistently
+     too (optional; gradient spans already carry their own weight/font) */
+.hy-display-1 {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.hy-display-2 {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.hy-display-3 {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  line-height: 1.3;
 }
