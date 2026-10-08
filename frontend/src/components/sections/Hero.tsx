@@ -1,12 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
-import TypewriterText from "@/components/ui/TypewriterText";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Code2,
+  Globe2,
+  Gauge,
+  Megaphone,
+  Palette,
+  Search,
+  ShieldCheck,
+  Smartphone,
+  Sparkles,
+  Target,
+  Zap,
+} from "lucide-react";
 
-/* ── palette shared across all layers ── */
-const GRAD = "linear-gradient(100deg,#7c3aed 0%,#2563eb 16%,#0891b2 31%,#059669 46%,#ca8a04 62%,#ea580c 78%,#db2777 92%,#7c3aed 100%)";
-const COLORS = ["#7c3aed","#2563eb","#0891b2","#059669","#ca8a04","#ea580c","#db2777"];
+import TypewriterText from "@/components/ui/TypewriterText";
 
 const typewriterWords = [
   "Digital Marketing",
@@ -16,590 +29,618 @@ const typewriterWords = [
   "3D Experiences",
 ];
 
-/* ════════════════════════════════
-   1. Animated gradient CSS injector
-════════════════════════════════ */
-const STYLE_ID = "heroy-heading-styles";
-function useGlobalStyles() {
-  useEffect(() => {
-    if (document.getElementById(STYLE_ID)) return;
-    const el = document.createElement("style");
-    el.id = STYLE_ID;
-    el.textContent = `
-      @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@700&display=swap');
+const stats = [
+  {
+    value: "20+",
+    label: "Projects in Progress",
+  },
+  {
+    value: "3",
+    label: "Core Specialists",
+  },
+  {
+    value: "2025",
+    label: "Founded",
+  },
+  {
+    value: "100%",
+    label: "Custom Built",
+  },
+];
 
-      @keyframes heroy-grad-pan {
-        0%,100% { background-position: 0% 50%; }
-        50%      { background-position: 100% 50%; }
-      }
-      @keyframes heroy-shimmer {
-        0%   { transform: translateX(-120%) skewX(-18deg); }
-        100% { transform: translateX(220%)  skewX(-18deg); }
-      }
-      @keyframes heroy-underline-glow {
-        0%,100% { opacity:.7; filter: blur(0px); }
-        50%      { opacity:1;  filter: blur(2px); }
-      }
-      @keyframes heroy-letter-in {
-        0%   { opacity:0; transform: translateY(0.4em) rotateX(-50deg); filter: blur(8px); }
-        100% { opacity:1; transform: translateY(0)     rotateX(0deg);   filter: blur(0px); }
-      }
-      @keyframes heroy-scale-dot {
-        0%,100% { transform: scale(1); }
-        50%      { transform: scale(1.6); }
-      }
-      @keyframes heroy-orbit {
-        from { transform: rotate(0deg) translateX(22px) rotate(0deg); }
-        to   { transform: rotate(360deg) translateX(22px) rotate(-360deg); }
-      }
-      @keyframes heroy-float {
-        0%,100% { transform: translateY(0px); }
-        50%      { transform: translateY(-6px); }
-      }
+const techTags = [
+  "Next.js",
+  "TypeScript",
+  "Node.js",
+  "React Native",
+  "MongoDB",
+  "AI / ML",
+  "Three.js",
+  "Tailwind CSS",
+];
 
-      /* Syne for the main hero headline */
-      .heroy-headline {
-        font-family: 'Syne', var(--font-sans), system-ui, sans-serif;
-        perspective: 900px;
-      }
+const services = [
+  {
+    icon: Megaphone,
+    title: "Digital Marketing",
+    description:
+      "Strategy-led digital campaigns, content, social media, and online growth initiatives built around real business goals.",
+  },
+  {
+    icon: Code2,
+    title: "Web & Full-Stack Development",
+    description:
+      "Modern websites, business platforms, dashboards, APIs, and full-stack applications engineered for maintainability and scale.",
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile Applications",
+    description:
+      "Responsive mobile experiences designed for practical business workflows, customer engagement, and product growth.",
+  },
+  {
+    icon: Search,
+    title: "SEO & Search Visibility",
+    description:
+      "Search-focused website structure, technical foundations, content organization, and optimization for stronger discoverability.",
+  },
+  {
+    icon: Palette,
+    title: "UI/UX & Creative Design",
+    description:
+      "Clear interfaces and visual systems that combine usability, brand identity, accessibility, and modern digital aesthetics.",
+  },
+  {
+    icon: Zap,
+    title: "AI & Automation",
+    description:
+      "Practical AI integrations and workflow automation designed to reduce repetitive work and improve digital experiences.",
+  },
+];
 
-      /* Panning animated gradient text */
-      .heroy-anim-grad {
-        background: linear-gradient(
-          100deg,
-          #7c3aed 0%, #2563eb 14%, #0891b2 28%,
-          #059669 42%, #ca8a04 57%, #ea580c 71%,
-          #db2777 85%, #7c3aed 100%
-        );
-        background-size: 300% 300%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        animation: heroy-grad-pan 6s ease infinite;
-        display: inline-block;
-      }
+const projectTypes = [
+  "Business Websites",
+  "Landing Pages",
+  "E-commerce Platforms",
+  "Business Dashboards",
+  "Custom Web Applications",
+  "Mobile Applications",
+  "SEO-Focused Websites",
+  "AI-Enabled Workflows",
+];
 
-      /* Per-letter stagger reveal */
-      .heroy-letter {
-        display: inline-block;
-        animation: heroy-letter-in 0.55s cubic-bezier(0.22,1,0.36,1) both;
-        transform-origin: bottom center;
-      }
+const trustPoints = [
+  {
+    icon: Target,
+    title: "Business-focused",
+    description:
+      "Technology and creative decisions are connected to the actual purpose of your project.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Security-minded",
+    description:
+      "Modern development practices are considered throughout architecture, development, and deployment.",
+  },
+  {
+    icon: Gauge,
+    title: "Performance-aware",
+    description:
+      "Interfaces and applications are designed with usability, responsiveness, and performance in mind.",
+  },
+  {
+    icon: Globe2,
+    title: "Built for the web",
+    description:
+      "Modern technologies help create digital products that work across devices and audiences.",
+  },
+];
 
-      /* Shimmer band sweep */
-      .heroy-shimmer-wrap {
-        position: relative;
-        display: inline-block;
-        overflow: hidden;
-      }
-      .heroy-shimmer-wrap::after {
-        content: '';
-        position: absolute;
-        top: -20%; left: 0;
-        width: 35%; height: 140%;
-        background: linear-gradient(
-          105deg,
-          transparent 20%,
-          rgba(255,255,255,0.22) 50%,
-          transparent 80%
-        );
-        animation: heroy-shimmer 3.5s ease-in-out infinite;
-        pointer-events: none;
-      }
-
-      /* "Scale." underline */
-      .heroy-underline-bar {
-        animation: heroy-underline-glow 2.5s ease-in-out infinite;
-      }
-
-      /* Magnetic word hover */
-      .heroy-word-magnetic {
-        display: inline-block;
-        transition: color 0.3s ease;
-        cursor: default;
-      }
-      .heroy-word-magnetic:hover {
-        color: transparent;
-        background: ${GRAD};
-        background-size: 300% 300%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        animation: heroy-grad-pan 3s ease infinite;
-      }
-
-      /* Typewriter dot pulse */
-      .heroy-tw-dot {
-        animation: heroy-scale-dot 2s ease-in-out infinite;
-      }
-    `;
-    document.head.appendChild(el);
-    return () => { el.remove(); };
-  }, []);
-}
-
-/* ════════════════════════════════
-   2. Magnetic letter component
-════════════════════════════════ */
-function MagLetter({
-  char, delay, color
-}: { char: string; delay: number; color: string }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 300, damping: 20 });
-  const sy = useSpring(y, { stiffness: 300, damping: 20 });
-  const ref = useRef<HTMLSpanElement>(null);
-  const [hov, setHov] = useState(false);
-
-  const onMove = useCallback((e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    const dx = e.clientX - (r.left + r.width / 2);
-    const dy = e.clientY - (r.top + r.height / 2);
-    x.set(dx * 0.35);
-    y.set(dy * 0.35);
-    setHov(true);
-  }, [x, y]);
-
-  const onLeave = useCallback(() => {
-    x.set(0); y.set(0); setHov(false);
-  }, [x, y]);
-
-  if (char === " ") return <span style={{ display: "inline-block", width: "0.28em" }} />;
-
+export default function Hero() {
   return (
-    <motion.span
-      ref={ref}
-      className="heroy-letter"
-      style={{
-        x: sx, y: sy,
-        display: "inline-block",
-        color: hov ? color : undefined,
-        textShadow: hov ? `0 0 24px ${color}88` : undefined,
-        transition: "color .2s, text-shadow .2s",
-        animationDelay: `${delay}ms`,
-      }}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      whileHover={{ scale: 1.18 }}
-      transition={{ type: "spring", stiffness: 400, damping: 18 }}
-    >
-      {char}
-    </motion.span>
-  );
-}
+    <section className="relative overflow-hidden bg-background">
+      {/* Background atmosphere */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
+        <div className="absolute left-1/2 top-[-12rem] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute right-[-10rem] top-[20rem] h-[24rem] w-[24rem] rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute left-[-12rem] top-[35rem] h-[24rem] w-[24rem] rounded-full bg-primary/5 blur-3xl" />
 
-/* ════════════════════════════════
-   3. Orbit ring around "Systems"
-════════════════════════════════ */
-function OrbitRing() {
-  return (
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border)/0.18)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border)/0.18)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:linear-gradient(to_bottom,black_0%,transparent_80%)]" />
+      </div>
+
+      {/* Main Hero */}
+      <div className="mx-auto max-w-7xl px-6 pb-20 pt-24 sm:px-8 lg:px-12 lg:pb-28 lg:pt-32">
+        <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+          {/* Left Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="max-w-3xl"
+          >
+            {/* Eyebrow */}
+            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold tracking-wide text-primary">
+              <Sparkles className="h-4 w-4" />
+              <span>Welcome to HEROY Universe</span>
+            </div>
+
+           {/* Hero heading */}
+<div className="max-w-5xl">
+  <h1 className="font-sans text-[2.8rem] font-extrabold leading-[0.96] tracking-[-0.055em] text-foreground sm:text-5xl md:text-6xl lg:text-6xl xl:text-[5.5rem]">
+    <span className="block">We Build</span>
+
+    <span className="relative mt-1 block">
+      {/* Static depth */}
+      <span
+        aria-hidden="true"
+        className="absolute left-0 top-[0.08em] -z-10 select-none text-[inherit] font-extrabold text-primary/10 blur-[8px]"
+      >
+        Digital Systems
+      </span>
+
+      {/* Main gradient */}
+      <span className="relative inline-block bg-[linear-gradient(100deg,#7c3aed_0%,#2563eb_16%,#0891b2_31%,#059669_46%,#ca8a04_62%,#ea580c_78%,#db2777_92%,#7c3aed_100%)] bg-clip-text text-transparent">
+        Digital Systems
+      </span>
+
+      {/* Static highlight */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 select-none bg-[linear-gradient(180deg,rgba(255,255,255,0.4)_0%,transparent_40%)] bg-clip-text text-transparent"
+      >
+        Digital Systems
+      </span>
+    </span>
+
+    <span className="mt-1 block">
+      That{" "}
+      <span className="relative inline-block">
+        <span className="relative z-10">Scale.</span>
+
+        <span
+          aria-hidden="true"
+          className="absolute -bottom-2 left-0 h-[3px] w-full rounded-full bg-[linear-gradient(90deg,#7c3aed,#2563eb,#0891b2,#059669,#ca8a04,#ea580c,#db2777)]"
+        />
+      </span>
+    </span>
+  </h1>
+
+  {/* Typewriter */}
+  <div className="mt-8 flex min-h-[3.75rem] items-center text-lg font-bold tracking-tight text-foreground sm:text-xl md:text-2xl lg:text-[1.75rem]">
     <span
       aria-hidden="true"
-      style={{
-        position: "absolute",
-        inset: "-12px -16px",
-        borderRadius: "50%",
-        border: "1.5px solid rgba(124,58,237,0.18)",
-        pointerEvents: "none",
-        animation: "heroy-float 4s ease-in-out infinite",
-      }}
-    >
-      {COLORS.slice(0, 5).map((c, i) => (
-        <span
-          key={i}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: 7,
-            height: 7,
-            marginTop: -3.5,
-            marginLeft: -3.5,
-            borderRadius: "50%",
-            background: c,
-            boxShadow: `0 0 8px ${c}`,
-            animation: `heroy-orbit ${3 + i * 0.7}s linear infinite`,
-            animationDelay: `${i * -0.9}s`,
-          }}
-        />
-      ))}
+      className="mr-3 h-2.5 w-2.5 shrink-0 rounded-full bg-primary shadow-[0_0_12px_rgba(99,102,241,0.4)]"
+    />
+
+    <span className="bg-[linear-gradient(100deg,#7c3aed,#2563eb,#0891b2,#059669,#ca8a04,#ea580c,#db2777)] bg-clip-text text-transparent">
+      <TypewriterText words={typewriterWords} />
     </span>
-  );
-}
+  </div>
+</div>
 
-/* ════════════════════════════════
-   4. Glowing cursor tracker for "Digital Systems"
-════════════════════════════════ */
-function GlowCursor() {
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const ref = useRef<HTMLSpanElement>(null);
+            {/* Description */}
+            <div className="mt-7 max-w-2xl space-y-5">
+              <p className="text-base font-normal leading-8 text-muted-foreground sm:text-lg">
+                HEROY is a digital transformation team helping startups,
+                businesses, organizations, and growing brands build stronger
+                digital foundations through technology, marketing, design, and
+                innovation.
+              </p>
 
-  const handleMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    mx.set(e.clientX - r.left);
-    my.set(e.clientY - r.top);
-  };
+              <p className="text-sm font-medium leading-7 text-muted-foreground/90 sm:text-base">
+                From high-converting landing pages and business websites to
+                full-stack platforms, mobile applications, SEO initiatives,
+                AI-powered workflows, and immersive digital experiences, we
+                combine strategy and engineering to turn ideas into useful
+                digital products.
+              </p>
+            </div>
 
-  const opacity = useMotionValue(0);
-  const springX = useSpring(mx, { stiffness: 120, damping: 18 });
-  const springY = useSpring(my, { stiffness: 120, damping: 18 });
-
-  return (
-    <span
-      ref={ref}
-      onMouseMove={handleMove}
-      onMouseEnter={() => opacity.set(1)}
-      onMouseLeave={() => opacity.set(0)}
-      style={{ position: "relative", display: "inline-block" }}
-    >
-      <motion.span
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: springY,
-          left: springX,
-          width: 120,
-          height: 120,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%)",
-          transform: "translate(-50%, -50%)",
-          pointerEvents: "none",
-          opacity,
-          zIndex: -1,
-        }}
-      />
-      {/* children are the gradient text span — rendered by parent */}
-    </span>
-  );
-}
-
-/* ════════════════════════════════
-   5. Particle burst on title click
-════════════════════════════════ */
-type Particle = { id: number; x: number; y: number; color: string; vx: number; vy: number };
-function ParticleBurst({ particles }: { particles: Particle[] }) {
-  return (
-    <AnimatePresence>
-      {particles.map(p => (
-        <motion.span
-          key={p.id}
-          initial={{ opacity: 1, x: p.x, y: p.y, scale: 1 }}
-          animate={{ opacity: 0, x: p.x + p.vx * 60, y: p.y + p.vy * 60, scale: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          style={{
-            position: "fixed",
-            width: 8, height: 8,
-            borderRadius: "50%",
-            background: p.color,
-            pointerEvents: "none",
-            zIndex: 9999,
-          }}
-        />
-      ))}
-    </AnimatePresence>
-  );
-}
-
-/* ════════════════════════════════
-   MAIN EXPORT
-════════════════════════════════ */
-export default function HeroHeading() {
-  useGlobalStyles();
-
-  const [particles, setParticles] = useState<Particle[]>([]);
-  const pid = useRef(0);
-
-  /* Magnetic tilt on the whole heading block */
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const rotX = useTransform(my, [-60, 60], [3, -3]);
-  const rotY = useTransform(mx, [-200, 200], [-4, 4]);
-  const srX = useSpring(rotX, { stiffness: 100, damping: 22 });
-  const srY = useSpring(rotY, { stiffness: 100, damping: 22 });
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  const onWrapMove = (e: React.MouseEvent) => {
-    if (!wrapRef.current) return;
-    const r = wrapRef.current.getBoundingClientRect();
-    mx.set(e.clientX - (r.left + r.width / 2));
-    my.set(e.clientY - (r.top + r.height / 2));
-  };
-  const onWrapLeave = () => { mx.set(0); my.set(0); };
-
-  /* Burst on click */
-  const burst = (e: React.MouseEvent) => {
-    const newParticles: Particle[] = Array.from({ length: 12 }, (_, i) => ({
-      id: pid.current++,
-      x: e.clientX,
-      y: e.clientY,
-      color: COLORS[i % COLORS.length],
-      vx: Math.cos((i / 12) * Math.PI * 2) * (1 + Math.random()),
-      vy: Math.sin((i / 12) * Math.PI * 2) * (1 + Math.random()),
-    }));
-    setParticles(p => [...p, ...newParticles]);
-    setTimeout(() => setParticles(p => p.filter(x => !newParticles.includes(x))), 900);
-  };
-
-  /* Split "Digital Systems" into per-letter magnetic array */
-  const WORD1 = "Digital";
-  const WORD2 = "Systems";
-  const letters1 = WORD1.split("").map((c, i) => ({ c, i, color: COLORS[i % COLORS.length] }));
-  const letters2 = WORD2.split("").map((c, i) => ({ c, i: i + WORD1.length, color: COLORS[(i + 3) % COLORS.length] }));
-
-  return (
-    <>
-      <ParticleBurst particles={particles} />
-
-      <motion.div
-        ref={wrapRef}
-        className="max-w-5xl"
-        style={{ rotateX: srX, rotateY: srY, transformStyle: "preserve-3d", perspective: 900 }}
-        onMouseMove={onWrapMove}
-        onMouseLeave={onWrapLeave}
-        onClick={burst}
-      >
-        {/* ── Main h1 ── */}
-        <h1
-          className="heroy-headline"
-          style={{
-            fontSize: "clamp(2.6rem, 7vw, 5.5rem)",
-            fontWeight: 800,
-            lineHeight: 0.97,
-            letterSpacing: "-0.055em",
-            color: "var(--text-primary)",
-            margin: 0,
-          }}
-        >
-
-          {/* Line 1 — "We Build" with magnetic per-letter */}
-          <span
-            className="block"
-            style={{ transformStyle: "preserve-3d", transform: "translateZ(8px)" }}
-          >
-            {"We Build".split("").map((c, i) => (
-              <MagLetter
-                key={i}
-                char={c}
-                delay={i * 38}
-                color={COLORS[i % COLORS.length]}
-              />
-            ))}
-          </span>
-
-          {/* Line 2 — "Digital Systems" shimmer + orbit + depth ghost */}
-          <span
-            className="relative mt-1 block heroy-shimmer-wrap"
-            style={{ transform: "translateZ(24px)", transformStyle: "preserve-3d" }}
-          >
-            {/* Depth ghost (blur layer) */}
-            <span
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                left: 0,
-                top: "0.06em",
-                zIndex: -1,
-                userSelect: "none",
-                fontWeight: 800,
-                fontSize: "inherit",
-                letterSpacing: "inherit",
-                lineHeight: "inherit",
-                background: GRAD,
-                backgroundSize: "300% 300%",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                color: "transparent",
-                opacity: 0.25,
-                filter: "blur(10px)",
-                animation: "heroy-grad-pan 6s ease infinite",
-              }}
-            >
-              Digital Systems
-            </span>
-
-            {/* Magnetic per-letter gradient word 1 */}
-            <span className="heroy-anim-grad" style={{ animationDelay: "0s" }}>
-              {letters1.map(({ c, i, color }) => (
-                <MagLetter key={i} char={c} delay={300 + i * 40} color={color} />
+            {/* Project-fit pills */}
+            <div className="mt-8 flex flex-wrap gap-2.5">
+              {projectTypes.slice(0, 6).map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-border/80 bg-background/70 px-3.5 py-2 text-xs font-semibold text-muted-foreground backdrop-blur-sm transition-colors hover:border-primary/30 hover:text-foreground"
+                >
+                  {item}
+                </span>
               ))}
-            </span>
+            </div>
 
-            <span style={{ display: "inline-block", width: "0.28em" }} />
-
-            {/* Word 2 with orbit ring */}
-            <span style={{ position: "relative", display: "inline-block" }}>
-              <OrbitRing />
-              <span className="heroy-anim-grad" style={{ animationDelay: "-3s" }}>
-                {letters2.map(({ c, i, color }) => (
-                  <MagLetter key={i} char={c} delay={300 + i * 40} color={color} />
-                ))}
-              </span>
-            </span>
-
-            {/* Top highlight veil */}
-            <span
-              aria-hidden="true"
-              style={{
-                pointerEvents: "none",
-                position: "absolute",
-                inset: 0,
-                userSelect: "none",
-                background: "linear-gradient(180deg,rgba(255,255,255,0.35) 0%,transparent 45%)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                color: "transparent",
-                fontSize: "inherit",
-                fontWeight: "inherit",
-                lineHeight: "inherit",
-                letterSpacing: "inherit",
-              }}
-            >
-              Digital Systems
-            </span>
-          </span>
-
-          {/* Line 3 — "That Scale." */}
-          <span
-            className="mt-1 block"
-            style={{ transform: "translateZ(6px)", transformStyle: "preserve-3d" }}
-          >
-            <span className="heroy-word-magnetic">That</span>
-            {" "}
-            <span
-              className="relative inline-block"
-              style={{ transform: "translateZ(16px)" }}
-            >
-              {/* "Scale." — gradient + underline */}
-              <motion.span
-                className="heroy-anim-grad"
-                style={{ position: "relative", zIndex: 10, animationDelay: "-2s" }}
-                whileHover={{
-                  scale: 1.06,
-                  transition: { type: "spring", stiffness: 400, damping: 18 },
-                }}
+            {/* CTAs */}
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/contact"
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/25"
               >
-                Scale.
-              </motion.span>
+                Start Your Project
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
 
-              {/* Animated underline bar */}
-              <motion.span
-                aria-hidden="true"
-                className="heroy-underline-bar"
-                initial={{ scaleX: 0, originX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.9, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
-                style={{
-                  position: "absolute",
-                  bottom: "-0.12em",
-                  left: 0,
-                  height: 3,
-                  width: "100%",
-                  borderRadius: 3,
-                  background: GRAD,
-                  backgroundSize: "300% 300%",
-                  display: "block",
-                  animation: "heroy-grad-pan 4s ease infinite, heroy-underline-glow 2.5s ease-in-out infinite",
-                }}
-              />
+              <Link
+                href="/portfolio"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background/70 px-6 py-3.5 text-sm font-bold text-foreground backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-muted/50"
+              >
+                Explore Our Work
+              </Link>
+            </div>
 
-              {/* Extra glow underline */}
-              <motion.span
-                aria-hidden="true"
-                initial={{ scaleX: 0, originX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.9, delay: 1.3, ease: [0.22, 1, 0.36, 1] }}
-                style={{
-                  position: "absolute",
-                  bottom: "-0.18em",
-                  left: "5%",
-                  height: 10,
-                  width: "90%",
-                  borderRadius: 10,
-                  background: GRAD,
-                  backgroundSize: "300% 300%",
-                  filter: "blur(6px)",
-                  opacity: 0.45,
-                  display: "block",
-                  animation: "heroy-grad-pan 4s ease infinite",
-                }}
-              />
-            </span>
-          </span>
-        </h1>
+            {/* Trust signals */}
+            <div className="mt-10 grid gap-4 border-t border-border/70 pt-7 sm:grid-cols-3">
+              <div>
+                <p className="text-sm font-bold text-foreground">
+                  Direct collaboration
+                </p>
+                <p className="mt-1 text-xs font-medium leading-5 text-muted-foreground">
+                  Clear communication throughout the project.
+                </p>
+              </div>
 
-        {/* ── Typewriter row ── */}
+              <div>
+                <p className="text-sm font-bold text-foreground">
+                  Transparent delivery
+                </p>
+                <p className="mt-1 text-xs font-medium leading-5 text-muted-foreground">
+                  Defined scope, milestones, and priorities.
+                </p>
+              </div>
+
+              <div>
+                <p className="text-sm font-bold text-foreground">
+                  Modern technology
+                </p>
+                <p className="mt-1 text-xs font-medium leading-5 text-muted-foreground">
+                  Contemporary tools for modern digital products.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Visual */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+            className="relative mx-auto w-full max-w-xl lg:max-w-none"
+          >
+            {/* Main image */}
+            <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/70 p-2 shadow-2xl shadow-black/10 backdrop-blur-xl">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
+                <Image
+                  src="/images/brand/hero-team-banner.png"
+                  alt="HEROY digital technology and creative team"
+                  fill
+                  priority
+                  className="object-cover transition-transform duration-700 hover:scale-[1.03]"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+                <div className="absolute bottom-5 left-5 right-5">
+                  <div className="rounded-2xl border border-white/20 bg-black/35 p-4 backdrop-blur-xl">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/70">
+                          Digital transformation
+                        </p>
+                        <p className="mt-1 text-lg font-bold tracking-tight text-white">
+                          Strategy. Design. Engineering.
+                        </p>
+                      </div>
+
+                      <div className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 sm:flex">
+                        <Sparkles className="h-5 w-5 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating project status */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="absolute -bottom-7 -left-4 z-20 w-[230px] rounded-2xl border border-border bg-background/95 p-4 shadow-xl backdrop-blur-xl sm:-left-8"
+            >
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500/10">
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                </div>
+
+                <div>
+                  <p className="text-sm font-bold text-foreground">
+                    Open to New Projects
+                  </p>
+                  <p className="mt-1 text-xs font-medium leading-5 text-muted-foreground">
+                    Let&apos;s discuss your next digital product.
+                  </p>
+
+                  <Link
+                    href="/contact"
+                    className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
+                  >
+                    Start a conversation
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Decorative code card */}
+            <div className="absolute -right-4 -top-7 hidden w-52 rounded-2xl border border-border bg-background/90 p-4 shadow-xl backdrop-blur-xl xl:block">
+              <div className="mb-3 flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
+                <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
+                <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
+              </div>
+
+              <div className="font-mono text-[10px] leading-5 text-muted-foreground">
+                <p>
+                  <span className="text-primary">const</span>{" "}
+                  <span className="text-foreground">heroy</span> = {"{"}
+                </p>
+                <p className="pl-3">
+                  purpose:{" "}
+                  <span className="text-foreground">
+                    &quot;build&quot;
+                  </span>
+                  ,
+                </p>
+                <p className="pl-3">
+                  design:{" "}
+                  <span className="text-foreground">
+                    &quot;human-first&quot;
+                  </span>
+                  ,
+                </p>
+                <p className="pl-3">
+                  technology:{" "}
+                  <span className="text-foreground">
+                    &quot;modern&quot;
+                  </span>
+                </p>
+                <p>{"}"}</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Stats */}
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.6 }}
-          style={{
-            marginTop: "2rem",
-            display: "flex",
-            minHeight: "3.75rem",
-            alignItems: "center",
-            fontSize: "clamp(1.1rem, 2.5vw, 1.75rem)",
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            gap: 14,
-            fontFamily: "'Space Grotesk', var(--font-sans), sans-serif",
-          }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+          className="mt-20 grid grid-cols-2 overflow-hidden rounded-3xl border border-border/70 bg-card/50 backdrop-blur-xl md:grid-cols-4"
         >
-          {/* Animated multi-dot indicator */}
-          <span
-            aria-hidden="true"
-            style={{ display: "flex", gap: 4, flexShrink: 0, alignItems: "center" }}
-          >
-            {COLORS.slice(0, 3).map((c, i) => (
-              <motion.span
-                key={i}
-                className="heroy-tw-dot"
-                style={{
-                  display: "inline-block",
-                  width: i === 1 ? 10 : 7,
-                  height: i === 1 ? 10 : 7,
-                  borderRadius: "50%",
-                  background: c,
-                  boxShadow: `0 0 10px ${c}88`,
-                  animationDelay: `${i * 0.35}s`,
-                }}
-              />
-            ))}
-          </span>
+          {stats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className={`p-6 text-center sm:p-8 ${
+                index !== stats.length - 1
+                  ? "border-b border-border/70 md:border-b-0 md:border-r"
+                  : ""
+              } ${
+                index === 1
+                  ? "border-r border-border/70 md:border-r"
+                  : ""
+              }`}
+            >
+              <p className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+                {stat.value}
+              </p>
 
-          {/* Gradient typewriter text */}
-          <span
-            style={{
-              background: GRAD,
-              backgroundSize: "300% 300%",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              color: "transparent",
-              animation: "heroy-grad-pan 6s ease infinite",
-            }}
-          >
-            <TypewriterText words={typewriterWords} />
-          </span>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground sm:text-sm">
+                {stat.label}
+              </p>
+            </div>
+          ))}
         </motion.div>
 
-        {/* ── Subtle "click to spark" hint ── */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.2 }}
-          style={{
-            marginTop: "0.75rem",
-            fontSize: "0.72rem",
-            color: "var(--text-muted)",
-            letterSpacing: "0.08em",
-            userSelect: "none",
-          }}
+        {/* Services */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7 }}
+          className="mt-28"
         >
-          ✦ click anywhere on the heading to spark
-        </motion.p>
-      </motion.div>
-    </>
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">
+              What We Build
+            </p>
+
+            <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.03em] text-foreground sm:text-4xl lg:text-5xl">
+              Digital capabilities for real business needs.
+            </h2>
+
+            <p className="mt-5 text-base font-normal leading-8 text-muted-foreground sm:text-lg">
+              Our work brings technology, creative execution, marketing, and
+              product thinking together so businesses can establish, improve,
+              and grow their digital presence.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {services.map((service, index) => {
+              const Icon = service.icon;
+
+              return (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.05,
+                  }}
+                  className="group rounded-2xl border border-border/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
+                    <Icon className="h-5 w-5" />
+                  </div>
+
+                  <h3 className="mt-5 text-lg font-bold tracking-tight text-foreground">
+                    {service.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">
+                    {service.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* Delivery Principles */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7 }}
+          className="mt-28"
+        >
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">
+                How We Think
+              </p>
+
+              <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.03em] text-foreground sm:text-4xl">
+                Technology should solve a problem, not create another one.
+              </h2>
+
+              <p className="mt-5 text-base font-normal leading-8 text-muted-foreground">
+                We focus on understandable solutions, thoughtful interfaces,
+                maintainable code, and practical digital experiences rather
+                than adding complexity simply for the sake of technology.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {trustPoints.map((point) => {
+                const Icon = point.icon;
+
+                return (
+                  <div
+                    key={point.title}
+                    className="rounded-2xl border border-border/70 bg-card/40 p-5"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        <Icon className="h-4 w-4" />
+                      </div>
+
+                      <h3 className="text-sm font-bold text-foreground">
+                        {point.title}
+                      </h3>
+                    </div>
+
+                    <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">
+                      {point.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Technology */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7 }}
+          className="mt-28 rounded-3xl border border-border/70 bg-card/40 p-7 sm:p-10"
+        >
+          <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">
+                Technology Stack
+              </p>
+
+              <h2 className="mt-3 text-2xl font-extrabold tracking-[-0.025em] text-foreground sm:text-3xl">
+                Modern tools. Practical engineering.
+              </h2>
+
+              <p className="mt-3 text-sm font-normal leading-7 text-muted-foreground sm:text-base">
+                We use modern frameworks, languages, databases, design tools,
+                and cloud technologies according to the requirements of each
+                project rather than forcing every product into the same stack.
+              </p>
+            </div>
+
+            <div className="flex max-w-xl flex-wrap gap-2.5 lg:justify-end">
+              {techTags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-lg border border-border bg-background/70 px-3 py-2 text-xs font-semibold text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Final CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7 }}
+          className="mt-28 overflow-hidden rounded-3xl border border-primary/20 bg-primary/[0.06] p-8 sm:p-12"
+        >
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <CheckCircle2 className="h-6 w-6" />
+            </div>
+
+            <h2 className="mt-6 text-3xl font-extrabold tracking-[-0.035em] text-foreground sm:text-4xl lg:text-5xl">
+              Have an idea worth building?
+            </h2>
+
+            <p className="mx-auto mt-5 max-w-2xl text-base font-normal leading-8 text-muted-foreground sm:text-lg">
+              Tell us what you are trying to achieve. We can explore the
+              problem, discuss the right digital approach, and define a
+              practical path from idea to launch.
+            </p>
+
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                href="/contact"
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Start a Conversation
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+
+              <Link
+                href="/portfolio"
+                className="inline-flex items-center justify-center rounded-xl border border-border bg-background/80 px-7 py-3.5 text-sm font-bold text-foreground transition-all duration-300 hover:border-primary/30"
+              >
+                View Portfolio
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Bottom fade */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent"
+      />
+    </section>
   );
 }
