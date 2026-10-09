@@ -32,19 +32,17 @@ exports.submitConsultation = asyncHandler(async (req, res, next) => {
     userAgent: req.headers["user-agent"] || "",
   });
 
-  try {
-    await sendConsultationNotification({
-      name: consultation.name,
-      email: consultation.email,
-      date: consultation.date,
-      time: consultation.time,
-      platform: consultation.platform,
-      topic: consultation.topic,
-      notes: consultation.notes,
-    });
-  } catch (emailError) {
+  sendConsultationNotification({
+    name: consultation.name,
+    email: consultation.email,
+    date: consultation.date,
+    time: consultation.time,
+    platform: consultation.platform,
+    topic: consultation.topic,
+    notes: consultation.notes,
+  }).catch((emailError) => {
     console.error("Consultation email failed to send:", emailError.message);
-  }
+  });
 
   res.status(201).json({
     success: true,
