@@ -135,8 +135,6 @@ export default function Footer() {
   const [subscribeError, setSubscribeError] = useState<string | null>(null);
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Clear any pending reset timer if the component unmounts while it's
-  // still waiting, so we never try to update state on an unmounted component.
   useEffect(() => {
     return () => {
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
@@ -156,29 +154,154 @@ export default function Footer() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: email.trim() }),
-        }
+        },
       );
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Something went wrong. Please try again.");
+        throw new Error(
+          data.error || "Something went wrong. Please try again.",
+        );
       }
 
       setSubscribed(true);
       setEmail("");
 
-      // Standard response time: show the confirmation for a couple of
-      // seconds, then return the form so the visitor (or someone else
-      // using the same device) can subscribe again without refreshing.
       resetTimerRef.current = setTimeout(() => {
         setSubscribed(false);
       }, 2500);
     } catch (err) {
       setSubscribeError(
-        err instanceof Error ? err.message : "Something went wrong. Please try again."
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
       );
     } finally {
       setSubscribing(false);
     }
   };
+
+  return (
+    <footer className="relative z-10 border-t border-slate-800/80 bg-[#05050f]/90 pt-16 pb-12 backdrop-blur-md">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Trust Badges */}
+        <div className="grid grid-cols-2 gap-4 border-b border-slate-800/60 pb-12 md:grid-cols-4">
+          {trustBadges.map((badge, idx) => (
+            <div key={idx} className="flex items-center space-x-3 text-slate-300">
+              <badge.icon className="h-5 w-5 text-cyan-400" />
+              <span className="text-sm font-medium">{badge.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Links Grid */}
+        <div className="grid grid-cols-1 gap-10 py-12 md:grid-cols-2 lg:grid-cols-5">
+          {/* Brand Info */}
+          <div className="lg:col-span-2">
+            <Link href="/" className="flex items-center space-x-2">
+              <Image
+                src="/images/brand/heroy-logo.png"
+                alt="HEROY Digital Solutions"
+                width={140}
+                height={40}
+                className="h-auto w-auto"
+              />
+            </Link>
+            <p className="mt-4 max-w-sm text-sm text-slate-400">
+              Building high-impact digital products, automation systems, and brand strategies from Ethiopia to the world.
+            </p>
+
+            {/* Newsletter Form */}
+            <div className="mt-6">
+              <p className="text-sm font-semibold text-slate-200">
+                Subscribe to our newsletter
+              </p>
+              <form onSubmit={handleSubscribe} className="mt-3 flex max-w-sm gap-2">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-lg border border-slate-800 bg-slate-900/80 px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={subscribing}
+                  className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-50"
+                >
+                  {subscribing ? "..." : subscribed ? "Done!" : "Join"}
+                </button>
+              </form>
+              {subscribeError && (
+                <p className="mt-1 text-xs text-rose-400">{subscribeError}</p>
+              )}
+            </div>
+          </div>
+
+          {/* Services */}
+          <div>
+            <h3 className="text-sm font-semibold text-slate-200">Services</h3>
+            <ul className="mt-4 space-y-2.5 text-sm text-slate-400">
+              {serviceLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="transition hover:text-cyan-400">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h3 className="text-sm font-semibold text-slate-200">Company</h3>
+            <ul className="mt-4 space-y-2.5 text-sm text-slate-400">
+              {companyLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="transition hover:text-cyan-400">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources & Socials */}
+          <div>
+            <h3 className="text-sm font-semibold text-slate-200">Resources</h3>
+            <ul className="mt-4 space-y-2.5 text-sm text-slate-400">
+              {resourceLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="transition hover:text-cyan-400">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-6 flex space-x-3 text-slate-400">
+              {socialLinks.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition hover:text-cyan-400"
+                  aria-label={s.label}
+                >
+                  <SocialIcon platform={s.icon} />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-slate-800/60 pt-8 text-center text-xs text-slate-500">
+          <p>© {new Date().getFullYear()} HEROY Digital Solutions. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
