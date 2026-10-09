@@ -14,7 +14,28 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
+
+/* Automatically creates the grid overlay without touching HTML */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 217, 255, 0.2) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(0, 217, 255, 0.2) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
 
 /* Guarantees every heading on every page uses the display font,
    correct weight, and tight tracking — independent of whether any

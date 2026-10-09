@@ -43,18 +43,19 @@ const socialLinks = [
   {
     label: "Facebook",
     icon: "facebook",
+    color: "#1877F2",
     href: "https://facebook.com/heroydigitalsolution",
   },
   {
     label: "Telegram",
     icon: "telegram",
+    color: "#26A5E4",
     href: "https://t.me/heroy_digital_solution2026",
   },
-  { label: "X", icon: "x", href: "#" },
-  { label: "LinkedIn", icon: "linkedin", href: "#" },
-  { label: "Instagram", icon: "instagram", href: "#" },
+  { label: "X", icon: "x", color: "#FFFFFF", href: "#" },
+  { label: "LinkedIn", icon: "linkedin", color: "#0A66C2", href: "#" },
+  { label: "Instagram", icon: "instagram", color: "#E4405F", href: "#" },
 ] as const;
-
 type SocialPlatform = (typeof socialLinks)[number]["icon"];
 
 function SocialIcon({ platform }: { platform: SocialPlatform }) {
@@ -227,9 +228,11 @@ export default function Footer() {
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
-                  className="w-10 h-10 rounded-lg glass flex items-center justify-center text-muted hover:text-white hover:border-primary/50 transition-colors text-xs font-bold"
+                  className="w-10 h-10 rounded-lg glass flex items-center justify-center hover:border-primary/100 transition-colors"
                 >
-                  <SocialIcon platform={s.icon} />
+                  <span style={{ color: s.color }}>
+                    <SocialIcon platform={s.icon} />
+                  </span>
                 </a>
               ))}
             </div>
