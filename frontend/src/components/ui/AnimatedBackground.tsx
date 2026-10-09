@@ -21,44 +21,29 @@ export default function AnimatedBackground() {
     const bodyObserver = new ResizeObserver(() => resize());
     bodyObserver.observe(document.body);
 
-    const dots: {
+    const dustParticles: {
       x: number;
       y: number;
       vx: number;
       vy: number;
       size: number;
-      color: string;
-      type: "solid" | "ring" | "square";
       opacity: number;
       pulse: number;
       pulseSpeed: number;
     }[] = [];
 
-    const colors = [
-      "#22d3ee",
-      "#7c5cff",
-      "#f472b6",
-      "#4ade80",
-      "#fbbf24",
-      "#a78bfa",
-    ];
+    // Strictly cyan glowing dust particles
+    const cyanColor = "#00d9ff";
 
-    for (let i = 0; i < 70; i++) {
-      dots.push({
+    for (let i = 0; i < 85; i++) {
+      dustParticles.push({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.4, // Floating movement speed (X)
-        vy: (Math.random() - 0.5) * 0.4, // Floating movement speed (Y)
-        size: Math.random() * 3 + 1,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        type:
-          Math.random() > 0.8
-            ? "ring"
-            : Math.random() > 0.6
-              ? "square"
-              : "solid",
+        vx: (Math.random() - 0.5) * 0.35, // Floating speed X
+        vy: (Math.random() - 0.5) * 0.35, // Floating speed Y
+        size: Math.random() * 2.5 + 1, // Subtle dust grain sizes
         opacity: Math.random() * 0.6 + 0.2,
-        pulse: 0,
+        pulse: Math.random() * Math.PI * 2,
         pulseSpeed: Math.random() * 0.02 + 0.005,
       });
     }
@@ -68,63 +53,51 @@ export default function AnimatedBackground() {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 1. Move dots and render constellation connection lines
-      for (let i = 0; i < dots.length; i++) {
-        const dotA = dots[i];
+      // 1. Move dust particles and render constellation connection lines
+      for (let i = 0; i < dustParticles.length; i++) {
+        const pA = dustParticles[i];
 
-        // Update particle positions
-        dotA.x += dotA.vx;
-        dotA.y += dotA.vy;
+        // Move dust
+        pA.x += pA.vx;
+        pA.y += pA.vy;
 
-        // Bounce off screen boundaries
-        if (dotA.x < 0 || dotA.x > canvas.width) dotA.vx *= -1;
-        if (dotA.y < 0 || dotA.y > canvas.height) dotA.vy *= -1;
+        // Wrap around screen edges smoothly
+        if (pA.x < 0) pA.x = canvas.width;
+        if (pA.x > canvas.width) pA.x = 0;
+        if (pA.y < 0) pA.y = canvas.height;
+        if (pA.y > canvas.height) pA.y = 0;
 
-        // Connect nearby dust particles with thin lines (Constellation effect)
-        for (let j = i + 1; j < dots.length; j++) {
-          const dotB = dots[j];
-          const dx = dotA.x - dotB.x;
-          const dy = dotA.y - dotB.y;
+        // Draw subtle cyan connecting lines between close dust nodes
+        for (let j = i + 1; j < dustParticles.length; j++) {
+          const pB = dustParticles[j];
+          const dx = pA.x - pB.x;
+          const dy = pA.y - pB.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 130) {
+          if (distance < 120) {
             ctx.beginPath();
-            ctx.moveTo(dotA.x, dotA.y);
-            ctx.lineTo(dotB.x, dotB.y);
-            ctx.strokeStyle = "rgba(0, 217, 255, 0.15)";
+            ctx.moveTo(pA.x, pA.y);
+            ctx.lineTo(pB.x, pB.y);
+            ctx.strokeStyle = `rgba(0, 217, 255, ${0.2 * (1 - distance / 120)})`;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }
       }
 
-      // 2. Render dust particles
-      dots.forEach((dot) => {
-        dot.pulse += dot.pulseSpeed;
-        const alpha = dot.opacity * (0.5 + 0.5 * Math.sin(dot.pulse));
+      // 2. Render cyan glowing dust particles
+      dustParticles.forEach((p) => {
+        p.pulse += p.pulseSpeed;
+        const alpha = p.opacity * (0.6 + 0.4 * Math.sin(p.pulse));
 
         ctx.globalAlpha = alpha;
-
-        if (dot.type === "solid") {
-          ctx.beginPath();
-          ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
-          ctx.fillStyle = dot.color;
-          ctx.shadowColor = dot.color;
-          ctx.shadowBlur = 6;
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        } else if (dot.type === "ring") {
-          ctx.beginPath();
-          ctx.arc(dot.x, dot.y, dot.size * 2.5, 0, Math.PI * 2);
-          ctx.strokeStyle = dot.color;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        } else {
-          const s = dot.size * 3;
-          ctx.fillStyle = dot.color;
-          ctx.fillRect(dot.x - s / 2, dot.y - s / 2, s, s);
-        }
-
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = cyanColor;
+        ctx.shadowColor = cyanColor;
+        ctx.shadowBlur = 8; // Cyan glow effect
+        ctx.fill();
+        ctx.shadowBlur = 0;
         ctx.globalAlpha = 1;
       });
 
@@ -156,7 +129,7 @@ export default function AnimatedBackground() {
       <canvas
         ref={canvasRef}
         className="w-full h-full"
-        style={{ opacity: 0.8 }}
+        style={{ opacity: 0.85 }}
       />
     </div>
   );
