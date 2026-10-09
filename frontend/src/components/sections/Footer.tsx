@@ -42,18 +42,83 @@ const resourceLinks = [
 const socialLinks = [
   {
     label: "Facebook",
-    short: "f",
+    icon: "facebook",
     href: "https://facebook.com/heroydigitalsolution",
   },
   {
     label: "Telegram",
-    short: "tg",
+    icon: "telegram",
     href: "https://t.me/heroy_digital_solution2026",
   },
-  { label: "X", short: "X", href: "#" },
-  { label: "LinkedIn", short: "in", href: "#" },
-  { label: "Instagram", short: "ig", href: "#" },
-];
+  { label: "X", icon: "x", href: "#" },
+  { label: "LinkedIn", icon: "linkedin", href: "#" },
+  { label: "Instagram", icon: "instagram", href: "#" },
+] as const;
+
+type SocialPlatform = (typeof socialLinks)[number]["icon"];
+
+function SocialIcon({ platform }: { platform: SocialPlatform }) {
+  const commonProps = {
+    width: 19,
+    height: 19,
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": true as const,
+    focusable: false as const,
+  };
+
+  switch (platform) {
+    case "facebook":
+      return (
+        <svg {...commonProps}>
+          <path d="M13.5 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.3V13h2.8v8h3.4Z" />
+        </svg>
+      );
+
+    case "telegram":
+      return (
+        <svg {...commonProps}>
+          <path d="M21.9 4.2 18.7 19c-.2 1-.8 1.2-1.6.7l-4.5-3.3-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.6 8.4-7.6c.4-.4-.1-.6-.6-.3L7.1 13.2l-4.5-1.4c-1-.3-1-1 .2-1.5L20.4 3.5c.8-.3 1.8.2 1.5.7Z" />
+        </svg>
+      );
+
+    case "x":
+      return (
+        <svg {...commonProps}>
+          <path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3L12 14.6 5.6 22H2.4l7.3-8.4L1.9 2h6.5l4.5 6.8L18.9 2Zm-1.1 18h1.7L7.4 3.9H5.6L17.8 20Z" />
+        </svg>
+      );
+
+    case "linkedin":
+      return (
+        <svg {...commonProps}>
+          <path d="M5.2 3a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4ZM3.3 9h3.8v12H3.3V9Zm6.1 0H13v1.6h.1A4.1 4.1 0 0 1 16.8 8c4 0 4.7 2.6 4.7 6V21h-3.8v-6.2c0-1.5 0-3.4-2.1-3.4s-2.4 1.6-2.4 3.3V21H9.4V9Z" />
+        </svg>
+      );
+
+    case "instagram":
+      return (
+        <svg
+          {...commonProps}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle
+            cx="17.5"
+            cy="6.8"
+            r="0.8"
+            fill="currentColor"
+            stroke="none"
+          />
+        </svg>
+      );
+  }
+}
 
 const trustBadges = [
   { icon: MessageCircle, label: "Free Consultation" },
@@ -83,14 +148,14 @@ export default function Footer() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: email.trim() }),
-        }
+        },
       );
 
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          data.error || "Something went wrong. Please try again."
+          data.error || "Something went wrong. Please try again.",
         );
       }
 
@@ -100,7 +165,7 @@ export default function Footer() {
       setSubscribeError(
         err instanceof Error
           ? err.message
-          : "Something went wrong. Please try again."
+          : "Something went wrong. Please try again.",
       );
     } finally {
       setSubscribing(false);
@@ -151,9 +216,9 @@ export default function Footer() {
             <p className="text-sm text-muted leading-relaxed max-w-sm mb-6">
               HEROY Digital Solutions is an Ethiopia-based digital studio
               working across web development, mobile applications, digital
-              marketing, SEO, AI solutions, and interactive digital
-              experiences. We focus on practical solutions shaped around each
-              project&apos;s goals, requirements, and audience.
+              marketing, SEO, AI solutions, and interactive digital experiences.
+              We focus on practical solutions shaped around each project&apos;s
+              goals, requirements, and audience.
             </p>
 
             <div className="flex gap-3 flex-wrap">
@@ -164,7 +229,7 @@ export default function Footer() {
                   aria-label={s.label}
                   className="w-10 h-10 rounded-lg glass flex items-center justify-center text-muted hover:text-white hover:border-primary/50 transition-colors text-xs font-bold"
                 >
-                  {s.short}
+                  <SocialIcon platform={s.icon} />
                 </a>
               ))}
             </div>
@@ -234,18 +299,12 @@ export default function Footer() {
 
             <ul className="flex flex-col gap-3 mb-6">
               <li className="flex items-start gap-3 text-sm text-muted">
-                <MapPin
-                  size={15}
-                  className="text-primary mt-0.5 shrink-0"
-                />
+                <MapPin size={15} className="text-primary mt-0.5 shrink-0" />
                 Injibara, Awi Zone, Amhara, Ethiopia
               </li>
 
               <li className="flex items-start gap-3 text-sm text-muted">
-                <Mail
-                  size={15}
-                  className="text-primary mt-0.5 shrink-0"
-                />
+                <Mail size={15} className="text-primary mt-0.5 shrink-0" />
 
                 <a
                   href="mailto:Heroydigitalsolution@gmail.com"
@@ -256,10 +315,7 @@ export default function Footer() {
               </li>
 
               <li className="flex items-start gap-3 text-sm text-muted">
-                <Phone
-                  size={15}
-                  className="text-primary mt-0.5 shrink-0"
-                />
+                <Phone size={15} className="text-primary mt-0.5 shrink-0" />
 
                 <a
                   href="tel:+251923853252"
@@ -292,10 +348,7 @@ export default function Footer() {
               </li>
 
               <li className="flex items-start gap-3 text-sm text-muted">
-                <Clock
-                  size={15}
-                  className="text-primary mt-0.5 shrink-0"
-                />
+                <Clock size={15} className="text-primary mt-0.5 shrink-0" />
                 Mon – Sat, 9:00 AM – 7:00 PM (EAT)
               </li>
             </ul>
@@ -357,9 +410,7 @@ export default function Footer() {
                 </p>
 
                 {subscribeError && (
-                  <p className="text-xs text-red-400 mt-2">
-                    {subscribeError}
-                  </p>
+                  <p className="text-xs text-red-400 mt-2">{subscribeError}</p>
                 )}
               </>
             )}
@@ -368,8 +419,8 @@ export default function Footer() {
 
         <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
           <p>
-            &copy; {new Date().getFullYear()} HEROY Digital Solutions. Built
-            by Ethiopian engineers.
+            &copy; {new Date().getFullYear()} HEROY Digital Solutions. Built by
+            Ethiopian engineers.
           </p>
 
           <div className="flex items-center gap-5">
@@ -380,17 +431,11 @@ export default function Footer() {
               Privacy Policy
             </Link>
 
-            <Link
-              href="/terms"
-              className="hover:text-white transition-colors"
-            >
+            <Link href="/terms" className="hover:text-white transition-colors">
               Terms
             </Link>
 
-            <Link
-              href="/faq"
-              className="hover:text-white transition-colors"
-            >
+            <Link href="/faq" className="hover:text-white transition-colors">
               FAQ
             </Link>
 
