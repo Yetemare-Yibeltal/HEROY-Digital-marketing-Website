@@ -35,20 +35,22 @@ exports.submitContact = asyncHandler(async (req, res, next) => {
     userAgent: req.headers["user-agent"] || "",
   });
 
-  try {
-    await sendContactNotification({
-      name: contact.name,
-      email: contact.email,
-      phone: contact.phone,
-      company: contact.company,
-      service: contact.service,
-      budget: contact.budget,
-      message: contact.message,
-      ipAddress: contact.ipAddress,
-    });
-  } catch (emailError) {
+  // Respond to the visitor immediately once the submission is safely
+  // saved. The notification email is sent in the background — nobody
+  // needs to wait several seconds for an SMTP round trip just to see
+  // "message received."
+  sendContactNotification({
+    name: contact.name,
+    email: contact.email,
+    phone: contact.phone,
+    company: contact.company,
+    service: contact.service,
+    budget: contact.budget,
+    message: contact.message,
+    ipAddress: contact.ipAddress,
+  }).catch((emailError) => {
     console.error("Email sending failed:", emailError.message);
-  }
+  });
 
   res.status(201).json({
     success: true,
