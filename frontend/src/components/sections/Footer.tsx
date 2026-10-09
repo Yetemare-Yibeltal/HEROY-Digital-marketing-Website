@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Mail,
   Phone,
@@ -133,6 +133,15 @@ export default function Footer() {
   const [subscribed, setSubscribed] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
   const [subscribeError, setSubscribeError] = useState<string | null>(null);
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Clear any pending reset timer if the component unmounts while it's
+  // still waiting, so we never try to update state on an unmounted component.
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+    };
+  }, []);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,6 +171,13 @@ export default function Footer() {
 
       setSubscribed(true);
       setEmail("");
+
+      // Standard response time: show the confirmation for a couple of
+      // seconds, then return the form so the visitor (or someone else
+      // using the same device) can subscribe again without refreshing.
+      resetTimerRef.current = setTimeout(() => {
+        setSubscribed(false);
+      }, 2500);
     } catch (err) {
       setSubscribeError(
         err instanceof Error
