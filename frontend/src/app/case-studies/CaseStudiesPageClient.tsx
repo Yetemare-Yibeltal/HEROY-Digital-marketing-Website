@@ -486,7 +486,7 @@ export default function CaseStudiesPageClient() {
             Case Studies & Approach
           </span>
 
-          <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.02] tracking-tight text-white">
+          <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-4xl xl:text-6xl leading-[1.02] tracking-tight text-white">
             How we turn digital{" "}
             <TypewriterText
               words={typewriterWords}

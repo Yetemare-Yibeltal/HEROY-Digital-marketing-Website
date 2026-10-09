@@ -20,11 +20,11 @@ export default function TypewriterText({ words, className }: TypewriterTextProps
       const pauseTimer = setTimeout(() => {
         setIsPaused(false);
         setIsDeleting(true);
-      }, 1800);
+      }, 2100);
       return () => clearTimeout(pauseTimer);
     }
 
-    const typingSpeed = isDeleting ? 60 : 110;
+    const typingSpeed = isDeleting ? 180 : 200;
 
     const timer = setTimeout(() => {
       if (!isDeleting) {
