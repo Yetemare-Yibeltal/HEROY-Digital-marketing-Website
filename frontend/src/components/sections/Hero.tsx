@@ -347,7 +347,7 @@ export default function Hero() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="absolute -bottom-7 -left-4 z-20 w-[230px] rounded-2xl border border-border bg-background/95 p-4 shadow-xl backdrop-blur-xl sm:-left-8"
+              className="absolute -bottom-24 -left-6 z-20 w-[230px] rounded-2xl border border-border bg-background/95 p-4 shadow-xl backdrop-blur-xl sm:-left-8"
             >
               <div className="flex items-start gap-3">
                 <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500/10">
@@ -373,42 +373,28 @@ export default function Hero() {
               </div>
             </motion.div>
 
-            {/* Decorative code card */}
-            <div className="absolute -right-4 -top-7 hidden w-52 rounded-2xl border border-border bg-background/90 p-4 shadow-xl backdrop-blur-xl xl:block">
-              <div className="mb-3 flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
-                <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
-                <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
-              </div>
+            {/* Formal Agency Standard Card */}
+{/* Decorative Outer Top-Right Card */}
+<div className="absolute -top-24 -right-10 z-20 hidden w-64 rounded-2xl border border-border/80 bg-background/95 p-4 shadow-2xl backdrop-blur-xl xl:block">
+  <div className="mb-2.5 flex items-center justify-between border-b border-border/60 pb-2">
+    <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+      HEROY Capabilities
+    </span>
+    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+  </div>
 
-              <div className="font-mono text-[10px] leading-5 text-muted-foreground">
-                <p>
-                  <span className="text-primary">const</span>{" "}
-                  <span className="text-foreground">heroy</span> = {"{"}
-                </p>
-                <p className="pl-3">
-                  purpose:{" "}
-                  <span className="text-foreground">
-                    &quot;build&quot;
-                  </span>
-                  ,
-                </p>
-                <p className="pl-3">
-                  design:{" "}
-                  <span className="text-foreground">
-                    &quot;human-first&quot;
-                  </span>
-                  ,
-                </p>
-                <p className="pl-3">
-                  technology:{" "}
-                  <span className="text-foreground">
-                    &quot;modern&quot;
-                  </span>
-                </p>
-                <p>{"}"}</p>
-              </div>
-            </div>
+  <div className="space-y-2 text-xs text-muted-foreground">
+    <p className="leading-snug">
+      <strong className="text-foreground font-semibold">Purpose:</strong> High-Impact Engineering
+    </p>
+    <p className="leading-snug">
+      <strong className="text-foreground font-semibold">Design:</strong> Human-Centered Experience
+    </p>
+    <p className="leading-snug">
+      <strong className="text-foreground font-semibold">Technology:</strong> Modern Enterprise Stack
+    </p>
+  </div>
+</div>
           </motion.div>
         </div>
 
