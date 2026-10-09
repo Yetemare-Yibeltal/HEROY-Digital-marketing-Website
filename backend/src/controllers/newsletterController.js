@@ -39,11 +39,9 @@ exports.subscribe = asyncHandler(async (req, res, next) => {
     });
   }
 
-  try {
-    await sendNewsletterConfirmation(normalizedEmail);
-  } catch (emailError) {
+  sendNewsletterConfirmation(normalizedEmail).catch((emailError) => {
     console.error("Newsletter confirmation email failed:", emailError.message);
-  }
+  });
 
   res.status(201).json({
     success: true,
