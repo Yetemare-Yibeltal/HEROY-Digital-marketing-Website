@@ -38,10 +38,10 @@ body::before {
   pointer-events: none;
   background-image: linear-gradient(
       to right,
-      rgba(0, 210, 240, 0.1) 1px,
+      rgba(45, 126, 138, 0.1) 1px,
       transparent 1px
     ),
-    linear-gradient(to bottom, rgba(0, 217, 255, 0.2) 1px, transparent 1px);
+    linear-gradient(to bottom, rgba(37, 140, 156, 0.1) 1px, transparent 1px);
   background-size: 80px 80px;
 }
 

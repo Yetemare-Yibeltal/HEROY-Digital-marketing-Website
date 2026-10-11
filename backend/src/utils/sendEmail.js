@@ -1,4 +1,10 @@
-const nodemailer = require("nodemailer");
+// Sends email via the Resend HTTPS API instead of Nodemailer/SMTP.
+// Render's free tier blocks outbound SMTP ports (25, 465, 587), so SMTP
+// based sending (Gmail, etc.) silently fails there. Resend sends over a
+// normal HTTPS POST request, which isn't blocked, and has a generous
+// permanent free tier (3,000 emails/month, 100/day).
+
+const RESEND_API_URL = "https://api.resend.com/emails";
 
 // Any text a visitor submits (name, message, notes, etc.) gets inserted
 // into HTML emails below via template literals. Without escaping,
@@ -15,35 +21,41 @@ const escapeHtml = (value) => {
     .replace(/'/g, "&#39;");
 };
 
+const sendViaResend = async ({ to, subject, html }) => {
+  const apiKey = process.env.RESEND_API_KEY;
 
-let cachedTransporter = null;
-const createTransporter = () => {
-  if (cachedTransporter) return cachedTransporter;
-  cachedTransporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: parseInt(process.env.EMAIL_PORT),
-    secure: false,
-    pool: true,
-    maxConnections: 3,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+  if (!apiKey) {
+    throw new Error(
+      "RESEND_API_KEY is not set — emails cannot be sent until it is configured.",
+    );
+  }
+
+  const response = await fetch(RESEND_API_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
     },
-    tls: {
-      rejectUnauthorized: false,
-    },
+    body: JSON.stringify({
+      from:
+        process.env.EMAIL_FROM ||
+        "HEROY Digital Solutions <onboarding@resend.dev>",
+      to: Array.isArray(to) ? to : [to],
+      subject,
+      html,
+    }),
   });
-  return cachedTransporter;
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Resend API error (${response.status}): ${errorText}`);
+  }
+
+  return response.json();
 };
 
 const sendContactNotification = async (contactData) => {
-  const transporter = createTransporter();
-
-  const adminMailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: process.env.EMAIL_TO,
-    subject: `New Contact Form Submission — ${escapeHtml(contactData.service || "General Inquiry")}`,
-    html: `
+  const adminHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 8px;">
         <div style="background: linear-gradient(135deg, #7c5cff, #22d3ee); padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
           <h1 style="color: white; margin: 0; font-size: 24px;">HEROY Digital Solutions</h1>
@@ -98,14 +110,9 @@ const sendContactNotification = async (contactData) => {
           HEROY Digital Solutions — Injibara, Ethiopia
         </p>
       </div>
-    `,
-  };
+  `;
 
-  const clientMailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: contactData.email,
-    subject: "We received your message — HEROY Digital Solutions",
-    html: `
+  const clientHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 8px;">
         <div style="background: linear-gradient(135deg, #7c5cff, #22d3ee); padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
           <h1 style="color: white; margin: 0; font-size: 24px;">HEROY Digital Solutions</h1>
@@ -139,23 +146,24 @@ const sendContactNotification = async (contactData) => {
           Heroydigitalsolution@gmail.com
         </p>
       </div>
-    `,
-  };
+  `;
 
   await Promise.all([
-    transporter.sendMail(adminMailOptions),
-    transporter.sendMail(clientMailOptions),
+    sendViaResend({
+      to: process.env.EMAIL_TO,
+      subject: `New Contact Form Submission — ${escapeHtml(contactData.service || "General Inquiry")}`,
+      html: adminHtml,
+    }),
+    sendViaResend({
+      to: contactData.email,
+      subject: "We received your message — HEROY Digital Solutions",
+      html: clientHtml,
+    }),
   ]);
 };
 
 const sendConsultationNotification = async (data) => {
-  const transporter = createTransporter();
-
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: process.env.EMAIL_TO,
-    subject: `New Consultation Request — ${escapeHtml(data.name)}`,
-    html: `
+  const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #7c5cff, #22d3ee); padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
           <h1 style="color: white; margin: 0;">New Consultation Request</h1>
@@ -193,20 +201,17 @@ const sendConsultationNotification = async (data) => {
           </table>
         </div>
       </div>
-    `,
-  };
+  `;
 
-  await transporter.sendMail(mailOptions);
+  await sendViaResend({
+    to: process.env.EMAIL_TO,
+    subject: `New Consultation Request — ${escapeHtml(data.name)}`,
+    html,
+  });
 };
 
 const sendNewsletterConfirmation = async (email) => {
-  const transporter = createTransporter();
-
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: email,
-    subject: "You're subscribed to HEROY updates",
-    html: `
+  const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 8px;">
         <div style="background: linear-gradient(135deg, #7c5cff, #22d3ee); padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
           <h1 style="color: white; margin: 0; font-size: 24px;">HEROY Digital Solutions</h1>
@@ -228,10 +233,13 @@ const sendNewsletterConfirmation = async (email) => {
           Heroydigitalsolution@gmail.com
         </p>
       </div>
-    `,
-  };
+  `;
 
-  await transporter.sendMail(mailOptions);
+  await sendViaResend({
+    to: email,
+    subject: "You're subscribed to HEROY updates",
+    html,
+  });
 };
 
 module.exports = {
